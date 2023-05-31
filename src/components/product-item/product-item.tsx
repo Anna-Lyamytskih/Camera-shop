@@ -8,7 +8,9 @@ const ProductItem = ({camera}:ProductItemProps) => (
   <div className="container">
     <div className="product__img">
       <picture>
-        <source type="image/webp" srcSet={`${camera?.previewImgWebp || ''}, ${camera?.previewImgWebp2x || ''}`} /><img src={camera?.previewImg} srcSet={camera?.previewImg2x} width="560" height="480" alt={camera?.name} />
+        <source type="image/webp" srcSet={`/${camera?.previewImgWebp || ''}, /${camera?.previewImgWebp2x || ''}`} />
+        {/* TODO заглушка для картинок (спиннер) */}
+        <img src={`/${camera?.previewImg || ''}`} srcSet={`/${camera?.previewImg2x || ''}`} width="560" height="480" alt={camera?.name} />
       </picture>
     </div>
     <div className="product__content">

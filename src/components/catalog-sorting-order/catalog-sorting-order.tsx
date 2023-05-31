@@ -1,19 +1,14 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortingTypeOrder, changeSortOrder } from '../../store/products-api/products-process';
 
-export enum SortingTypes {
-  Up = 'up',
-  Down = 'down',
-}
-
 export const catalogSortingOrderList = [
   {
     title: 'По возрастанию',
-    value: SortingTypes.Up,
+    value: SortingTypeOrder.Up,
   },
   {
     title: 'По убыванию',
-    value: SortingTypes.Down,
+    value: SortingTypeOrder.Down,
   },
 ];
 
@@ -28,7 +23,6 @@ const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
   const dispatch = useAppDispatch();
 
   const handleSortClick = (sortName: SortingTypeOrder) => {
-    console.log(sortName);
     dispatch(changeSortOrder(sortName));
   };
 

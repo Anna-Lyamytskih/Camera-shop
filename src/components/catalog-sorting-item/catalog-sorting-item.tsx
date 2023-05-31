@@ -1,19 +1,14 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortingTypeBy, changeSortBy } from '../../store/products-api/products-process';
 
-export enum SortingTypes {
-  Price = 'Price',
-  Popular = 'Popular',
-}
-
 export const catalogSortList = [
   {
     title: 'по цене',
-    value: SortingTypes.Price,
+    value: SortingTypeBy.Price,
   },
   {
     title: 'по популярности',
-    value: SortingTypes.Popular,
+    value: SortingTypeBy.Rate,
   },
 ];
 
