@@ -7,6 +7,6 @@ const ReviewList = () => (
     <ReviewItem />
     <ReviewItem />
   </ul>
-)
+);
 
 export default ReviewList;

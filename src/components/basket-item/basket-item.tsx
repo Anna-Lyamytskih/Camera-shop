@@ -36,6 +36,6 @@ const BasketItem = () => (
       </svg>
     </button>
   </li>
-)
+);
 
 export default BasketItem;

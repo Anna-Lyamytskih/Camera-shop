@@ -6,6 +6,6 @@ const BreadcrumbsList = () => (
     <BreadcrumbsItem />
     <BreadcrumbsItem />
   </ul>
-)
+);
 
 export default BreadcrumbsList;

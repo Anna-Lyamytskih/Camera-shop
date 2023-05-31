@@ -34,6 +34,6 @@ const ReviewItem = () => (
       </li>
     </ul>
   </li>
-)
+);
 
 export default ReviewItem;

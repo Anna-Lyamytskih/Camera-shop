@@ -8,6 +8,6 @@ const BasketList = () => (
     <BasketItem />
     <BasketItem />
   </ul>
-)
+);
 
 export default BasketList;

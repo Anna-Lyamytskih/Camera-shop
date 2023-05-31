@@ -10,6 +10,6 @@ const BasketForm = () => (
     <button className="btn" type="submit">Применить
     </button>
   </form>
-)
+);
 
 export default BasketForm;

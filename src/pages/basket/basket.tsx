@@ -22,10 +22,12 @@ const Basket = () => (
                 <use xlinkHref="#icon-close"></use>
               </svg><span className="visually-hidden">Сбросить поиск</span>
             </button>
-          </div><a className="header__basket-link" href="#">
+          </div>
+          <a className="header__basket-link" href="#">
             <svg width="16" height="16" aria-hidden="true">
               <use xlinkHref="#icon-basket"></use>
-            </svg><span className="header__basket-count">3</span></a>
+            </svg><span className="header__basket-count">3</span>
+          </a>
         </div>
       </header>
       <main>
@@ -33,15 +35,19 @@ const Basket = () => (
           <div className="breadcrumbs">
             <div className="container">
               <ul className="breadcrumbs__list">
-                <li className="breadcrumbs__item"><a className="breadcrumbs__link" href="index.html">Главная
-                  <svg width="5" height="8" aria-hidden="true">
-                    <use xlinkHref="#icon-arrow-mini"></use>
-                  </svg></a>
+                <li className="breadcrumbs__item">
+                  <a className="breadcrumbs__link" href="index.html">Главная
+                    <svg width="5" height="8" aria-hidden="true">
+                      <use xlinkHref="#icon-arrow-mini"></use>
+                    </svg>
+                  </a>
                 </li>
-                <li className="breadcrumbs__item"><a className="breadcrumbs__link" href="catalog.html">Каталог
-                  <svg width="5" height="8" aria-hidden="true">
-                    <use xlinkHref="#icon-arrow-mini"></use>
-                  </svg></a>
+                <li className="breadcrumbs__item">
+                  <a className="breadcrumbs__link" href="catalog.html">Каталог
+                    <svg width="5" height="8" aria-hidden="true">
+                      <use xlinkHref="#icon-arrow-mini"></use>
+                    </svg>
+                  </a>
                 </li>
                 <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">Корзина</span>
                 </li>
@@ -74,6 +80,6 @@ const Basket = () => (
       <Footer />
     </div>
   </>
-)
+);
 
 export default Basket;
