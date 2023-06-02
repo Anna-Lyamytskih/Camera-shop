@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Banner from '../../components/banner';
 import CatalogFilter from '../../components/catalog-filter';
 import CatalogSort from '../../components/catalog-sort';
@@ -9,9 +10,34 @@ import PaginationList from '../../components/pagination-list';
 import Path from '../../components/path';
 import ProductCardList from '../../components/product-card-list';
 import { useGetSortProducts } from '../../hooks/use-get-sort-products/use-get-sort-products';
+import { Products } from '../../store/products-api/types';
 
 const Catalog = () => {
   const sortingProducts = useGetSortProducts();
+
+  const [products, setProducts] = useState([] as Products);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productPerPage] = useState(9);
+
+  useEffect(() => {
+    setProducts(sortingProducts);
+  }, []);
+
+  const lastProductIndex = currentPage * productPerPage;
+  const firstProductIndex = lastProductIndex - productPerPage;
+  const currentProduct = sortingProducts.slice(firstProductIndex, lastProductIndex);
+
+  const paginate = (pageNumber:number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
 
   return (
     <>
@@ -65,7 +91,7 @@ const Catalog = () => {
                       <CatalogSort />
                     </div>
                     <ProductCardList cameras={sortingProducts} />
-                    <PaginationList />
+                    <PaginationList productPerPage={productPerPage} totalProducts={products?.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>
                   </div>
                 </div>
               </div>
