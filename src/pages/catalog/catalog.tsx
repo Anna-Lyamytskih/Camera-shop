@@ -10,34 +10,50 @@ import PaginationList from '../../components/pagination-list';
 import Path from '../../components/path';
 import ProductCardList from '../../components/product-card-list';
 import { useGetSortProducts } from '../../hooks/use-get-sort-products/use-get-sort-products';
-import { Products } from '../../store/products-api/types';
 
-const Catalog = () => {
-  const sortingProducts = useGetSortProducts();
+type UsePagination = {
+  currentPage: number;
+  paginate: (pageNumber: number) => void;
+  goToNext: () => void;
+  goToPrev: () => void;
+  qty: number;
+  limit: number;
+}
 
-  const [products, setProducts] = useState([] as Products);
+const usePagination = ({ total, limit = 9 }: {
+  total: number;
+  limit?: number;
+}): UsePagination => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [productPerPage] = useState(9);
+  const [_total, _setTotal] = useState(total);
+  const [_limit] = useState(limit);
+  const qty = Math.ceil(_total / _limit);
 
-  useEffect(() => {
-    setProducts(sortingProducts);
-  }, []);
-
-  const lastProductIndex = currentPage * productPerPage;
-  const firstProductIndex = lastProductIndex - productPerPage;
-  const currentProduct = sortingProducts.slice(firstProductIndex, lastProductIndex);
-
-  const paginate = (pageNumber:number) => {
+  const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  const nextPage = () => {
+  const goToNext = () => {
     setCurrentPage((prev) => prev + 1);
   };
 
-  const prevPage = () => {
+  const goToPrev = () => {
     setCurrentPage((prev) => prev - 1);
   };
+
+  useEffect(() => {
+    _setTotal(total);
+  }, [total]);
+
+  return { currentPage, paginate, goToNext, goToPrev, qty, limit: _limit };
+};
+
+const Catalog = () => {
+  const sortingProducts = useGetSortProducts();
+  const pagination = usePagination({ total: sortingProducts.length });
+  const { currentPage, limit } = pagination;
+
+  const slicedList = sortingProducts.slice((currentPage - 1) * limit, currentPage * limit);
 
   return (
     <>
@@ -90,8 +106,8 @@ const Catalog = () => {
                     <div className="catalog-sort">
                       <CatalogSort />
                     </div>
-                    <ProductCardList cameras={sortingProducts} />
-                    <PaginationList productPerPage={productPerPage} totalProducts={products?.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>
+                    <ProductCardList cameras={slicedList} />
+                    <PaginationList pagination={pagination} />
                   </div>
                 </div>
               </div>
@@ -101,6 +117,7 @@ const Catalog = () => {
         <Footer />
       </div>
     </>
-  );};
+  );
+};
 
 export default Catalog;

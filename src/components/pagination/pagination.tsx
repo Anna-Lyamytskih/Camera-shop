@@ -1,17 +1,22 @@
 type PaginationProps = {
-  item:number;
+  item: number;
+  currentPage: number;
   paginate: (pageNumber: number) => void;
 }
 
-const Pagination = ({item, paginate} : PaginationProps) => (
+const Pagination = ({ item, paginate, currentPage }: PaginationProps) => (
   <li className="pagination__item">
-    <a className="pagination__link pagination__link--active"
+    <a
+      className={`pagination__link ${item === currentPage ? 'pagination__link--active' : ''}`}
       href={`${item}`}
-      onClick={() => paginate(item)}
+      onClick={(evt) => {
+        evt.preventDefault();
+        paginate(item);
+      }}
     >
       {item}
     </a>
-  </li>
+  </li >
 );
 
 export default Pagination;
