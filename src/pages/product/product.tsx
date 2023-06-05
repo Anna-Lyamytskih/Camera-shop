@@ -5,19 +5,104 @@ import FormSearch from '../../components/form-search';
 import Logo from '../../components/logo';
 import NavigationList from '../../components/navigation-list';
 import Path from '../../components/path';
-// import ProductCard from '../../components/product-card';
+import ProductCard from '../../components/product-card';
 import ReviewList from '../../components/review-list';
 import { productsApi } from '../../store/products-api/products-api';
 import ProductItem from '../../components/product-item';
+import { similarProductsApi } from '../../store/similar-product-api/similar-product-api';
+import { SimilarProducts } from '../../store/similar-product-api/types';
+import { useEffect, useState } from 'react';
+import ProductReviewForm from '../../components/product-review-form';
+
+type ProductSliderProps = {
+  slides: SimilarProducts | undefined;
+}
+
+const MAX_SLIDE_COUNT = 3;
+
+const ProductSlider = ({ slides }: ProductSliderProps) => {
+  const [active, setActive] = useState<number[]>([]);
+  const [startEndPoints, setStartEndPoints] = useState<[number,number]>([0,MAX_SLIDE_COUNT ]);
+
+  const goToNext = () => {
+    setStartEndPoints((prev) => [prev[0] + MAX_SLIDE_COUNT , prev[1] + MAX_SLIDE_COUNT ] as [number, number]);
+  };
+
+  const goToPrev = () => {
+    setStartEndPoints((prev) => [prev[0] - MAX_SLIDE_COUNT , prev[1] - MAX_SLIDE_COUNT ] as [number, number]);
+  };
+
+  const nextSlideHandler = () => {
+    goToNext();
+  };
+
+  const prevSlideHandler = () => {
+    goToPrev();
+  };
+
+  useEffect(()=>{
+    const init = (slides || []).map((item) => item.id).slice(0, 3);
+    setActive(init);
+  },[slides]);
+
+  useEffect(()=>{
+    setActive(startEndPoints);
+  },[startEndPoints]);
+
+  // const isDisabled = () => {
+
+  // }
+  //TODO не нажимаются кнопки слайдера. Не реализован disabled
+  return (
+    <div className="product-similar__slider-list">
+      {slides?.map((item) => (
+        <ProductCard
+          camera={item}
+          key={item.id}
+          isActive={active.includes(item.id)}
+        />
+      ))}
+      <button
+        className="slider-controls slider-controls--prev"
+        type="button"
+        aria-label="Предыдущий слайд"
+        onClick={(evt) => {
+          evt.preventDefault();
+          prevSlideHandler();
+        }}
+      >
+        <svg width="7" height="12" aria-hidden="true">
+          <use xlinkHref="#icon-arrow"></use>
+        </svg>
+      </button>
+      <button
+        className="slider-controls slider-controls--next"
+        type="button"
+        aria-label="Следующий слайд"
+        onClick={(evt) => {
+          evt.preventDefault();
+          nextSlideHandler();
+        }}
+      >
+        <svg width="7" height="12" aria-hidden="true">
+          <use xlinkHref="#icon-arrow"></use>
+        </svg>
+      </button>
+    </div>
+  );
+};
 
 const Product = () => {
   const { id } = useParams();
-
   const cameraId = Number(id);
 
-  const {data} = productsApi.useGetByIdQuery(cameraId);
-
+  const { data } = productsApi.useGetByIdQuery(cameraId);
+  const { data: similarProducts } = similarProductsApi.useGetListQuery(cameraId);
   const camera = data;
+
+  const reviewFormHandler = () => {
+    <ProductReviewForm />;
+  };
 
   return (
     <>
@@ -47,12 +132,26 @@ const Product = () => {
           <div className="page-content">
             <div className="breadcrumbs">
               <div className="container">
-                <BreadcrumbsList />
+                <BreadcrumbsList
+                  list={[
+                    {
+                      link: '/',
+                      title: 'Главная',
+                    },
+                    {
+                      link: '/',
+                      title: 'Каталог',
+                    },
+                    {
+                      title: camera?.name || '',
+                    }
+                  ]}
+                />
               </div>
             </div>
             <div className="page-content__section">
               <section className="product">
-                <ProductItem camera={camera}/>
+                <ProductItem camera={camera} />
               </section>
             </div>
             <div className="page-content__section">
@@ -60,25 +159,7 @@ const Product = () => {
                 <div className="container">
                   <h2 className="title title--h3">Похожие товары</h2>
                   <div className="product-similar__slider">
-                    <div className="product-similar__slider-list">
-                      {/* <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard /> */}
-                      <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" disabled>
-                        <svg width="7" height="12" aria-hidden="true">
-                          <use xlinkHref="#icon-arrow"></use>
-                        </svg>
-                      </button>
-                      <button className="slider-controls slider-controls--next" type="button" aria-label="Следующий слайд">
-                        <svg width="7" height="12" aria-hidden="true">
-                          <use xlinkHref="#icon-arrow"></use>
-                        </svg>
-                      </button>
-                    </div>
+                    <ProductSlider slides={similarProducts} />
                   </div>
                 </div>
               </section>
@@ -88,13 +169,9 @@ const Product = () => {
                 <div className="container">
                   <div className="page-content__headed">
                     <h2 className="title title--h3">Отзывы</h2>
-                    <button className="btn" type="button">Оставить свой отзыв</button>
+                    <button className="btn" type="button" onClick={() => reviewFormHandler()}>Оставить свой отзыв</button>
                   </div>
-                  <ReviewList />
-                  <div className="review-block__buttons">
-                    <button className="btn btn--purple" type="button">Показать больше отзывов
-                    </button>
-                  </div>
+                  <ReviewList cameraId={cameraId}/>
                 </div>
               </section>
             </div>

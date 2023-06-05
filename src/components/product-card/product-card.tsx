@@ -4,19 +4,20 @@ import { Link, generatePath } from 'react-router-dom';
 
 type ProductCardProps = {
   camera: Product;
+  isActive?: boolean;
 }
 
-const ProductCard = ({camera}:ProductCardProps) => {
+const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
   const link = generatePath(AppRoute.Product, {
     id: `${camera?.id || ''}`,
   });
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
       <div className="product-card__img">
         <picture>
-          <source type="image/webp" srcSet={`${camera.previewImgWebp}, ${camera.previewImgWebp2x}`} />
-          <img src={camera.previewImg} srcSet={camera.previewImg2x} width="280" height="240" alt={camera.name} />
+          <source type="image/webp" srcSet={`/ ${camera.previewImgWebp}, /${camera.previewImgWebp2x} `} />
+          <img src={`/ ${camera.previewImg} `} srcSet={` / ${camera.previewImg2x} `} width="280" height="240" alt={camera.name} />
         </picture>
       </div>
       <div className="product-card__info">
@@ -45,7 +46,7 @@ const ProductCard = ({camera}:ProductCardProps) => {
       </div>
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">
-        Купить
+          Купить
         </button>
         {camera?.id && <Link className="btn btn--transparent" to={link}>Подробнее</Link>}
       </div>
