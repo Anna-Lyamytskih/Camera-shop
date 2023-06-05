@@ -13,6 +13,7 @@ import { similarProductsApi } from '../../store/similar-product-api/similar-prod
 import { SimilarProducts } from '../../store/similar-product-api/types';
 import { useEffect, useState } from 'react';
 import ProductReviewForm from '../../components/product-review-form';
+import './product.css';
 
 type ProductSliderProps = {
   slides: SimilarProducts | undefined;
@@ -22,14 +23,20 @@ const MAX_SLIDE_COUNT = 3;
 
 const ProductSlider = ({ slides }: ProductSliderProps) => {
   const [active, setActive] = useState<number[]>([]);
-  const [startEndPoints, setStartEndPoints] = useState<[number,number]>([0,MAX_SLIDE_COUNT ]);
+  const [startEndPoints, setStartEndPoints] = useState<[number, number]>([0, MAX_SLIDE_COUNT]);
 
   const goToNext = () => {
-    setStartEndPoints((prev) => [prev[0] + MAX_SLIDE_COUNT , prev[1] + MAX_SLIDE_COUNT ] as [number, number]);
+    setStartEndPoints((prev) => [
+      prev[0] + MAX_SLIDE_COUNT,
+      prev[1] + MAX_SLIDE_COUNT,
+    ] as [number, number]);
   };
 
   const goToPrev = () => {
-    setStartEndPoints((prev) => [prev[0] - MAX_SLIDE_COUNT , prev[1] - MAX_SLIDE_COUNT ] as [number, number]);
+    setStartEndPoints((prev) => [
+      prev[0] - MAX_SLIDE_COUNT,
+      prev[1] - MAX_SLIDE_COUNT,
+    ] as [number, number]);
   };
 
   const nextSlideHandler = () => {
@@ -40,19 +47,21 @@ const ProductSlider = ({ slides }: ProductSliderProps) => {
     goToPrev();
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const init = (slides || []).map((item) => item.id).slice(0, 3);
     setActive(init);
-  },[slides]);
+  }, [slides]);
 
-  useEffect(()=>{
-    setActive(startEndPoints);
-  },[startEndPoints]);
+  useEffect(() => {
+    setActive((slides || []).map((item) => item.id)
+      .slice(startEndPoints[0], startEndPoints[1]));
+  }, [startEndPoints]);
 
-  // const isDisabled = () => {
+  //TODO будет работать неправильно, если придёт не кратное MAX_SLIDE_COUNT
+  const isDisabledNext = (): boolean => startEndPoints[1] + MAX_SLIDE_COUNT > (slides?.length || 0);
 
-  // }
-  //TODO не нажимаются кнопки слайдера. Не реализован disabled
+  const isDisabledPrev = (): boolean => startEndPoints[0] === 0;
+
   return (
     <div className="product-similar__slider-list">
       {slides?.map((item) => (
@@ -66,6 +75,7 @@ const ProductSlider = ({ slides }: ProductSliderProps) => {
         className="slider-controls slider-controls--prev"
         type="button"
         aria-label="Предыдущий слайд"
+        disabled={isDisabledPrev()}
         onClick={(evt) => {
           evt.preventDefault();
           prevSlideHandler();
@@ -79,6 +89,7 @@ const ProductSlider = ({ slides }: ProductSliderProps) => {
         className="slider-controls slider-controls--next"
         type="button"
         aria-label="Следующий слайд"
+        disabled={isDisabledNext()}
         onClick={(evt) => {
           evt.preventDefault();
           nextSlideHandler();
@@ -171,7 +182,7 @@ const Product = () => {
                     <h2 className="title title--h3">Отзывы</h2>
                     <button className="btn" type="button" onClick={() => reviewFormHandler()}>Оставить свой отзыв</button>
                   </div>
-                  <ReviewList cameraId={cameraId}/>
+                  <ReviewList cameraId={cameraId} />
                 </div>
               </section>
             </div>

@@ -29,7 +29,7 @@ const BreadcrumbsItem = ({ link, title }: BreadcrumbsItemProps) => (
 const BreadcrumbsList = ({ list }: BreadcrumbsListProps) => (
   <ul className="breadcrumbs__list">
     {list.map((item) => (
-      <BreadcrumbsItem key={item.link} link={item.link} title={item.title} />
+      <BreadcrumbsItem key={item.title} link={item.link} title={item.title} />
     ))}
   </ul>
 );
