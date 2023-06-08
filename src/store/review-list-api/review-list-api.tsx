@@ -22,15 +22,12 @@ export const reviewListApi = createApi({
       providesTags: (result) => ['reviewList'],
     }),
     addItem: builder.mutation<Reviews, ProductReviewFormType>({
-      query: ({ cameraId, ...body }) => ({
+      query: ({ ...body }) => ({
         url: `${APIRoute.Review}`,
         method: 'POST',
         body,
       }),
       invalidatesTags: ['reviewList'],
-      onCacheEntryAdded: (args, { dispatch }) => {
-        dispatch(reviewListApi.util.invalidateTags(['reviewList']));
-      }
     }),
   }),
 });
