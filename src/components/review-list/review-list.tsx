@@ -7,6 +7,14 @@ type ReviewListProps = {
   cameraId: number;
 }
 
+const getReviewList = (review: Reviews) => {
+  const items = [...review];
+
+  items.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+
+  return items;
+};
+
 const MAX_REVIEW_COUNT = 3;
 
 const ReviewList = ({ cameraId }: ReviewListProps) => {
@@ -36,7 +44,7 @@ const ReviewList = ({ cameraId }: ReviewListProps) => {
   //TODO разобраться со скроллом. При переключении товара скролл не обнуляется.
   useEffect(() => {
     const getEndItem = () => Math.ceil((data?.length || 0) / MAX_REVIEW_COUNT) * MAX_REVIEW_COUNT;
-    const init = data?.slice(0, endReviews);
+    const init = getReviewList(data || []).slice(0, endReviews);
     endItemRef.current = getEndItem();
     setReviews(init);
   }, [data, endReviews]);
