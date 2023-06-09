@@ -72,5 +72,4 @@ const ReviewList = ({ cameraId }: ReviewListProps) => {
   );
 };
 export default ReviewList;
-//нужно количество комментариев поделить на число 3. Далее подгружать комменты порциями
 

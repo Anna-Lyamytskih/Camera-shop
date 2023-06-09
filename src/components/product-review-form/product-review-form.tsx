@@ -17,12 +17,13 @@ type ProductReviewFormProps = {
   setActive: (item:boolean) => void;
   camera: number;
   setActiveModal: (item:boolean) => void;
-
+  scroll:number;
 }
 
-const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:ProductReviewFormProps) => {
+const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}:ProductReviewFormProps) => {
   const [rating, setRating] = useState<string>();
   const [isDisable, setDisable] = useState<boolean>();
+
 
   const popapRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,16 +58,35 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
   });
 
   const onSubmitSuccess = () => {
+    if(isLoading) {
+      setDisable(true);
+    }
+    if(!isLoading) {
+      setDisable(false);
+    }
     if(isSubmitSuccessful){
       reset();
       setActive(false);
       setActiveModal(true);
+      setDisable(false);
     }
   };
 
   useEffect(() => {
+    if(!isActive){
+      return;
+    }
+
+    if(!popapRef.current) {
+      return;
+    }
+    popapRef.current.setAttribute('tabindex', '0');
+    popapRef.current.focus();
+  },[isActive, popapRef.current]);
+
+  useEffect(() => {
     onSubmitSuccess();
-  },[isLoading, isSubmitSuccessful]);
+  },[isLoading, isSubmitSuccessful, setDisable]);
 
   useEffect(() => {
     if(!isActive){
@@ -83,11 +103,26 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
       }
     };
 
+    const clickKeyHandler = (evt:KeyboardEvent) => {
+      if(evt.keyCode === 27) {
+        reset();
+        setActive(false);
+      }
+    };
+
+    const scrollOffHandler = () => {
+      window.scrollTo(0,scroll);
+    };
+
     document.addEventListener('mousedown', clickHandler);
+    document.addEventListener('keydown', clickKeyHandler);
+    document.addEventListener('scroll', scrollOffHandler);
     return () => {
       document.removeEventListener('mousedown', clickHandler);
+      document.removeEventListener('keydown', clickKeyHandler);
+      document.removeEventListener('scroll', scrollOffHandler);
     };
-  },[isActive, setActive]);
+  },[isActive, setActive, scroll]);
 
   return(
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
@@ -128,7 +163,7 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
                       })}
                     />
                   </label>
-                  <div> {errors?.userName && <p className="custom-input__error">{errors?.userName?.message}</p>}</div>
+                  {errors?.userName && <p className="custom-input__error">{errors?.userName?.message}</p>}
                 </div>
                 <div className="custom-inputhtmlForm-review__item">
                   <label>
@@ -147,7 +182,7 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
                       })}
                     />
                   </label>
-                  <div> {errors?.advantage && <p className="custom-input__error">{errors?.advantage?.message}</p>}</div>
+                  {errors?.advantage && <p className="custom-input__error">{errors?.advantage?.message}</p>}
                 </div>
                 <div className="custom-inputhtmlForm-review__item">
                   <label>
@@ -166,7 +201,7 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
                       })}
                     />
                   </label>
-                  <div> {errors?.disadvantage && <p className="custom-input__error">{errors?.disadvantage?.message}</p>}</div>
+                  {errors?.disadvantage && <p className="custom-input__error">{errors?.disadvantage?.message}</p>}
                 </div>
                 <div className="custom-textareahtmlForm-review__item">
                   <label>
@@ -185,7 +220,7 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal}:Product
                       })}
                     />
                   </label>
-                  <div> {errors?.disadvantage && <p className="custom-textarea__error">{errors?.disadvantage?.message}</p>}</div>
+                  {errors?.review && <p className="custom-textarea__error">{errors?.review?.message}</p>}
                 </div>
               </div>
               <button

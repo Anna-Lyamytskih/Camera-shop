@@ -1,3 +1,11 @@
 .slider-controls:active {
   pointer-events: all !important;
 }
+
+.scroll_off {
+  max-height: 100vh;
+  overflow: hidden;
+  position: fixed;
+    right: 0;
+    left: 0;
+}

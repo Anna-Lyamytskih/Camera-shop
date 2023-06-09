@@ -11,7 +11,7 @@ import { productsApi } from '../../store/products-api/products-api';
 import ProductItem from '../../components/product-item';
 import { similarProductsApi } from '../../store/similar-product-api/similar-product-api';
 import { SimilarProducts } from '../../store/similar-product-api/types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './product.css';
 import ProductReviewForm from '../../components/product-review-form';
 import ProductReviewSuccess from '../../components/product-review-success';
@@ -60,7 +60,6 @@ const ProductSlider = ({ slides }: ProductSliderProps) => {
 
   const getEndItem = () => Math.ceil((slides?.length || 0) / MAX_SLIDE_COUNT) * MAX_SLIDE_COUNT;
 
-  //TODO будет работать неправильно, если придёт не кратное MAX_SLIDE_COUNT. Проверка на превышение максимума
   const isDisabledNext = (): boolean => startEndPoints[1] === getEndItem();
 
   const isDisabledPrev = (): boolean => startEndPoints[0] === 0;
@@ -116,6 +115,12 @@ const Product = () => {
 
   const [isActive, setActive] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<boolean>(false);
+  const [scroll, setScroll] = useState(0);
+
+  useEffect(() => {
+    window.scrollY = window.pageYOffset;
+    setScroll(window.scrollY);
+  });
 
   return (
     <>
@@ -183,8 +188,8 @@ const Product = () => {
                   <div className="page-content__headed">
                     <h2 className="title title--h3">Отзывы</h2>
                     <button className="btn" type="button" onClick={() => setActive(true)}>Оставить свой отзыв</button>
-                    <ProductReviewForm isActive={isActive} setActive={setActive} camera={cameraId} setActiveModal={setActiveModal}/>
-                    <ProductReviewSuccess activeModal={activeModal} setActiveModal={setActiveModal}/>
+                    <ProductReviewForm isActive={isActive} setActive={setActive} camera={cameraId} setActiveModal={setActiveModal} scroll={scroll}/>
+                    <ProductReviewSuccess activeModal={activeModal} setActiveModal={setActiveModal} scroll={scroll}/>
                   </div>
                   <ReviewList cameraId={cameraId}/>
                 </div>

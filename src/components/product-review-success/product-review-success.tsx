@@ -3,9 +3,10 @@ import { useEffect, useRef } from 'react';
 type ProductReviewSuccessProps = {
   activeModal:boolean;
   setActiveModal: (item:boolean) => void;
+  scroll:number;
 }
 
-export const ProductReviewSuccess = ({setActiveModal, activeModal}:ProductReviewSuccessProps) => {
+export const ProductReviewSuccess = ({setActiveModal, activeModal, scroll}:ProductReviewSuccessProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -22,9 +23,24 @@ export const ProductReviewSuccess = ({setActiveModal, activeModal}:ProductReview
       }
     };
 
+    const clickKeyHandler = (evt:KeyboardEvent) => {
+      if(evt.keyCode === 27) {
+        setActiveModal(false);
+      }
+    };
+
+
+    const scrollOffHandler = () => {
+      window.scrollTo(0,scroll);
+    };
+
+    document.addEventListener('keydown', clickKeyHandler);
     document.addEventListener('mousedown', clickHandler);
+    document.addEventListener('scroll', scrollOffHandler);
     return () => {
       document.removeEventListener('mousedown', clickHandler);
+      document.removeEventListener('keydown', clickKeyHandler);
+      document.removeEventListener('scroll', scrollOffHandler);
     };
   },[activeModal, setActiveModal]);
 
