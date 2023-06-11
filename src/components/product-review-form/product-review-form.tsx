@@ -23,7 +23,7 @@ type ProductReviewFormProps = {
 const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll }: ProductReviewFormProps) => {
   const [isDisable, setDisable] = useState<boolean>();
 
-  const popapRef = useRef<HTMLDivElement | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
 
   const {
     register,
@@ -89,10 +89,10 @@ const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll
     }
 
     const clickHandler = (evt: Event) => {
-      if (!popapRef.current) {
+      if (!popupRef.current) {
         return;
       }
-      if (!popapRef.current.contains((evt?.target as Node) || null)) {
+      if (!popupRef.current.contains((evt?.target as Node) || null)) {
         reset();
         setActive(false);
       }
@@ -123,7 +123,7 @@ const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
-        <div className="modal__content" ref={popapRef}>
+        <div className="modal__content" ref={popupRef}>
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
             <form method="post" onSubmit={(event) => void onSubmit(event)}>
