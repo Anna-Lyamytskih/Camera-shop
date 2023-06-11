@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
 import RatingList from '../rating-list';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -13,36 +13,39 @@ type ProductReviewFormType = {
 }
 
 type ProductReviewFormProps = {
-  isActive:boolean;
-  setActive: (item:boolean) => void;
+  isActive: boolean;
+  setActive: (item: boolean) => void;
   camera: number;
-  setActiveModal: (item:boolean) => void;
-  scroll:number;
+  setActiveModal: (item: boolean) => void;
+  scroll: number;
 }
 
-const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}:ProductReviewFormProps) => {
-  const [rating, setRating] = useState<string>();
+const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll }: ProductReviewFormProps) => {
   const [isDisable, setDisable] = useState<boolean>();
-
 
   const popapRef = useRef<HTMLDivElement | null>(null);
 
-  const changeRatingHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setRating(evt.target.value);
-  };
-
-  const {register,
+  const {
+    register,
     handleSubmit,
     reset,
-    formState:{
+    formState: {
       isSubmitSuccessful,
       errors,
-      isValid
-    }} = useForm<ProductReviewFormType>({
-      mode: 'onChange',
-    });
+    },
+    control,
+    setValue
+  } = useForm<ProductReviewFormType>({
+    mode: 'onChange',
+  });
 
-  const [addItem, {isLoading}] = reviewListApi.useAddItemMutation();
+  const rating = useWatch<ProductReviewFormType>({ control, name: 'rating' });
+
+  const changeRatingHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue('rating', Number(evt.target.value));
+  };
+
+  const [addItem, { isLoading, isError }] = reviewListApi.useAddItemMutation();
 
   const onSubmit = handleSubmit((data) => {
     const productReviewForm: ProductReviewFormType = {
@@ -50,7 +53,7 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
       advantage: data.advantage,
       disadvantage: data.disadvantage,
       review: data.review,
-      rating: Number(rating),
+      rating: data.rating,
       cameraId: camera,
     };
 
@@ -58,13 +61,17 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
   });
 
   const onSubmitSuccess = () => {
-    if(isLoading) {
+    if (!isActive) {
+      return;
+    }
+
+    if (isLoading) {
       setDisable(true);
     }
-    if(!isLoading) {
+    if (!isLoading) {
       setDisable(false);
     }
-    if(isSubmitSuccessful){
+    if (isSubmitSuccessful && !isError && !isLoading) {
       reset();
       setActive(false);
       setActiveModal(true);
@@ -73,45 +80,33 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
   };
 
   useEffect(() => {
-    if(!isActive){
-      return;
-    }
-
-    if(!popapRef.current) {
-      return;
-    }
-    popapRef.current.setAttribute('tabindex', '0');
-    popapRef.current.focus();
-  },[isActive, popapRef.current]);
-
-  useEffect(() => {
     onSubmitSuccess();
-  },[isLoading, isSubmitSuccessful, setDisable]);
+  }, [isLoading, isSubmitSuccessful, setDisable, isError]);
 
   useEffect(() => {
-    if(!isActive){
+    if (!isActive) {
       return;
     }
 
     const clickHandler = (evt: Event) => {
-      if(!popapRef.current) {
+      if (!popapRef.current) {
         return;
       }
-      if(!popapRef.current.contains((evt?.target as Node) || null)){
+      if (!popapRef.current.contains((evt?.target as Node) || null)) {
         reset();
         setActive(false);
       }
     };
 
-    const clickKeyHandler = (evt:KeyboardEvent) => {
-      if(evt.keyCode === 27) {
+    const clickKeyHandler = (evt: KeyboardEvent) => {
+      if (evt.keyCode === 27) {
         reset();
         setActive(false);
       }
     };
 
     const scrollOffHandler = () => {
-      window.scrollTo(0,scroll);
+      window.scrollTo(0, scroll);
     };
 
     document.addEventListener('mousedown', clickHandler);
@@ -122,9 +117,9 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
       document.removeEventListener('keydown', clickKeyHandler);
       document.removeEventListener('scroll', scrollOffHandler);
     };
-  },[isActive, setActive, scroll]);
+  }, [isActive, setActive, scroll]);
 
-  return(
+  return (
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
@@ -133,20 +128,28 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
           <div className="form-review">
             <form method="post" onSubmit={(event) => void onSubmit(event)}>
               <div className="form-review__rate">
-                <fieldset className="ratehtmlForm-review__item" disabled={isDisable}>
+                <fieldset className="rate form-review__item" disabled={isDisable}>
                   <legend className="rate__caption">Рейтинг
                     <svg width="9" height="9" aria-hidden="true">
                       <use xlinkHref="#icon-snowflake"></use>
                     </svg>
                   </legend>
                   <div className="rate__bar">
-                    <RatingList onChangeData={changeRatingHandler}/>
-                    <div className="rate__progress"><span className="rate__stars">0</span> <span>/</span> <span className="rate__all-stars">5</span>
+                    <input
+                      type="hidden"
+                      disabled={isDisable}
+                      {...register('rating', {
+                        required: 'Нужно оценить товар',
+                      })}
+                    />
+                    <p className="custom-input__error custom-input is-invalid">{errors?.rating?.message}</p>
+                    <RatingList onChangeData={changeRatingHandler} />
+                    <div className="rate__progress"><span className="rate__stars">{rating || 0}</span> <span>/</span> <span className="rate__all-stars">5</span>
                     </div>
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <div className="custom-inputhtmlForm-review__item">
+                <div className={`custom-input ${errors?.userName ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Ваше имя
                       <svg width="9" height="9" aria-hidden="true">
@@ -158,14 +161,14 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
                         required: 'Нужно указать имя',
                         minLength: {
                           value: 1,
-                          message: 'Имя должно содержать не менее 1 символа'
+                          message: 'Не менее 1 символа'
                         },
                       })}
                     />
                   </label>
-                  {errors?.userName && <p className="custom-input__error">{errors?.userName?.message}</p>}
+                  <p className="custom-input__error custom-input is-invalid">{errors?.userName?.message}</p>
                 </div>
-                <div className="custom-inputhtmlForm-review__item">
+                <div className={`custom-input ${errors?.advantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Достоинства
                       <svg width="9" height="9" aria-hidden="true">
@@ -177,14 +180,14 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
                         required: 'Нужно указать достоинства',
                         minLength: {
                           value: 1,
-                          message: 'Поле должно содержать не менее 1 символа'
+                          message: 'Не менее 1 символа'
                         },
                       })}
                     />
                   </label>
-                  {errors?.advantage && <p className="custom-input__error">{errors?.advantage?.message}</p>}
+                  <p className="custom-input__error custom-input is-invalid">{errors?.advantage?.message}</p>
                 </div>
-                <div className="custom-inputhtmlForm-review__item">
+                <div className={`custom-input ${errors?.disadvantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Недостатки
                       <svg width="9" height="9" aria-hidden="true">
@@ -196,14 +199,14 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
                         required: 'Нужно указать недостатки',
                         minLength: {
                           value: 1,
-                          message: 'Поле должно содержать не менее 1 символа'
+                          message: 'Не менее 1 символа'
                         },
                       })}
                     />
                   </label>
-                  {errors?.disadvantage && <p className="custom-input__error">{errors?.disadvantage?.message}</p>}
+                  <p className="custom-input__error custom-input is-invalid">{errors?.disadvantage?.message}</p>
                 </div>
-                <div className="custom-textareahtmlForm-review__item">
+                <div className={`custom-textarea ${errors?.review ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-textarea__label">Комментарий
                       <svg width="9" height="9" aria-hidden="true">
@@ -215,18 +218,17 @@ const ProductReviewForm = ({isActive, setActive, camera, setActiveModal, scroll}
                         required: 'Нужно добавить комментарий',
                         minLength: {
                           value: 5,
-                          message: 'Поле должно содержать не менее 5 символов'
+                          message: 'Не менее 5 символов'
                         },
                       })}
                     />
                   </label>
-                  {errors?.review && <p className="custom-textarea__error">{errors?.review?.message}</p>}
+                  <p className="custom-textarea__error custom-textarea ">{errors?.review?.message}</p>
                 </div>
               </div>
               <button
-                className="btn btn--purplehtmlForm-review__btn"
+                className="btn btn--purple form-review__btn"
                 type="submit"
-                disabled={!isValid}
                 onClick={() => {
                   onSubmitSuccess();
                 }}
