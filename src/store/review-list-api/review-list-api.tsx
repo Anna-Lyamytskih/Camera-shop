@@ -1,16 +1,7 @@
 import { baseQuery } from '../../services/api';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { APIRoute } from '../constants';
-import { Reviews } from './type';
-
-type ProductReviewFormType = {
-  cameraId: number;
-  userName: string;
-  advantage: string;
-  disadvantage: string;
-  review: string;
-  rating: number;
-}
+import { ProductReviewFormType, Reviews } from './type';
 
 export const reviewListApi = createApi({
   reducerPath: 'reviewListApi',

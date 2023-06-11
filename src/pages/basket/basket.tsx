@@ -1,14 +1,17 @@
-import BasketForm from '../../components/basket-form';
-import BasketList from '../../components/basket-list';
-import Footer from '../../components/footer';
-import FormSearch from '../../components/form-search';
-import Logo from '../../components/logo';
-import NavigationList from '../../components/navigation-list';
-import Path from '../../components/path';
+import { Helmet } from 'react-helmet-async';
+import { BasketForm } from '../../components/basket-form';
+import { BasketList } from '../../components/basket-list';
+import { Footer } from '../../components/footer';
+import { FormSearch } from '../../components/form-search';
+import { Logo } from '../../components/logo';
+import { NavigationList } from '../../components/navigation-list';
+import { Path } from '../../components/path';
 
-const Basket = () => (
+export const Basket = () => (
   <>
-    <title>Корзина - Фотошоп</title>
+    <Helmet>
+      <title>Корзина - Фотошоп</title>
+    </Helmet>
     <Path />
     <div className="wrapper">
       <header className="header" id="header">
@@ -81,5 +84,3 @@ const Basket = () => (
     </div>
   </>
 );
-
-export default Basket;

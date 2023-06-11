@@ -1,26 +1,10 @@
 import { useForm, useWatch } from 'react-hook-form';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
-import RatingList from '../rating-list';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ProductReviewFormProps, ProductReviewFormType } from './types';
+import { RatingList } from '../rating-list';
 
-type ProductReviewFormType = {
-  cameraId: number;
-  userName: string;
-  advantage: string;
-  disadvantage: string;
-  review: string;
-  rating: number;
-}
-
-type ProductReviewFormProps = {
-  isActive: boolean;
-  setActive: (item: boolean) => void;
-  camera: number;
-  setActiveModal: (item: boolean) => void;
-  scroll: number;
-}
-
-const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll }: ProductReviewFormProps) => {
+export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll }: ProductReviewFormProps) => {
   const [isDisable, setDisable] = useState<boolean>();
 
   const popupRef = useRef<HTMLDivElement | null>(null);
@@ -255,5 +239,3 @@ const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll
     </div>
   );
 };
-
-export default ProductReviewForm;

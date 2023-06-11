@@ -1,10 +1,6 @@
-type PaginationProps = {
-  item: number;
-  currentPage: number;
-  paginate: (pageNumber: number) => void;
-}
+import { PaginationProps } from './types';
 
-const Pagination = ({ item, paginate, currentPage }: PaginationProps) => (
+export const Pagination = ({ item, paginate, currentPage }: PaginationProps) => (
   <li className="pagination__item">
     <a
       className={`pagination__link ${item === currentPage ? 'pagination__link--active' : ''}`}
@@ -18,6 +14,4 @@ const Pagination = ({ item, paginate, currentPage }: PaginationProps) => (
     </a>
   </li >
 );
-
-export default Pagination;
 

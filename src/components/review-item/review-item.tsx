@@ -1,10 +1,6 @@
-import { Review } from '../../store/review-list-api/type';
+import { ReviewItemProps } from './types';
 
-type ReviewItemProps = {
-  review: Review;
-}
-
-const ReviewItem = ({review}:ReviewItemProps) => {
+export const ReviewItem = ({review}:ReviewItemProps) => {
   const date = String(new Date(review.createAt).toLocaleString('ru-RU', {
     day: 'numeric',
     month: 'long',
@@ -48,4 +44,3 @@ const ReviewItem = ({review}:ReviewItemProps) => {
     </li>
   );
 };
-export default ReviewItem;

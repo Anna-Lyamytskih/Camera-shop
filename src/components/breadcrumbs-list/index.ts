@@ -1,3 +1,1 @@
-import BreadcrumbsList from './breadcrumbs-list';
-
-export default BreadcrumbsList;
+export {BreadcrumbsList} from './breadcrumbs-list';

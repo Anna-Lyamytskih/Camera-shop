@@ -1,3 +1,2 @@
-import Basket from './basket';
+export {Basket} from './basket';
 
-export default Basket;

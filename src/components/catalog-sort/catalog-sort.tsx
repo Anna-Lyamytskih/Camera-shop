@@ -1,7 +1,9 @@
-import CatalogSortingItem, { catalogSortList } from '../catalog-sorting-item/catalog-sorting-item';
-import CatalogSortingOrder, { catalogSortingOrderList } from '../catalog-sorting-order/catalog-sorting-order';
+import { CatalogSortingItem } from '../catalog-sorting-item';
+import { catalogSortList } from '../catalog-sorting-item/constants';
+import { CatalogSortingOrder } from '../catalog-sorting-order';
+import { catalogSortingOrderList } from '../catalog-sorting-order/constants';
 
-const CatalogSort = () => (
+export const CatalogSort = () => (
   <form action="#">
     <div className="catalog-sort__inner">
       <p className="title title--h5">Сортировать:</p>
@@ -14,5 +16,3 @@ const CatalogSort = () => (
     </div>
   </form>
 );
-
-export default CatalogSort;

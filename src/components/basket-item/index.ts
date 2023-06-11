@@ -1,3 +1,1 @@
-import BasketItem from './basket-item';
-
-export default BasketItem;
+export {BasketItem} from './basket-item';

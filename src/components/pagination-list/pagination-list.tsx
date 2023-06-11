@@ -1,19 +1,7 @@
-import Pagination from '../pagination/pagination';
+import { Pagination } from '../pagination';
+import { PaginationListProps } from './types';
 
-
-type UsePagination = {
-  currentPage: number;
-  paginate: (pageNumber: number) => void;
-  goToNext: () => void;
-  goToPrev: () => void;
-  qty: number;
-}
-
-type PaginationListProps = {
-  pagination: UsePagination;
-}
-
-const PaginationList = ({ pagination }: PaginationListProps) => {
+export const PaginationList = ({ pagination }: PaginationListProps) => {
   const { paginate, qty, currentPage, goToNext, goToPrev } = pagination;
   const pageNumber = [];
 
@@ -67,5 +55,3 @@ const PaginationList = ({ pagination }: PaginationListProps) => {
     </div>
   );
 };
-
-export default PaginationList;

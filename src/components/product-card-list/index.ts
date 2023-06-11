@@ -1,3 +1,1 @@
-import ProductCardList from './product-card-list';
-
-export default ProductCardList;
+export {ProductCardList} from './product-card-list';

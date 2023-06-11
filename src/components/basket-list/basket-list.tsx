@@ -1,6 +1,6 @@
-import BasketItem from '../basket-item';
+import { BasketItem } from '../basket-item';
 
-const BasketList = () => (
+export const BasketList = () => (
   <ul className="basket__list">
     <BasketItem />
     <BasketItem />
@@ -9,5 +9,3 @@ const BasketList = () => (
     <BasketItem />
   </ul>
 );
-
-export default BasketList;

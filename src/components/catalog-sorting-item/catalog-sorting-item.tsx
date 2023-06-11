@@ -1,23 +1,9 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { SortingTypeBy, changeSortBy } from '../../store/products-api/products-process';
+import { changeSortBy } from '../../store/products-api/products-process';
+import { SortingTypeBy } from '../../store/products-api/types';
+import { CatalogSortingItemProps } from './types';
 
-export const catalogSortList = [
-  {
-    title: 'по цене',
-    value: SortingTypeBy.Price,
-  },
-  {
-    title: 'по популярности',
-    value: SortingTypeBy.Rate,
-  },
-];
-
-type CatalogSortingItemProps = {
-  id: string;
-  value:string;
-}
-
-const CatalogSortingItem = ({id, value}:CatalogSortingItemProps) => {
+export const CatalogSortingItem = ({id, value}:CatalogSortingItemProps) => {
   const sort = useAppSelector((state) => state.PRODUCT.filter);
 
   const dispatch = useAppDispatch();
@@ -44,6 +30,4 @@ const CatalogSortingItem = ({id, value}:CatalogSortingItemProps) => {
       <label htmlFor={`'sort'${id}`}>{value}</label>
     </div>
   );};
-
-export default CatalogSortingItem;
 

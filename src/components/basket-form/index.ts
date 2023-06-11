@@ -1,3 +1,1 @@
-import BasketForm from './basket-form';
-
-export default BasketForm;
+export {BasketForm} from './basket-form';

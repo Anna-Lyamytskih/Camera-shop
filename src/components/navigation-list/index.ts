@@ -1,3 +1,1 @@
-import NavigationList from './navigation-list';
-
-export default NavigationList;
+export {NavigationList} from './navigation-list';

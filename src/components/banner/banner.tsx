@@ -2,7 +2,7 @@ import { Link, generatePath } from 'react-router-dom';
 import { AppRoute } from '../../router/constants';
 import { promoApi } from '../../store/promo-api/promo-api';
 
-const Banner = () => {
+export const Banner = () => {
 
   const {data} = promoApi.useGetListQuery();
 
@@ -26,4 +26,4 @@ const Banner = () => {
     </div>
   );
 };
-export default Banner;
+

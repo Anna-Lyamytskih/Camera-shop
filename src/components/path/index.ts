@@ -1,3 +1,1 @@
-import Path from './path';
-
-export default Path;
+export {Path} from './path';

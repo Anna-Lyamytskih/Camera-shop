@@ -1,23 +1,9 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { SortingTypeOrder, changeSortOrder } from '../../store/products-api/products-process';
+import { changeSortOrder } from '../../store/products-api/products-process';
+import { SortingTypeOrder } from '../../store/products-api/types';
+import { CatalogSortingOrderProps } from './types';
 
-export const catalogSortingOrderList = [
-  {
-    title: 'По возрастанию',
-    value: SortingTypeOrder.Up,
-  },
-  {
-    title: 'По убыванию',
-    value: SortingTypeOrder.Down,
-  },
-];
-
-type CatalogSortingOrderProps = {
-  id: string;
-  value:string;
-}
-
-const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
+export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
   const sort = useAppSelector((state) => state.PRODUCT.filter);
 
   const dispatch = useAppDispatch();

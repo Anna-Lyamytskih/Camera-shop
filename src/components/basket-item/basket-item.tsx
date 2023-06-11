@@ -1,4 +1,4 @@
-const BasketItem = () => (
+export const BasketItem = () => (
   <li className="basket-item">
     <div className="basket-item__img">
       <picture>
@@ -37,5 +37,3 @@ const BasketItem = () => (
     </button>
   </li>
 );
-
-export default BasketItem;

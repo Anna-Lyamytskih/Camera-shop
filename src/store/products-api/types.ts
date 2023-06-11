@@ -31,3 +31,35 @@ export type ProductItemType = {
   previewImgWebp: string;
   previewImgWebp2x: string;
   }
+
+export enum SortingTypeBy {
+  Price = 'price',
+  Rate = 'reviewCount',
+  }
+
+export type SortingProduct = Pick<Product, 'price' | 'reviewCount'>;
+
+export type SortingProductKey = keyof SortingProduct;
+
+export enum SortingTypeOrder {
+    Up = 'up',
+    Down = 'down',
+  }
+
+export type ProductProcess = {
+    filter: {
+      by: SortingProductKey | null;
+      order: SortingTypeOrder | null;
+    };
+  }
+
+export const initialState: ProductProcess = {
+  filter: {
+    by: null,
+    order: null,
+  },
+};
+
+export enum NameSpace {
+    ProductItem = 'PRODUCT',
+  }

@@ -1,10 +1,5 @@
 import { useEffect, useRef } from 'react';
-
-type ProductReviewSuccessProps = {
-  activeModal:boolean;
-  setActiveModal: (item:boolean) => void;
-  scroll:number;
-}
+import { ProductReviewSuccessProps } from './types';
 
 export const ProductReviewSuccess = ({setActiveModal, activeModal, scroll}:ProductReviewSuccessProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);

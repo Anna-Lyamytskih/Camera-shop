@@ -1,3 +1,1 @@
-import ProductReviewForm from './product-review-form';
-
-export default ProductReviewForm;
+export {ProductReviewForm} from './product-review-form';

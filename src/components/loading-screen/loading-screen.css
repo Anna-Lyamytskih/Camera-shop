@@ -1,0 +1,21 @@
+.loadingVortex {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 70px;
+  font-family: 'Nixie One', Helvetica, Arial, sans-serif;
+  font-size: 50px;
+}
+
+.loadingText {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 70px;
+  font-family: 'Nixie One', Helvetica, Arial, sans-serif;
+  font-size: 50px;
+}

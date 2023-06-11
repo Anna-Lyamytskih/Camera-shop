@@ -1,23 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
-import ReviewItem from '../review-item';
 import { Reviews } from '../../store/review-list-api/type';
+import { MAX_REVIEW_COUNT } from './constants';
+import { ReviewListProps } from './types';
+import { getReviewList } from '../../utils/utils';
+import { ReviewItem } from '../review-item';
 
-type ReviewListProps = {
-  cameraId: number;
-}
-
-const getReviewList = (review: Reviews) => {
-  const items = [...review];
-
-  items.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
-
-  return items;
-};
-
-const MAX_REVIEW_COUNT = 3;
-
-const ReviewList = ({ cameraId }: ReviewListProps) => {
+export const ReviewList = ({ cameraId }: ReviewListProps) => {
   const endItemRef = useRef<number>(0);
   const { data } = reviewListApi.useGetListQuery(cameraId);
 
@@ -41,7 +30,7 @@ const ReviewList = ({ cameraId }: ReviewListProps) => {
   const nextReviewHandler = () => {
     goToNextReviews();
   };
-  //TODO разобраться со скроллом. При переключении товара скролл не обнуляется.
+
   useEffect(() => {
     const getEndItem = () => Math.ceil((data?.length || 0) / MAX_REVIEW_COUNT) * MAX_REVIEW_COUNT;
     const init = getReviewList(data || []).slice(0, endReviews);
@@ -79,5 +68,4 @@ const ReviewList = ({ cameraId }: ReviewListProps) => {
     </>
   );
 };
-export default ReviewList;
 

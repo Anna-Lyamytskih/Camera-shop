@@ -1,4 +1,1 @@
-import CatalogFilter from './catalog-filter';
-
-export default CatalogFilter;
-
+export {CatalogFilter} from './catalog-filter';

@@ -1,4 +1,4 @@
-const Footer = () => (
+export const Footer = () => (
   <footer className="footer">
     <div className="container">
       <div className="footer__info">
@@ -88,5 +88,3 @@ const Footer = () => (
     </div>
   </footer>
 );
-
-export default Footer;

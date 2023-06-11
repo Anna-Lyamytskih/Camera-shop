@@ -1,3 +1,1 @@
-import CatalogSortingItem from './catalog-sorting-item';
-
-export default CatalogSortingItem;
+export {CatalogSortingItem} from './catalog-sorting-item';

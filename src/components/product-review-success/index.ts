@@ -1,3 +1,1 @@
-import { ProductReviewSuccess } from './product-review-success';
-
-export default ProductReviewSuccess;
+export {ProductReviewSuccess} from './product-review-success';

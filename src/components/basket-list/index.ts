@@ -1,4 +1,1 @@
-import BasketList from './basket-list';
-
-export default BasketList;
-
+export {BasketList} from './basket-list';

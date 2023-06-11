@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 const NotFound = () => (
   <>
     <Helmet>
-      <title>Not Found - Escape Room</title>
+      <title>Not Found</title>
     </Helmet>
     <section className="not_found">
       <h1>404. Page not found</h1>

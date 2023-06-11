@@ -1,115 +1,28 @@
 import { useParams } from 'react-router-dom';
-import BreadcrumbsList from '../../components/breadcrumbs-list';
-import Footer from '../../components/footer';
-import FormSearch from '../../components/form-search';
-import Logo from '../../components/logo';
-import NavigationList from '../../components/navigation-list';
-import Path from '../../components/path';
-import ProductCard from '../../components/product-card';
-import ReviewList from '../../components/review-list';
 import { productsApi } from '../../store/products-api/products-api';
-import ProductItem from '../../components/product-item';
 import { similarProductsApi } from '../../store/similar-product-api/similar-product-api';
-import { SimilarProducts } from '../../store/similar-product-api/types';
 import { useEffect, useState } from 'react';
 import './product.css';
-import ProductReviewForm from '../../components/product-review-form';
-import ProductReviewSuccess from '../../components/product-review-success';
-
-type ProductSliderProps = {
-  slides: SimilarProducts | undefined;
-}
-
-const MAX_SLIDE_COUNT = 3;
-
-const ProductSlider = ({ slides }: ProductSliderProps) => {
-  const [active, setActive] = useState<number[]>([]);
-  const [startEndPoints, setStartEndPoints] = useState<[number, number]>([0, MAX_SLIDE_COUNT]);
-
-  const goToNext = () => {
-    setStartEndPoints((prev) => [
-      prev[0] + MAX_SLIDE_COUNT,
-      prev[1] + MAX_SLIDE_COUNT,
-    ] as [number, number]);
-  };
-
-  const goToPrev = () => {
-    setStartEndPoints((prev) => [
-      prev[0] - MAX_SLIDE_COUNT,
-      prev[1] - MAX_SLIDE_COUNT,
-    ] as [number, number]);
-  };
-
-  const nextSlideHandler = () => {
-    goToNext();
-  };
-
-  const prevSlideHandler = () => {
-    goToPrev();
-  };
-
-  useEffect(() => {
-    const init = (slides || []).map((item) => item.id).slice(0, 3);
-    setActive(init);
-  }, [slides]);
-
-  useEffect(() => {
-    setActive((slides || []).map((item) => item.id)
-      .slice(startEndPoints[0], startEndPoints[1]));
-  }, [startEndPoints]);
-
-  const getEndItem = () => Math.ceil((slides?.length || 0) / MAX_SLIDE_COUNT) * MAX_SLIDE_COUNT;
-
-  const isDisabledNext = (): boolean => startEndPoints[1] === getEndItem();
-
-  const isDisabledPrev = (): boolean => startEndPoints[0] === 0;
-
-  return (
-    <div className="product-similar__slider-list">
-      {slides?.map((item) => (
-        <ProductCard
-          camera={item}
-          key={item.id}
-          isActive={active.includes(item.id)}
-        />
-      ))}
-      <button
-        className="slider-controls slider-controls--prev"
-        type="button"
-        aria-label="Предыдущий слайд"
-        disabled={isDisabledPrev()}
-        onClick={(evt) => {
-          evt.preventDefault();
-          prevSlideHandler();
-        }}
-      >
-        <svg width="7" height="12" aria-hidden="true">
-          <use xlinkHref="#icon-arrow"></use>
-        </svg>
-      </button>
-      <button
-        className="slider-controls slider-controls--next"
-        type="button"
-        aria-label="Следующий слайд"
-        disabled={isDisabledNext()}
-        onClick={(evt) => {
-          evt.preventDefault();
-          nextSlideHandler();
-        }}
-      >
-        <svg width="7" height="12" aria-hidden="true">
-          <use xlinkHref="#icon-arrow"></use>
-        </svg>
-      </button>
-    </div>
-  );
-};
+import { Helmet } from 'react-helmet-async';
+import { Path } from '../../components/path';
+import { Logo } from '../../components/logo';
+import { NavigationList } from '../../components/navigation-list';
+import { FormSearch } from '../../components/form-search';
+import { BreadcrumbsList } from '../../components/breadcrumbs-list';
+import { ProductItem } from '../../components/product-item';
+import { ProductSlider } from '../../components/product-slider';
+import { ProductReviewForm } from '../../components/product-review-form';
+import { ProductReviewSuccess } from '../../components/product-review-success';
+import { ReviewList } from '../../components/review-list';
+import { Footer } from '../../components/footer';
+import NotFound from '../not-found';
+import { LoadingScreen } from '../../components/loading-screen';
 
 const Product = () => {
   const { id } = useParams();
   const cameraId = Number(id);
 
-  const { data } = productsApi.useGetByIdQuery(cameraId);
+  const { data, isLoading } = productsApi.useGetByIdQuery(cameraId);
   const { data: similarProducts } = similarProductsApi.useGetListQuery(cameraId);
   const camera = data;
 
@@ -122,9 +35,19 @@ const Product = () => {
     setScroll(window.scrollY);
   });
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!data) {
+    return <NotFound />;
+  }
+
   return (
     <>
-      <title>Продукт - Фотошоп</title>
+      <Helmet>
+        <title>Продукт - Фотошоп</title>
+      </Helmet>
       <Path />
       <div className="wrapper">
         <header className="header" id="header">

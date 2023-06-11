@@ -1,4 +1,4 @@
-const BasketForm = () => (
+export const BasketForm = () => (
   <form action="#">
     <div className="custom-input">
       <label><span className="custom-input__label">Промокод</span>
@@ -11,5 +11,3 @@ const BasketForm = () => (
     </button>
   </form>
 );
-
-export default BasketForm;

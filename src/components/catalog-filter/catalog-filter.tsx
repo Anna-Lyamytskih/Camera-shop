@@ -1,4 +1,4 @@
-const CatalogFilter = () => (
+export const CatalogFilter = () => (
   <form action="#">
     <h2 className="visually-hidden">Фильтр</h2>
     <fieldset className="catalog-filter__block">
@@ -74,5 +74,3 @@ const CatalogFilter = () => (
     </button>
   </form>
 );
-
-export default CatalogFilter;

@@ -1,64 +1,31 @@
-import { useEffect, useState } from 'react';
-import Banner from '../../components/banner';
-import CatalogFilter from '../../components/catalog-filter';
-import CatalogSort from '../../components/catalog-sort';
-import Footer from '../../components/footer';
-import FormSearch from '../../components/form-search';
-import Logo from '../../components/logo';
-import NavigationList from '../../components/navigation-list';
-import PaginationList from '../../components/pagination-list';
-import Path from '../../components/path';
-import ProductCardList from '../../components/product-card-list';
 import { useGetSortProducts } from '../../hooks/use-get-sort-products/use-get-sort-products';
-import BreadcrumbsList from '../../components/breadcrumbs-list';
+import { Path } from '../../components/path';
+import { Logo } from '../../components/logo';
+import { NavigationList } from '../../components/navigation-list';
+import { FormSearch } from '../../components/form-search';
+import { Banner } from '../../components/banner';
+import { BreadcrumbsList } from '../../components/breadcrumbs-list';
+import { CatalogFilter } from '../../components/catalog-filter';
+import { CatalogSort } from '../../components/catalog-sort';
+import { ProductCardList } from '../../components/product-card-list';
+import { PaginationList } from '../../components/pagination-list';
+import { Footer } from '../../components/footer';
+import { MAX_COUNT_PAGE_PGINATION } from './constants';
+import { usePagination } from '../../hooks/use-pagination/use-pagination';
+import { Helmet } from 'react-helmet-async';
 
-type UsePagination = {
-  currentPage: number;
-  paginate: (pageNumber: number) => void;
-  goToNext: () => void;
-  goToPrev: () => void;
-  qty: number;
-  limit: number;
-}
-
-const usePagination = ({ total, limit = 9 }: {
-  total: number;
-  limit?: number;
-}): UsePagination => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [_total, _setTotal] = useState(total);
-  const [_limit] = useState(limit);
-  const qty = Math.ceil(_total / _limit);
-
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const goToNext = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-
-  const goToPrev = () => {
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  useEffect(() => {
-    _setTotal(total);
-  }, [total]);
-
-  return { currentPage, paginate, goToNext, goToPrev, qty, limit: _limit };
-};
-
-const Catalog = () => {
+export const Catalog = () => {
   const sortingProducts = useGetSortProducts();
   const pagination = usePagination({ total: sortingProducts.length });
   const { currentPage, limit } = pagination;
 
-  const slicedList = sortingProducts.slice((currentPage - 1) * limit, currentPage * limit);
+  const slicedList = sortingProducts.slice((currentPage - MAX_COUNT_PAGE_PGINATION) * limit, currentPage * limit);
 
   return (
     <>
-      <title>Каталог - Фотошоп</title>
+      <Helmet>
+        <title>Каталог - Фотошоп</title>
+      </Helmet>
       <Path />
       <div className="wrapper">
         <header className="header" id="header">
@@ -123,5 +90,3 @@ const Catalog = () => {
     </>
   );
 };
-
-export default Catalog;

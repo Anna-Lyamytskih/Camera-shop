@@ -1,5 +1,5 @@
-import { SortingProductKey, SortingTypeOrder } from '../store/products-api/products-process';
-import { Product, Products } from '../store/products-api/types';
+import { Product, Products, SortingProductKey, SortingTypeOrder } from '../store/products-api/types';
+import { Reviews } from '../store/review-list-api/type';
 
 export const getSortingOrder = (
   products: Products | undefined,
@@ -24,3 +24,10 @@ export const getSortingOrder = (
   }
 };
 
+export const getReviewList = (review: Reviews) => {
+  const items = [...review];
+
+  items.sort((a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime());
+
+  return items;
+};

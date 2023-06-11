@@ -1,13 +1,8 @@
 import { AppRoute } from '../../router/constants';
-import { Product } from '../../store/products-api/types';
 import { Link, generatePath } from 'react-router-dom';
+import { ProductCardProps } from './types';
 
-type ProductCardProps = {
-  camera: Product;
-  isActive?: boolean;
-}
-
-const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
+export const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
   const link = generatePath(AppRoute.Product, {
     id: `${camera?.id || ''}`,
   });

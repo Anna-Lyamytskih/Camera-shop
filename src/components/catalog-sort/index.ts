@@ -1,4 +1,1 @@
-import CatalogSort from './catalog-sort';
-
-export default CatalogSort;
-
+export {CatalogSort} from './catalog-sort';

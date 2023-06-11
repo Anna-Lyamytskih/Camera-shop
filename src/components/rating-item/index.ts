@@ -1,3 +1,1 @@
-import RatingItem from './rating-item';
-
-export default RatingItem;
+export {RatingItem} from './rating-item';
