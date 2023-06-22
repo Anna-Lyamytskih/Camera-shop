@@ -23,10 +23,6 @@ export const ReviewList = ({ cameraId }: ReviewListProps) => {
     });
   };
 
-  const scrollHandler = () => {
-    goToNextReviews();
-  };
-
   const nextReviewHandler = () => {
     goToNextReviews();
   };
@@ -37,13 +33,6 @@ export const ReviewList = ({ cameraId }: ReviewListProps) => {
     endItemRef.current = getEndItem();
     setReviews(init);
   }, [data, endReviews]);
-
-  useEffect(() => {
-    document.addEventListener('scrollend', scrollHandler);
-    return () => {
-      document.removeEventListener('scrollend', scrollHandler);
-    };
-  }, []);
 
   const isHidden = (): boolean => endItemRef.current === endReviews || data?.length === 0;
 
