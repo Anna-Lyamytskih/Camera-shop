@@ -1,3 +1,4 @@
+import { ReviewCardRateList } from '../review-card-rate-list';
 import { ReviewItemProps } from './types';
 
 export const ReviewItem = ({review}:ReviewItemProps) => {
@@ -12,24 +13,7 @@ export const ReviewItem = ({review}:ReviewItemProps) => {
         <p className="title title--h4">{review.userName}</p>
         <time className="review-card__data" dateTime={date}>{date}</time>
       </div>
-      <div className="rate review-card__rate">
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref="#icon-full-star"></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref="#icon-full-star"></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref="#icon-full-star"></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref="#icon-full-star"></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref="#icon-full-star"></use>
-        </svg>
-        <p className="visually-hidden">Оценка: {review.rating}</p>
-      </div>
+      <ReviewCardRateList rate={review.rating}/>
       <ul className="review-card__list">
         <li className="item-list"><span className="item-list__title">Достоинства:</span>
           <p className="item-list__text">{review.advantage}</p>
