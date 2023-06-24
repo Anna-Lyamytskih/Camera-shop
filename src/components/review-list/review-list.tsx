@@ -10,7 +10,7 @@ export const ReviewList = ({ cameraId }: ReviewListProps) => {
   const endItemRef = useRef<number>(0);
   const { data } = reviewListApi.useGetListQuery(cameraId);
 
-  const [reviews, setReviews] = useState<Reviews | undefined>([]);
+  const [reviews, setReviews] = useState<Reviews>([]);
   const [endReviews, setEndReviews] = useState<number>(MAX_REVIEW_COUNT);
 
   const goToNextReviews = () => {
@@ -39,7 +39,7 @@ export const ReviewList = ({ cameraId }: ReviewListProps) => {
   return (
     <>
       <ul className="review-block__list">
-        {reviews?.map((item) => <ReviewItem review={item} key={item.id} />)}
+        {reviews.map((item) => <ReviewItem review={item} key={item.id} />)}
       </ul>
       <div className="review-block__buttons">
         {isHidden() ? '' :

@@ -3,7 +3,7 @@ import { ProductCardListProps } from './types';
 
 export const ProductCardList = ({cameras}:ProductCardListProps) => (
   <div className="cards catalog__cards">
-    {cameras?.map((item) => <ProductCard camera={item} key={item.id} /> )}
+    {cameras.map((item) => <ProductCard camera={item} key={item.id} /> )}
   </div>
 );
 export default ProductCardList;

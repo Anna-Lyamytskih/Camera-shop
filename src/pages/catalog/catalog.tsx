@@ -17,6 +17,8 @@ import { AppRoute } from '../../router/constants';
 
 export const Catalog = () => {
   const sortingProducts = useGetSortProducts();
+
+
   const pagination = usePagination({ total: sortingProducts.length });
   const { currentPage, limit } = pagination;
 

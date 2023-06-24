@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { ProviderWrapper } from '../../utils/test-jest';
 import { Pagination } from './pagination';
+import { createMemoryHistory } from 'history';
+import { HistoryRouter } from '../history-router';
 
 describe('Component: Pagination', () => {
 
@@ -10,10 +12,15 @@ describe('Component: Pagination', () => {
     currentPage: 1,
   };
 
+  const history = createMemoryHistory();
+
   it('should render correctly', () => {
+    history.push('/');
     render(
       <ProviderWrapper>
-        <Pagination item={fakePagination.item} paginate={fakePagination.paginate} currentPage={fakePagination.currentPage} />
+        <HistoryRouter history={history}>
+          <Pagination item={fakePagination.item} paginate={fakePagination.paginate} currentPage={fakePagination.currentPage} />
+        </HistoryRouter>
       </ProviderWrapper>
     );
 

@@ -2,14 +2,19 @@ import { render, screen } from '@testing-library/react';
 import { ProviderWrapper } from '../../utils/test-jest';
 import { makeFakerProduct } from '../../utils/mocks';
 import { ProductItem } from './product-item';
+import { createMemoryHistory } from 'history';
+import { HistoryRouter } from '../history-router';
 
 describe('Component: ProductItem', () => {
   const camera = makeFakerProduct();
+  const history = createMemoryHistory();
   it('should render correctly', () => {
     render(
-      <ProviderWrapper>
-        <ProductItem camera={camera}/>
-      </ProviderWrapper>
+      <HistoryRouter history={history}>
+        <ProviderWrapper>
+          <ProductItem camera={camera}/>
+        </ProviderWrapper>
+      </HistoryRouter>
     );
 
     expect(screen.getByText('Артикул:')).toBeInTheDocument();

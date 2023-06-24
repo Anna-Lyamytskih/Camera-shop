@@ -133,7 +133,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <div className={`custom-input ${errors?.userName ? 'is-invalid' : ''} form-review__item`}>
+                <div className={`custom-input ${errors.userName ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Ваше имя
                       <svg width="9" height="9" aria-hidden="true">
@@ -152,7 +152,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                   </label>
                   <p className="custom-input__error custom-input is-invalid">{errors?.userName?.message}</p>
                 </div>
-                <div className={`custom-input ${errors?.advantage ? 'is-invalid' : ''} form-review__item`}>
+                <div className={`custom-input ${errors.advantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Достоинства
                       <svg width="9" height="9" aria-hidden="true">
@@ -171,7 +171,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                   </label>
                   <p className="custom-input__error custom-input is-invalid">{errors?.advantage?.message}</p>
                 </div>
-                <div className={`custom-input ${errors?.disadvantage ? 'is-invalid' : ''} form-review__item`}>
+                <div className={`custom-input ${errors.disadvantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-input__label">Недостатки
                       <svg width="9" height="9" aria-hidden="true">
@@ -190,7 +190,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                   </label>
                   <p className="custom-input__error custom-input is-invalid">{errors?.disadvantage?.message}</p>
                 </div>
-                <div className={`custom-textarea ${errors?.review ? 'is-invalid' : ''} form-review__item`}>
+                <div className={`custom-textarea ${errors.review ? 'is-invalid' : ''} form-review__item`}>
                   <label>
                     <span className="custom-textarea__label">Комментарий
                       <svg width="9" height="9" aria-hidden="true">

@@ -93,7 +93,10 @@ const Product = () => {
             </div>
             <div className="page-content__section">
               <section className="product">
-                <ProductItem camera={camera} />
+                {camera ?
+                  <ProductItem camera={camera}/>
+                  :
+                  <LoadingScreen />}
               </section>
             </div>
             <div className="page-content__section">

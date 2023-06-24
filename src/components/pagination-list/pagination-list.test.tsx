@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { ProviderWrapper } from '../../utils/test-jest';
 import { PaginationList } from './pagination-list';
+import { createMemoryHistory } from 'history';
+import { HistoryRouter } from '../history-router';
 
 describe('Component: PaginationList', () => {
   const fakePagination = {
@@ -11,12 +13,17 @@ describe('Component: PaginationList', () => {
     goToPrev: jest.fn,
   };
 
+  const history = createMemoryHistory();
+
   it('should render correctly', () => {
+    history.push('/');
     render(
       <ProviderWrapper>
-        <PaginationList
-          pagination={fakePagination}
-        />
+        <HistoryRouter history={history}>
+          <PaginationList
+            pagination={fakePagination}
+          />
+        </HistoryRouter>
       </ProviderWrapper>
     );
 
