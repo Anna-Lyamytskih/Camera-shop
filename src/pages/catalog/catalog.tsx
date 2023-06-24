@@ -13,6 +13,7 @@ import { Footer } from '../../components/footer';
 import { MAX_COUNT_PAGE_PGINATION } from './constants';
 import { usePagination } from '../../hooks/use-pagination/use-pagination';
 import { Helmet } from 'react-helmet-async';
+import { AppRoute } from '../../router/constants';
 
 export const Catalog = () => {
   const sortingProducts = useGetSortProducts();
@@ -55,7 +56,7 @@ export const Catalog = () => {
                 <BreadcrumbsList
                   list={[
                     {
-                      link: '/',
+                      link: AppRoute.Root,
                       title: 'Главная',
                     },
                     {

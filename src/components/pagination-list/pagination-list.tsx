@@ -1,5 +1,8 @@
+import { Link, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination';
 import { PaginationListProps } from './types';
+import queryString from 'query-string';
+import { AppRoute } from '../../router/constants';
 
 export const PaginationList = ({ pagination }: PaginationListProps) => {
   const { paginate, qty, currentPage, goToNext, goToPrev } = pagination;
@@ -9,6 +12,18 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
     pageNumber.push(i);
   }
 
+  const [searchParams] = useSearchParams();
+
+  const updateUrl = () => {
+    const url = queryString.parse(searchParams.toString());
+
+    delete url['page'];
+
+    const newUrl = queryString.stringify(url);
+
+    return newUrl && `&${newUrl}`;
+  };
+
   return (
     <div className="pagination">
       <ul className="pagination__list">
@@ -16,16 +31,15 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
           currentPage !== 1
             ? (
               <li className="pagination__item">
-                <a
+                <Link
                   className="pagination__link pagination__link--text"
                   onClick={(evt) => {
-                    evt.preventDefault();
                     goToPrev();
                   }}
-                  href="/prev"
+                  to={`${AppRoute.Root}?page=${currentPage - 1}${updateUrl()}`}
                 >
                   Назад
-                </a>
+                </Link>
               </li>
             )
             : null
@@ -37,16 +51,15 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
           currentPage !== qty
             ? (
               <li className="pagination__item">
-                <a
+                <Link
                   className="pagination__link pagination__link--text"
                   onClick={(evt) => {
-                    evt.preventDefault();
                     goToNext();
                   }}
-                  href="/next"
+                  to={`${AppRoute.Root}?page=${currentPage + 1}${updateUrl()}`}
                 >
                   Вперед
-                </a>
+                </Link>
               </li>
             )
             : null

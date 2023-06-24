@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { ProviderWrapper } from '../../utils/test-jest';
 import { Navigation } from './navigation';
+import { AppRoute } from '../../router/constants';
 
 const fakeNavigation = {
-  url:'/',
+  url:AppRoute.Root,
   title:'fake'
 };
 describe('Component: Navigation', () => {

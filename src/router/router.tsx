@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { AppRoute } from './constants';
 import Product from '../pages/product';
 import NotFound from '../pages/not-found';
@@ -12,6 +12,7 @@ const browserHistory = createBrowserHistory();
 const Router = () => (
   <HistoryRouter history={browserHistory}>
     <Routes>
+      <Route path='/' element={ <Navigate to={AppRoute.Root} />}/>
       <Route path={AppRoute.Root} element={<Catalog />} />
       <Route path={AppRoute.Basket} element={<Basket />} />
       <Route path={AppRoute.Product} element={<Product />} />

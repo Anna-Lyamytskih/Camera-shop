@@ -1,18 +1,20 @@
+import { AppRoute } from '../../router/constants';
+
 export const navigationItems = [
   {
-    url:'/',
+    url:AppRoute.Root,
     title:'Каталог'
   },
   {
-    url:'/',
+    url:AppRoute.Root,
     title:'Гарантии'
   },
   {
-    url:'/',
+    url:AppRoute.Root,
     title:'Доставка'
   },
   {
-    url:'/',
+    url:AppRoute.Root,
     title:'О компании'
   }
 ];

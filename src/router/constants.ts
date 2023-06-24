@@ -1,6 +1,7 @@
 export enum AppRoute {
-  Root = '/',
+  Root = '/catalog',
   Product = '/cameras/:id',
   NotFound = '/not-found',
-  Basket = '/basket'
+  Basket = '/basket',
+  Camera = '/cameras/'
 }

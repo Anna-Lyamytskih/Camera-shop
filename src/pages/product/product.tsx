@@ -17,6 +17,7 @@ import { ReviewList } from '../../components/review-list';
 import { Footer } from '../../components/footer';
 import NotFound from '../not-found';
 import { LoadingScreen } from '../../components/loading-screen';
+import { AppRoute } from '../../router/constants';
 
 const Product = () => {
   const { id } = useParams();
@@ -76,11 +77,11 @@ const Product = () => {
                 <BreadcrumbsList
                   list={[
                     {
-                      link: '/',
+                      link: AppRoute.Root,
                       title: 'Главная',
                     },
                     {
-                      link: '/',
+                      link: AppRoute.Root,
                       title: 'Каталог',
                     },
                     {
