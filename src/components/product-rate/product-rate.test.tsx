@@ -3,11 +3,14 @@ import { ProviderWrapper } from '../../utils/test-jest';
 import { ProductRate } from './product-rate';
 
 describe('Component: ProductRate', () => {
-
+  const props = {
+    rate:1,
+    evaluation:1
+  };
   it('should render correctly', () => {
     render(
       <ProviderWrapper>
-        <ProductRate />
+        <ProductRate rate={props.rate} evaluation={props.evaluation}/>
       </ProviderWrapper>
     );
 

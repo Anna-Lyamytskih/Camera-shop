@@ -21,13 +21,15 @@ describe('Component: ReviewList', () => {
     );
   const props = {
     cameraId: 1,
+    setRate: jest.fn,
+    setEvaluation:jest.fn
   };
   it('should render correctly', () => {
     render(
       <HistoryRouter history={history}>
         <Provider store={storeRef.store}>
           <HelmetProvider>
-            <ReviewList cameraId={props.cameraId}/>
+            <ReviewList cameraId={props.cameraId} setRate={props.setRate} setEvaluation={props.setEvaluation}/>
           </HelmetProvider>
         </Provider>
       </HistoryRouter>
