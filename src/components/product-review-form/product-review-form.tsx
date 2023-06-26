@@ -1,6 +1,6 @@
 import { useForm, useWatch } from 'react-hook-form';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { ProductReviewFormProps, ProductReviewFormType } from './types';
 import { RatingList } from '../rating-list';
 
@@ -25,8 +25,9 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
 
   const rating = useWatch<ProductReviewFormType>({ control, name: 'rating' });
 
-  const changeRatingHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue('rating', Number(evt.target.value));
+  const changeRatingHandler = (evt: MouseEventHandler<HTMLInputElement>) => {
+    const typedEvent = evt as unknown as {target:{value: string}};
+    setValue('rating', Number(typedEvent.target.value));
   };
 
   const [addItem, { isLoading, isError }] = reviewListApi.useAddItemMutation();
@@ -102,7 +103,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
       document.removeEventListener('scroll', scrollOffHandler);
     };
   }, [isActive, setActive, scroll, reset]);
-
+  console.log(rating)
   return (
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
@@ -127,7 +128,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                       })}
                     />
                     {errors.rating && <p className="custom-input__error custom-input is-invalid">{errors.rating.message}</p>}
-                    <RatingList onChangeData={changeRatingHandler} />
+                    <RatingList onChangeData={changeRatingHandler as unknown as MouseEventHandler<HTMLInputElement>} />
                     <div className="rate__progress"><span className="rate__stars">{rating || 0}</span> <span>/</span> <span className="rate__all-stars">5</span>
                     </div>
                   </div>

@@ -1,7 +1,7 @@
+import { MouseEventHandler } from 'react';
+
 export type RatingItemProps = {
   title:string;
   value:string;
-  onChangeData: (
-    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChangeData: MouseEventHandler<HTMLInputElement>;
 }
