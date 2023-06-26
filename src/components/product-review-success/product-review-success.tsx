@@ -37,7 +37,7 @@ export const ProductReviewSuccess = ({setActiveModal, activeModal, scroll}:Produ
       document.removeEventListener('keydown', clickKeyHandler);
       document.removeEventListener('scroll', scrollOffHandler);
     };
-  },[activeModal, setActiveModal]);
+  },[activeModal, setActiveModal, scroll]);
 
   return(
     <div className={`modal ${activeModal ? 'is-active' : ''} modal--narrow`}>

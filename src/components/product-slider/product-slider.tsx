@@ -37,7 +37,7 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
   useEffect(() => {
     setActive((slides || []).map((item) => item.id)
       .slice(startEndPoints[0], startEndPoints[1]));
-  }, [startEndPoints]);
+  }, [startEndPoints, slides]);
 
   const getEndItem = () => Math.ceil((slides?.length || 0) / MAX_SLIDE_COUNT) * MAX_SLIDE_COUNT;
 

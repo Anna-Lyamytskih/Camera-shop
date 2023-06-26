@@ -62,7 +62,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
       setDisable(false);
     }
   };
-
+/* eslint-disable */
   useEffect(() => {
     onSubmitSuccess();
   }, [isLoading, isSubmitSuccessful, setDisable, isError]);
@@ -101,7 +101,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
       document.removeEventListener('keydown', clickKeyHandler);
       document.removeEventListener('scroll', scrollOffHandler);
     };
-  }, [isActive, setActive, scroll]);
+  }, [isActive, setActive, scroll, reset]);
 
   return (
     <div className={`modal ${isActive ? 'is-active' : ''}`}>

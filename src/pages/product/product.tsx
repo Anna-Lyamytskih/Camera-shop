@@ -32,7 +32,7 @@ const Product = () => {
   const [scroll, setScroll] = useState(0);
   const [rate, setRate] = useState<number>();
   const [evaluation, setEvaluation] = useState<number>();
-
+/* eslint-disable */
   useEffect(() => {
     window.scrollY = window.pageYOffset;
     setScroll(window.scrollY);

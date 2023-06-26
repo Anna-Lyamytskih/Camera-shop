@@ -41,7 +41,7 @@ export const ReviewList = ({ cameraId, setRate, setEvaluation }: ReviewListProps
       setEvaluation(Math.ceil(rating / data.length));
     }
 
-  }, [data, endReviews]);
+  }, [data, endReviews, setEvaluation, setRate]);
 
   const isHidden = (): boolean => endItemRef.current === endReviews || data?.length === 0;
 

@@ -26,7 +26,7 @@ export const Basket = () => (
               </svg><span className="visually-hidden">Сбросить поиск</span>
             </button>
           </div>
-          <a className="header__basket-link" href="#">
+          <a className="header__basket-link" href='/'>
             <svg width="16" height="16" aria-hidden="true">
               <use xlinkHref="#icon-basket"></use>
             </svg><span className="header__basket-count">3</span>

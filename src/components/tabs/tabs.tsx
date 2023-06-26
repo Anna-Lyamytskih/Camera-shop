@@ -15,7 +15,7 @@ export const Tabs = ({ tabs }: {
     if(!activeTab && tabsState){
       setSearchParams(`?tab=${initKey}`);
     }
-  },[activeTab, tabsState]);
+  },[activeTab, tabsState, initKey, setSearchParams]);
 
 
   const urlChangeHandler = (item:string) => {
