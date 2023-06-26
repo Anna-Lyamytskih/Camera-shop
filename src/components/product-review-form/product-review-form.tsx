@@ -126,7 +126,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                         required: 'Нужно оценить товар',
                       })}
                     />
-                    <p className="custom-input__error custom-input is-invalid">{errors?.rating?.message}</p>
+                    {errors.rating && <p className="custom-input__error custom-input is-invalid">{errors.rating.message}</p>}
                     <RatingList onChangeData={changeRatingHandler} />
                     <div className="rate__progress"><span className="rate__stars">{rating || 0}</span> <span>/</span> <span className="rate__all-stars">5</span>
                     </div>
@@ -150,7 +150,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                       })}
                     />
                   </label>
-                  <p className="custom-input__error custom-input is-invalid">{errors?.userName?.message}</p>
+                  {errors.userName && <p className="custom-input__error custom-input is-invalid">{errors.userName.message}</p>}
                 </div>
                 <div className={`custom-input ${errors.advantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
@@ -169,7 +169,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                       })}
                     />
                   </label>
-                  <p className="custom-input__error custom-input is-invalid">{errors?.advantage?.message}</p>
+                  {errors.advantage && <p className="custom-input__error custom-input is-invalid">{errors.advantage.message}</p>}
                 </div>
                 <div className={`custom-input ${errors.disadvantage ? 'is-invalid' : ''} form-review__item`}>
                   <label>
@@ -188,7 +188,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                       })}
                     />
                   </label>
-                  <p className="custom-input__error custom-input is-invalid">{errors?.disadvantage?.message}</p>
+                  {errors.disadvantage && <p className="custom-input__error custom-input is-invalid">{errors.disadvantage.message}</p>}
                 </div>
                 <div className={`custom-textarea ${errors.review ? 'is-invalid' : ''} form-review__item`}>
                   <label>
@@ -207,7 +207,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
                       })}
                     />
                   </label>
-                  <p className="custom-textarea__error custom-textarea ">{errors?.review?.message}</p>
+                  {errors.review && <p className="custom-textarea__error custom-textarea ">{errors.review.message}</p>}
                 </div>
               </div>
               <button
