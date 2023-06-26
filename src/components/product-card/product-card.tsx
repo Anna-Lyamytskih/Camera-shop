@@ -1,11 +1,27 @@
 import { AppRoute } from '../../router/constants';
 import { Link, generatePath } from 'react-router-dom';
 import { ProductCardProps } from './types';
+import { reviewListApi } from '../../store/review-list-api/review-list-api';
+import { useEffect, useState } from 'react';
 
 export const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
+  const { data } = reviewListApi.useGetListQuery(camera.id);
+
+  const [rate, setRate] = useState<number>();
+
   const link = generatePath(AppRoute.Product, {
     id: `${camera?.id || ''}`,
   });
+
+  useEffect(() => {
+    let evaluationNumber = 0;
+
+    if(!data) {
+      return;
+    }
+    setRate(Math.ceil(data.map((i)=>(evaluationNumber += i.rating)).reverse()[0] / data.length));
+  }, [data, camera]);
+
 
   return (
     <div className={`product-card ${isActive ? 'is-active' : ''}`}>
@@ -17,22 +33,14 @@ export const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
       </div>
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-          <p className="visually-hidden">Рейтинг: 3</p>
+          {rate ?
+            Array(5).fill('').map((_, index) => (
+              <svg key={`${index.toString()}`} width="17" height="16" aria-hidden="true">
+                <use data-testid={'star'} xlinkHref={`${index + 1 <= rate ? '#icon-full-star' : '#icon-star'}`}></use>
+              </svg>))
+            :
+            <p>Loading...</p>}
+          <p className="visually-hidden">Рейтинг: {rate}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{camera.reviewCount}</p>
         </div>
         <p className="product-card__title">{camera.name}</p>
