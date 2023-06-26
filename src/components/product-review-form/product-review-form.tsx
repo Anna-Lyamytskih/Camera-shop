@@ -103,7 +103,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
       document.removeEventListener('scroll', scrollOffHandler);
     };
   }, [isActive, setActive, scroll, reset]);
-  console.log(rating)
+
   return (
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
