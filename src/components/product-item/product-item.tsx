@@ -3,7 +3,7 @@ import { ProductRate } from '../product-rate';
 import { Tabs } from '../tabs';
 import { ProductItemProps } from './types';
 
-export const ProductItem = ({ camera }: ProductItemProps) => (
+export const ProductItem = ({ camera, rate, evaluation }: ProductItemProps) => (
   <div className="container">
     <div className="product__img">
       <picture>
@@ -13,7 +13,7 @@ export const ProductItem = ({ camera }: ProductItemProps) => (
     </div>
     <div className="product__content">
       <h1 className="title title--h3">{camera.name}</h1>
-      <ProductRate />
+      <ProductRate rate={rate} evaluation={evaluation}/>
       <p className="product__price"><span className="visually-hidden">Цена:</span>{camera.price} ₽</p>
       <AddToCartButton />
       <Tabs

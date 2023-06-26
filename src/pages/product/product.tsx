@@ -30,6 +30,8 @@ const Product = () => {
   const [isActive, setActive] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [scroll, setScroll] = useState(0);
+  const [rate, setRate] = useState<number>();
+  const [evaluation, setEvaluation] = useState<number>();
 
   useEffect(() => {
     window.scrollY = window.pageYOffset;
@@ -94,7 +96,7 @@ const Product = () => {
             <div className="page-content__section">
               <section className="product">
                 {camera ?
-                  <ProductItem camera={camera}/>
+                  <ProductItem camera={camera} rate={rate} evaluation={evaluation}/>
                   :
                   <LoadingScreen />}
               </section>
@@ -118,7 +120,7 @@ const Product = () => {
                     <ProductReviewForm isActive={isActive} setActive={setActive} camera={cameraId} setActiveModal={setActiveModal} scroll={scroll}/>
                     <ProductReviewSuccess activeModal={activeModal} setActiveModal={setActiveModal} scroll={scroll}/>
                   </div>
-                  <ReviewList cameraId={cameraId}/>
+                  <ReviewList cameraId={cameraId} setRate={setRate} setEvaluation={setEvaluation}/>
                 </div>
               </section>
             </div>

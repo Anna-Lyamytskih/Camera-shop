@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
-import { Reviews } from '../../store/review-list-api/type';
+import { Reviews} from '../../store/review-list-api/type';
 import { MAX_REVIEW_COUNT } from './constants';
 import { ReviewListProps } from './types';
 import { getReviewList } from '../../utils/utils';
 import { ReviewItem } from '../review-item';
 
-export const ReviewList = ({ cameraId }: ReviewListProps) => {
+export const ReviewList = ({ cameraId, setRate, setEvaluation }: ReviewListProps) => {
   const endItemRef = useRef<number>(0);
   const { data } = reviewListApi.useGetListQuery(cameraId);
 
@@ -32,6 +32,15 @@ export const ReviewList = ({ cameraId }: ReviewListProps) => {
     const init = getReviewList(data || []).slice(0, endReviews);
     endItemRef.current = getEndItem();
     setReviews(init);
+    if(data){
+      setRate(data.length);
+      let evaluationNumber = 0;
+      let rating = 0;
+      rating = data.map((i)=>(evaluationNumber += i.rating)).reverse()[0];
+
+      setEvaluation(Math.ceil(rating / data.length));
+    }
+
   }, [data, endReviews]);
 
   const isHidden = (): boolean => endItemRef.current === endReviews || data?.length === 0;
