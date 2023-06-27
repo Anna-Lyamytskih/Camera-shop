@@ -18,6 +18,7 @@ import { Footer } from '../../components/footer';
 import NotFound from '../not-found';
 import { LoadingScreen } from '../../components/loading-screen';
 import { AppRoute } from '../../router/constants';
+import { Link} from 'react-scroll';
 
 const Product = () => {
   const { id } = useParams();
@@ -53,7 +54,7 @@ const Product = () => {
       </Helmet>
       <Path />
       <div className="wrapper">
-        <header className="header" id="header">
+        <header className="header" id="header" title='header'>
           <div className="container">
             <Logo />
             <NavigationList />
@@ -126,11 +127,11 @@ const Product = () => {
             </div>
           </div>
         </main>
-        <a className="up-btn" href="#header">
+        <Link className="up-btn" href="#header" to="header" smooth={true} duration={2500} offset={-70}>
           <svg width="12" height="18" aria-hidden="true">
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
-        </a>
+        </Link>
         <Footer />
       </div>
     </>
