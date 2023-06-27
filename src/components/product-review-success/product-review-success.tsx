@@ -5,6 +5,14 @@ export const ProductReviewSuccess = ({setActiveModal, activeModal, scroll}:Produ
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if(activeModal){
+      document.body.style.overflow = 'hidden';}
+    return ()=> {
+      document.body.style.overflow = '';
+    };
+  });
+
+  useEffect(() => {
     if(!activeModal){
       return;
     }
@@ -24,18 +32,12 @@ export const ProductReviewSuccess = ({setActiveModal, activeModal, scroll}:Produ
       }
     };
 
-
-    const scrollOffHandler = () => {
-      window.scrollTo(0,scroll);
-    };
-
     document.addEventListener('keydown', clickKeyHandler);
     document.addEventListener('mousedown', clickHandler);
-    document.addEventListener('scroll', scrollOffHandler);
+
     return () => {
       document.removeEventListener('mousedown', clickHandler);
       document.removeEventListener('keydown', clickKeyHandler);
-      document.removeEventListener('scroll', scrollOffHandler);
     };
   },[activeModal, setActiveModal, scroll]);
 
