@@ -35,8 +35,13 @@ const Product = () => {
   const [evaluation, setEvaluation] = useState<number>();
 /* eslint-disable */
   useEffect(() => {
+    if(isActive){
+    document.body.style.overflow = 'hidden';}
     window.scrollY = window.pageYOffset;
     setScroll(window.scrollY);
+    return ()=> {
+      document.body.style.overflow = '';
+    }
   });
 
   if (isLoading) {
