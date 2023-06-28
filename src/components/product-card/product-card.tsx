@@ -2,9 +2,9 @@ import { AppRoute } from '../../router/constants';
 import { Link, generatePath } from 'react-router-dom';
 import { ProductCardProps } from './types';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 
-export const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
+export const ProductCard = ({style, camera, isActive = false }: ProductCardProps) => {
   const { data } = reviewListApi.useGetListQuery(camera.id);
 
   const [rate, setRate] = useState<number>();
@@ -24,7 +24,7 @@ export const ProductCard = ({ camera, isActive = false }: ProductCardProps) => {
 
 
   return (
-    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
+    <div className={`product-card ${isActive ? 'is-active' : ''}`} style={style as CSSProperties}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/ ${camera.previewImgWebp}, /${camera.previewImgWebp2x} `} />

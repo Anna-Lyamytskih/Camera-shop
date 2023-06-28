@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { MAX_SLIDE_COUNT } from './constants';
 import { ProductSliderProps } from './types';
 import { ProductCard } from '../product-card';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+import 'swiper/swiper-bundle.min.css';
 
 export const ProductSlider = ({ slides }: ProductSliderProps) => {
   const [active, setActive] = useState<number[]>([]);
@@ -47,13 +50,33 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
 
   return (
     <div className="product-similar__slider-list">
-      {slides?.map((item) => (
-        <ProductCard
-          camera={item}
-          key={item.id}
-          isActive={active.includes(item.id)}
-        />
-      ))}
+      <Swiper
+        className="product-similar__slider-list"
+        modules={[Navigation]}
+        slidesPerView={3}
+        slidesPerGroup={3}
+        spaceBetween={30}
+        navigation={
+          {
+            nextEl: '.slider-controls--next',
+            prevEl: '.slider-controls--prev'
+          }
+        }
+      >
+        {slides?.map((item) => (
+          <SwiperSlide key={item.id}>
+            <ProductCard
+              style={{
+                width: '100%',
+                margin: 0
+              }}
+              camera={item}
+              key={item.id}
+              isActive={active.includes(item.id)}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <button
         className="slider-controls slider-controls--prev"
         type="button"
