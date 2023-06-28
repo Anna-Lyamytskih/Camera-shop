@@ -38,7 +38,7 @@ export const CatalogFilter = () => (
       </div>
       <div className="custom-checkbox catalog-filter__item">
         <label>
-          <input type="checkbox" name="film" disabled onChange={(item)=>item}/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
+          <input type="checkbox" name="film" onChange={(item)=>item}/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Плёночная</span>
         </label>
       </div>
       <div className="custom-checkbox catalog-filter__item">
@@ -48,7 +48,7 @@ export const CatalogFilter = () => (
       </div>
       <div className="custom-checkbox catalog-filter__item">
         <label>
-          <input type="checkbox" name="collection" disabled onChange={(item)=>item}/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Коллекционная</span>
+          <input type="checkbox" name="collection" onChange={(item)=>item}/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Коллекционная</span>
         </label>
       </div>
     </fieldset>

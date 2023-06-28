@@ -56,6 +56,7 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
         slidesPerView={3}
         slidesPerGroup={3}
         spaceBetween={30}
+        speed={800}
         navigation={
           {
             nextEl: '.slider-controls--next',
