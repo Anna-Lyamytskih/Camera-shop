@@ -3,6 +3,7 @@ import { reviewListApi } from '../../store/review-list-api/review-list-api';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { ProductReviewFormProps, ProductReviewFormType } from './types';
 import { RatingList } from '../rating-list';
+import ReactFocusLock from 'react-focus-lock';
 
 export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal, scroll }: ProductReviewFormProps) => {
   const [isDisable, setDisable] = useState<boolean>();
@@ -105,6 +106,7 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
   }, [isActive, setActive, scroll, reset]);
 
   return (
+    <ReactFocusLock className={`modal ${isActive ? 'is-active' : ''}`} disabled={!isActive} returnFocus>
     <div className={`modal ${isActive ? 'is-active' : ''}`}>
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
@@ -238,5 +240,6 @@ export const ProductReviewForm = ({ isActive, setActive, camera, setActiveModal,
         </div>
       </div>
     </div>
+    </ReactFocusLock>
   );
 };
