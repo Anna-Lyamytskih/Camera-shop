@@ -18,7 +18,6 @@ import { AppRoute } from '../../router/constants';
 export const Catalog = () => {
   const sortingProducts = useGetSortProducts();
 
-
   const pagination = usePagination({ total: sortingProducts.length });
   const { currentPage, limit } = pagination;
 
@@ -35,14 +34,7 @@ export const Catalog = () => {
           <div className="container">
             <Logo />
             <NavigationList />
-            <div className="form-search">
-              <FormSearch />
-              <button className="form-search__reset" type="reset">
-                <svg width="10" height="10" aria-hidden="true">
-                  <use xlinkHref="#icon-close"></use>
-                </svg><span className="visually-hidden">Сбросить поиск</span>
-              </button>
-            </div>
+            <FormSearch />
             <a className="header__basket-link" href='/'>
               <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-basket"></use>
