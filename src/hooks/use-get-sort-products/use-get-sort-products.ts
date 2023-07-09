@@ -1,11 +1,28 @@
 import { productsApi } from '../../store/products-api/products-api';
 import { useAppSelector } from '..';
 import { getSortingOrder } from '../../utils/utils';
+import { Product} from '../../store/products-api/types';
+import { useGetDataWithReview } from '../use-get-data-with-review/use-get-data-with-review';
 
-export const useGetSortProducts = () => {
-  const {data} = productsApi.useGetListQuery();
+export function api<T>(url: string): Promise<T> {
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json() as Promise<T>;
+    });
+}
+
+export const useGetSortProducts = (): {
+  sortingProducts: Product[];
+  isLoading: boolean;
+} => {
   const sort = useAppSelector((state) => state.PRODUCT.filter);
-  const sortingProduct = getSortingOrder(data, sort.order, sort.by);
+  const { data, isLoading: isLoadingList } = productsApi.useGetListQuery();
+  const { dataFinal, inProgress } = useGetDataWithReview({ data });
+  const isLoading = isLoadingList || inProgress;
+  const sortingProducts = getSortingOrder(dataFinal, sort.order, sort.by);
 
-  return sortingProduct;
+  return { sortingProducts, isLoading };
 };

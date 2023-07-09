@@ -14,14 +14,19 @@ import { MAX_COUNT_PAGE_PGINATION } from './constants';
 import { usePagination } from '../../hooks/use-pagination/use-pagination';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../router/constants';
+import { LoadingScreen } from '../../components/loading-screen';
 
 export const Catalog = () => {
-  const sortingProducts = useGetSortProducts();
+  const { sortingProducts, isLoading } = useGetSortProducts();
 
   const pagination = usePagination({ total: sortingProducts.length });
   const { currentPage, limit } = pagination;
 
   const slicedList = sortingProducts.slice((currentPage - MAX_COUNT_PAGE_PGINATION) * limit, currentPage * limit);
+
+  if(isLoading){
+    return <LoadingScreen/>;
+  }
 
   return (
     <>

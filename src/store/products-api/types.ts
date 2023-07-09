@@ -12,16 +12,17 @@ export type Product= {
   previewImg2x: string;
   previewImgWebp: string;
   previewImgWebp2x: string;
+  rating?: number;
   }
 
 export type Products = Product[];
 
 export enum SortingTypeBy {
   Price = 'price',
-  Rate = 'reviewCount',
+  Rate = 'rating',
   }
 
-export type SortingProduct = Pick<Product, 'price' | 'reviewCount'>;
+export type SortingProduct = Pick<Product, 'price' | 'rating'>;
 
 export type SortingProductKey = keyof SortingProduct;
 

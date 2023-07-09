@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSortOrder } from '../../store/products-api/products-process';
-import { SortingTypeOrder } from '../../store/products-api/types';
+import { changeSortBy, changeSortOrder } from '../../store/products-api/products-process';
+import { SortingTypeBy, SortingTypeOrder } from '../../store/products-api/types';
 import { CatalogSortingOrderProps } from './types';
 
 export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
@@ -9,6 +9,10 @@ export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
   const dispatch = useAppDispatch();
 
   const handleSortClick = (sortName: SortingTypeOrder) => {
+    if(!sort.by){
+      dispatch(changeSortBy(SortingTypeBy.Price));
+    }
+
     dispatch(changeSortOrder(sortName));
   };
 
