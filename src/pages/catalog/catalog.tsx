@@ -15,18 +15,16 @@ import { usePagination } from '../../hooks/use-pagination/use-pagination';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../router/constants';
 import { LoadingScreen } from '../../components/loading-screen';
+import { EmptyList } from '../../components/empty-list';
+
 
 export const Catalog = () => {
-  const { sortingProducts, isLoading } = useGetSortProducts();
+  const { filterProducts:sortingProducts, isLoading } = useGetSortProducts();
 
-  const pagination = usePagination({ total: sortingProducts.length });
+  const pagination = usePagination({ total: sortingProducts?.length });
   const { currentPage, limit } = pagination;
 
   const slicedList = sortingProducts.slice((currentPage - MAX_COUNT_PAGE_PGINATION) * limit, currentPage * limit);
-
-  if(isLoading){
-    return <LoadingScreen/>;
-  }
 
   return (
     <>
@@ -70,15 +68,20 @@ export const Catalog = () => {
                 <div className="page-content__columns">
                   <div className="catalog__aside">
                     <div className="catalog-filter">
-                      <CatalogFilter />
+                      <CatalogFilter sortingProducts={sortingProducts}/>
                     </div>
                   </div>
                   <div className="catalog__content">
                     <div className="catalog-sort">
                       <CatalogSort />
                     </div>
-                    <ProductCardList cameras={slicedList} />
-                    <PaginationList pagination={pagination} />
+                    {!isLoading && !sortingProducts.length && <EmptyList/>}
+                    {isLoading ?
+                      <LoadingScreen/> :
+                      <ProductCardList cameras={slicedList} />}
+                    {!isLoading && !sortingProducts.length ?
+                      '' :
+                      <PaginationList pagination={pagination} />}
                   </div>
                 </div>
               </div>

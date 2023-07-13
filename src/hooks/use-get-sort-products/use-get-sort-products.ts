@@ -3,6 +3,7 @@ import { useAppSelector } from '..';
 import { getSortingOrder } from '../../utils/utils';
 import { Product} from '../../store/products-api/types';
 import { useGetDataWithReview } from '../use-get-data-with-review/use-get-data-with-review';
+import { useGetFilterProducts } from '../use-get-filter-products/use-get-filter-products';
 
 export function api<T>(url: string): Promise<T> {
   return fetch(url)
@@ -15,7 +16,7 @@ export function api<T>(url: string): Promise<T> {
 }
 
 export const useGetSortProducts = (): {
-  sortingProducts: Product[];
+  filterProducts: Product[];
   isLoading: boolean;
 } => {
   const sort = useAppSelector((state) => state.PRODUCT.filter);
@@ -23,6 +24,7 @@ export const useGetSortProducts = (): {
   const { dataFinal, inProgress } = useGetDataWithReview({ data });
   const isLoading = isLoadingList || inProgress;
   const sortingProducts = getSortingOrder(dataFinal, sort.order, sort.by);
+  const {filterProducts} = useGetFilterProducts(sortingProducts);
 
-  return { sortingProducts, isLoading };
+  return { filterProducts, isLoading };
 };

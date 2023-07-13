@@ -47,4 +47,44 @@ export const initialState: ProductProcess = {
 
 export enum NameSpace {
     ProductItem = 'PRODUCT',
+    Filter = 'FILTER'
   }
+
+export enum FilterTypePrice {
+  Price = 'от',
+  PriceUp = 'до',
+  }
+
+export enum FilterTypeCategory {
+  Photocamera = 'Фотокамера',
+  Videocamera = 'Видеокамера',
+  }
+
+export enum FilterTypeTypes {
+  Digital = 'Цифровая',
+  Film = 'Плёночная',
+  Snapshot = 'Моментальная',
+  Collection = 'Коллекционная'
+  }
+
+export enum FilterTypeLevel {
+    Zero = 'Нулевой',
+    NonProfessional = 'Любительский',
+    Professional = 'Профессиональный'
+  }
+
+export type FilterProcess = {
+  filter:
+{
+  maxPrice: number;
+  minPrice: number;
+  category:FilterTypeCategory | null;
+  type:FilterTypeTypes[];
+  level:FilterTypeLevel[];
+};
+}
+
+export enum FilterPrices {
+  Min = 'min',
+  Max = 'max',
+}
