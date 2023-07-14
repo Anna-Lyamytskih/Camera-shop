@@ -1,7 +1,7 @@
-import { useEffect, useState, KeyboardEvent } from 'react';
+import { KeyboardEvent } from 'react';
 import { useAppDispatch, useAppSelector, } from '../../hooks';
 import { getPriceValidation } from '../../utils/utils';
-import { FilterPrices, Products } from '../../store/products-api/types';
+import { Products } from '../../store/products-api/types';
 import { changFilterMaxPrice, changFilterMinPrice } from '../../store/filter-process/filter-process';
 
 enum FilterPricesValue {
@@ -22,12 +22,10 @@ const filterPrices = [
 
 type FilterPriceProps = {
   sortingProducts: Products;
-  isReset: boolean;
 }
 
-export const FilterPrice = ({ sortingProducts, isReset }: FilterPriceProps) => {
+export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
   const filter = useAppSelector((state) => state.FILTER.filter);
-  console.log('filter', filter);
 
   const dispatch = useAppDispatch();
 
@@ -37,9 +35,6 @@ export const FilterPrice = ({ sortingProducts, isReset }: FilterPriceProps) => {
     min: minPriceFilter,
     max: maxPriceFilter,
   };
-  console.log('defaultValues', defaultValues);
-  // const [minPrice, setMinPrice] = useState(filter.minPrice);
-  // const [maxPrice, setMaxPrice] = useState(filter.maxPrice);
 
   const handlePrice = (evt: React.ChangeEvent<HTMLInputElement>, price: string) => {
     const priceValue = +evt.target.value < 0 ? '' : evt.target.value;
@@ -50,30 +45,17 @@ export const FilterPrice = ({ sortingProducts, isReset }: FilterPriceProps) => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(changFilterMinPrice(+''));
-  //   dispatch(changFilterMaxPrice(+''));
-  // }, [defaultValues]);
-
   const handleMinPriceBlur = () => {
-    console.log('handleMinPriceBlur', filter);
-    // if (!filter.minPrice) {
-    //   // setMinPrice(defaultValues.min);
-    //   dispatch(changFilterMinPrice(defaultValues.min));
-    //   return;
-    // }
+
     if (filter.maxPrice < filter.minPrice) {
-      // setMaxPrice(minPrice);
       dispatch(changFilterMaxPrice(filter.minPrice));
       return;
     }
     if (filter.minPrice < minPriceFilter) {
-      // setMinPrice(minPriceFilter);
       dispatch(changFilterMinPrice(minPriceFilter));
       return;
     }
     if (filter.minPrice > maxPriceFilter) {
-      // setMinPrice(maxPriceFilter);
       dispatch(changFilterMinPrice(maxPriceFilter));
       return;
     }
@@ -81,20 +63,12 @@ export const FilterPrice = ({ sortingProducts, isReset }: FilterPriceProps) => {
   };
 
   const handleMaxPriceBlur = () => {
-    console.log('handleMaxPriceBlur', filter);
-    // if (!filter.maxPrice) {
-    //   // setMaxPrice(defaultValues.max);
-    //   dispatch(changFilterMaxPrice(defaultValues.max));
-    //   return;
-    // }
-    console.log(1);
+
     if (filter.maxPrice < filter.minPrice) {
-      // setMaxPrice(minPrice);
       dispatch(changFilterMaxPrice(filter.minPrice));
       return;
     }
     if (filter.maxPrice > maxPriceFilter) {
-      // setMaxPrice(maxPriceFilter);
       dispatch(changFilterMaxPrice(maxPriceFilter));
       return;
     }

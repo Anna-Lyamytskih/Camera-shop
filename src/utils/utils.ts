@@ -1,4 +1,4 @@
-import { FilterPrices, FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, Product, Products, SortingProductKey, SortingTypeOrder } from '../store/products-api/types';
+import { FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, Product, Products, SortingProductKey, SortingTypeOrder } from '../store/products-api/types';
 import { Reviews } from '../store/review-list-api/type';
 
 export const getSortingOrder = (
@@ -68,10 +68,6 @@ export const getFilterProducts = (
     if (!minPrice && !maxPrice) {
       return product;
     }
-    //TODO
-    // if (!maxPrice) {
-    //   maxPrice = Infinity;
-    // }
 
     const isPriceFilter = (item:Product) => item.price >= minPrice && item.price <= maxPrice;
 
