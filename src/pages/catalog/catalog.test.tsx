@@ -11,14 +11,15 @@ import fetchMock from 'jest-fetch-mock';
 import { productProcessSlice } from '../../store/products-api/products-process';
 import { promoApi } from '../../store/promo-api/promo-api';
 import { createMemoryHistory } from 'history';
-
+import { filterProcessSlice } from '../../store/filter-process/filter-process';
 describe('Component: Catalog', () => {
 
   it('should render correctly', () => {
     const history = createMemoryHistory();
     const fakeProducts = makeFakeProducts();
     fetchMock.mockResponse(JSON.stringify(fakeProducts));
-    const storeRef = setupApiStore(productsApi, {PRODUCT: productProcessSlice.reducer, promoApi: promoApi.reducer} as any);
+
+    const storeRef = setupApiStore(productsApi, {PRODUCT: productProcessSlice.reducer, promoApi: promoApi.reducer, FILTER: filterProcessSlice.reducer} as any);
 
     render(
       <HistoryRouter history={history}>

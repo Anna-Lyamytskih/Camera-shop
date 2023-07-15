@@ -97,14 +97,16 @@ export const Catalog = () => {
       type.forEach((item) => {
         dispatch(changFilterLTypes(item as unknown as FilterTypeTypes));
       });}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
-    if(level){
+    if(level.length){
       level.forEach((item) => {
         dispatch(changFilterLevel(item as unknown as FilterTypeLevel));
-      });
-    }}, [dispatch]);
+      });}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   useEffect(() => {
     setSearchParams(currentParams);

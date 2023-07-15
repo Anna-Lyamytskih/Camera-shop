@@ -1,17 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import { CatalogFilter } from './catalog-filter';
-import { makeFakeProducts } from '../../utils/mocks';
-import { NameSpace, Products } from '../../store/products-api/types';
 import thunk from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
+import { NameSpace } from '../../store/products-api/types';
 import { Provider } from 'react-redux';
 import { HistoryRouter } from '../history-router';
+import { FilterTypes } from './filter-types';
 
 const mockStore = configureMockStore([thunk]);
 
-describe('Component: CatalogFilter', () => {
-  const sortingProducts = makeFakeProducts();
+describe('Component: filterPrice', () => {
   it('should render correctly', () => {
     const history = createMemoryHistory();
     const store = mockStore({
@@ -25,15 +23,15 @@ describe('Component: CatalogFilter', () => {
         level:[]
       }}
     });
+
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <CatalogFilter sortingProducts={sortingProducts as unknown as Products}/>
+          <FilterTypes/>
         </HistoryRouter>
       </Provider>
     );
 
-    expect(screen.getByText('Фильтр')).toBeInTheDocument();
-    expect(screen.getByText('Категория')).toBeInTheDocument();
+    expect(screen.getByText('Тип камеры')).toBeInTheDocument();
   });
 });

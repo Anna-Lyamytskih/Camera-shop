@@ -19,6 +19,7 @@ export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
   return (
     <div className={`catalog-sort__btn catalog-sort__btn--${id}`}>
       <input
+        data-testid="catalog-sort"
         type="radio"
         id={id}
         name="sort-icon"

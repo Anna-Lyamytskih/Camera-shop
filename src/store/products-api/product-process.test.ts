@@ -1,4 +1,3 @@
-// import { makeFakeProducts } from '../../utils/mocks';
 import { changeSortBy, changeSortOrder, productProcessSlice } from './products-process';
 import { ProductProcess, SortingTypeBy, SortingTypeOrder} from './types';
 
@@ -21,7 +20,7 @@ describe('reducer: productProcessSlice', () => {
     });
     expect(sortingByReducer).toEqual({
       filter: {
-        by:'reviewCount',
+        by:'rating',
         order: SortingTypeOrder.Up,
       }});
   });
