@@ -42,6 +42,7 @@ export const useGetDataWithReview = ({ data }: {
       };
       fetchAllreviews();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return { dataFinal, inProgress };

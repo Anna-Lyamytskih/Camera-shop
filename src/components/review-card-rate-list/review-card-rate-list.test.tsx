@@ -21,6 +21,7 @@ describe('Component: ReviewCardRateList', () => {
       {PRODUCT: productProcessSlice.reducer,
         promoApi: promoApi.reducer,
         FILTER: filterProcessSlice.reducer,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         reviewListApi: reviewListApi.reducer} as any);
     render(
       <HistoryRouter history={history}>

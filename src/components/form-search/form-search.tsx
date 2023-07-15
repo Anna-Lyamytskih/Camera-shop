@@ -42,6 +42,7 @@ export const FormSearch = () => {
       setSearchList(filteredNames);
     }, 300);
     return () => clearTimeout(debounce);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[search]);
 
   const clearButtonHandler = (item:string) => {
