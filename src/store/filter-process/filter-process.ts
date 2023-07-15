@@ -1,15 +1,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { FilterProcess, FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, NameSpace} from '../products-api/types';
+import { FilterProcess, FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, NameSpace } from '../products-api/types';
 
-export const initialState:FilterProcess = {
+export const initialState: FilterProcess = {
   filter:
-{
-  maxPrice: 0,
-  minPrice:0,
-  category:null,
-  type:[],
-  level:[]
-}
+  {
+    maxPrice: 0,
+    minPrice: 0,
+    category: null,
+    type: [],
+    level: []
+  }
 };
 
 export const filterProcessSlice = createSlice({
@@ -26,7 +26,8 @@ export const filterProcessSlice = createSlice({
       state.filter.category = action.payload;
     },
     changFilterLevel: (state, action: PayloadAction<FilterTypeLevel>) => {
-      if (state.filter.level.includes(action.payload)) {state.filter.level = state.filter.level.filter((level) => level !== action.payload);
+      if (state.filter.level.includes(action.payload)) {
+        state.filter.level = state.filter.level.filter((level) => level !== action.payload);
 
         return;
       }
@@ -41,6 +42,16 @@ export const filterProcessSlice = createSlice({
       }
       state.filter.type.push(action.payload);
     },
+    setInitialTypes: (state, action: PayloadAction<FilterTypeTypes[]>) => {
+      if (action.payload.length) {
+        state.filter.type = action.payload;
+      }
+    },
+    setInitialLevel: (state, action: PayloadAction<FilterTypeLevel[]>) => {
+      if (action.payload.length) {
+        state.filter.level = action.payload;
+      }
+    },
     resetFilters: (state) => {
       state.filter.category = null;
       state.filter.type = [];
@@ -51,4 +62,7 @@ export const filterProcessSlice = createSlice({
   }
 });
 
-export const {changFilterMinPrice, changFilterMaxPrice, changFilterCategory, changFilterLevel, changFilterLTypes, resetFilters } = filterProcessSlice.actions;
+export const {
+  changFilterMinPrice, changFilterMaxPrice, changFilterCategory,
+  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel
+} = filterProcessSlice.actions;

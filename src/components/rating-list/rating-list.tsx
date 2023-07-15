@@ -3,7 +3,7 @@ import { rating } from './constants';
 import { RatingListProps } from './types';
 
 export const RatingList = ({onChangeData}:RatingListProps) => (
-  <div className="rate__group" data-testId="rating-list">
+  <div className="rate__group" data-testid="rating-list">
     {rating.map((item)=> <RatingItem title={item.title} value={item.value} key={item.value} onChangeData={onChangeData}/>)}
   </div>
 );

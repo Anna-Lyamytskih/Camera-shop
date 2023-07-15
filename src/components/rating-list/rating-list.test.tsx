@@ -6,17 +6,15 @@ import { productsApi } from '../../store/products-api/products-api';
 import { HistoryRouter } from '../history-router';
 import { Provider } from 'react-redux';
 import { RatingList } from './rating-list';
+import { MouseEventHandler} from 'react';
 
 describe('Component: RatingList', () => {
 
   it('should render correctly', () => {
-    const rating = [
-      {
-        title:'Отлично',
-        value:'5'
-      },
-    ];
-
+    const changeRatingHandler = (evt: MouseEventHandler<HTMLInputElement>) => {
+      const typedEvent = evt as unknown as {target:{value: string}};
+      return typedEvent;
+    };
     const history = createMemoryHistory();
     const fakeProducts = makeFakeProducts();
     fetchMock.mockResponse(JSON.stringify(fakeProducts));
@@ -24,7 +22,7 @@ describe('Component: RatingList', () => {
     render(
       <HistoryRouter history={history}>
         <Provider store={storeRef.store}>
-          <RatingList rating={rating}/>
+          <RatingList onChangeData={changeRatingHandler as unknown as MouseEventHandler<HTMLInputElement>}/>
         </Provider>
       </HistoryRouter>
     );

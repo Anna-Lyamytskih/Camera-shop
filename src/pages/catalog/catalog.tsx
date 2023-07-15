@@ -21,33 +21,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect, useMemo } from 'react';
 import { changeSortBy, changeSortOrder } from '../../store/products-api/products-process';
 import { FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, SortingTypeBy, SortingTypeOrder } from '../../store/products-api/types';
-import { changFilterCategory, changFilterLTypes, changFilterLevel, changFilterMaxPrice, changFilterMinPrice } from '../../store/filter-process/filter-process';
+import {
+  changFilterCategory, changFilterMaxPrice, changFilterMinPrice,
+  setInitialTypes, setInitialLevel,
+} from '../../store/filter-process/filter-process';
 import { QueryParam } from './types';
 
-
-export const Catalog = () => {
+const useLocationState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { filterProducts:sortingProducts, isLoading } = useGetSortProducts();
+
   const sort = useAppSelector((state) => state.PRODUCT.filter);
   const filter = useAppSelector((state) => state.FILTER.filter);
-
-  const sortType = searchParams.get('sortBy');
-  const sortOrder = searchParams.get('order');
-  const category = searchParams.get('category');
-  const priceGte = searchParams.get('price_gte');
-  const priceLte = searchParams.get('price_lte');
-  const type: string[] = [];
-  const level: string[] = [];
-
-  for (const [key, value] of searchParams.entries()) {
-    if (key === 'type' && !type.includes(value)) {
-      type.push(value);
-    }
-
-    if (key === 'level' && !level.includes(value)) {
-      level.push(value);
-    }
-  }
 
   const currentParams = useMemo(() => {
     const params: QueryParam = {};
@@ -70,47 +54,60 @@ export const Catalog = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if(priceGte){
-      dispatch(changFilterMinPrice(+priceGte));
-    }
-    if(priceLte){
-      dispatch(changFilterMaxPrice(+priceLte));
-    }
-  }, [priceGte, priceLte, dispatch]);
+    setSearchParams(currentParams);
+  }, [filter]);
 
   useEffect(() => {
-    if(sortType){
+    const sortType = searchParams.get('sortBy');
+    const sortOrder = searchParams.get('order');
+    const category = searchParams.get('category');
+    const priceGte = searchParams.get('price_gte');
+    const priceLte = searchParams.get('price_lte');
+    const type: string[] = [];
+    const level: string[] = [];
+
+    for (const [key, value] of searchParams.entries()) {
+      if (key === 'type' && !type.includes(value)) {
+        type.push(value);
+      }
+
+      if (key === 'level' && !level.includes(value)) {
+        level.push(value);
+      }
+    }
+
+    if (sortType) {
       dispatch(changeSortBy(sortType as SortingTypeBy));
     }
-    if(sortOrder){
+
+    if (sortOrder) {
       dispatch(changeSortOrder(sortOrder as SortingTypeOrder));
     }
-  }, [sortType, sortOrder, dispatch]);
 
-  useEffect(() => {
-    if(category){
+    if (priceGte) {
+      dispatch(changFilterMinPrice(+priceGte));
+    }
+    if (priceLte) {
+      dispatch(changFilterMaxPrice(+priceLte));
+    }
+
+    if (category) {
       dispatch(changFilterCategory(category as FilterTypeCategory | null));
-    }}, [category, dispatch]);
+    }
 
-  useEffect(() => {
-    if(type.length){
-      type.forEach((item) => {
-        dispatch(changFilterLTypes(item as unknown as FilterTypeTypes));
-      });}
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+    if (type.length) {
+      dispatch(setInitialTypes(type as unknown as FilterTypeTypes[]));
+    }
 
-  useEffect(() => {
-    if(level.length){
-      level.forEach((item) => {
-        dispatch(changFilterLevel(item as unknown as FilterTypeLevel));
-      });}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+    if (level.length) {
+      dispatch(setInitialLevel(level as unknown as FilterTypeLevel[]));
+    }
+  }, []);
+};
 
-  useEffect(() => {
-    setSearchParams(currentParams);
-  }, [setSearchParams, currentParams]);
+export const Catalog = () => {
+  useLocationState();
+  const { filterProducts: sortingProducts, isLoading } = useGetSortProducts();
 
   const pagination = usePagination({ total: sortingProducts?.length });
   const { currentPage, limit } = pagination;
@@ -159,16 +156,16 @@ export const Catalog = () => {
                 <div className="page-content__columns">
                   <div className="catalog__aside">
                     <div className="catalog-filter">
-                      <CatalogFilter sortingProducts={sortingProducts}/>
+                      <CatalogFilter sortingProducts={sortingProducts} />
                     </div>
                   </div>
                   <div className="catalog__content">
                     <div className="catalog-sort">
                       <CatalogSort />
                     </div>
-                    {!isLoading && !sortingProducts.length && <EmptyList/>}
+                    {!isLoading && !sortingProducts.length && <EmptyList />}
                     {isLoading ?
-                      <LoadingScreen/> :
+                      <LoadingScreen /> :
                       <ProductCardList cameras={slicedList} />}
                     {!isLoading && !sortingProducts.length ?
                       '' :
