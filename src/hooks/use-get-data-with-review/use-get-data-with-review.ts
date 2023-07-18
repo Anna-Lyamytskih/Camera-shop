@@ -17,7 +17,7 @@ export const useGetDataWithReview = ({ data }: {
       setDataFinal([...data]);
       const fetchAllreviews = async () => {
         setInProgress(true);
-        for (let i = 0; i < data?.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           reviewRequests.push(
             api<Reviews>(`${BACKEND_URL}cameras/${data[i].id}/reviews`)
           );

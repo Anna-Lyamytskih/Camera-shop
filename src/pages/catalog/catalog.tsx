@@ -109,7 +109,7 @@ export const Catalog = () => {
   useLocationState();
   const { filterProducts: sortingProducts, isLoading } = useGetSortProducts();
 
-  const pagination = usePagination({ total: sortingProducts?.length });
+  const pagination = usePagination({ total: sortingProducts.length });
   const { currentPage, limit } = pagination;
 
   const slicedList = sortingProducts.slice((currentPage - MAX_COUNT_PAGE_PGINATION) * limit, currentPage * limit);

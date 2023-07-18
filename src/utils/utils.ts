@@ -101,7 +101,7 @@ export const getRate = (reviews: Reviews | undefined) => {
 
 export const getPriceValidation = (products:Products | undefined) => {
   if (!products?.length) {
-    return {min: 0, max: Infinity};
+    return {min: 0, max: 0};
   }
 
   const items = [...products];

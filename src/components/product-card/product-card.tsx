@@ -10,7 +10,7 @@ export const ProductCard = ({style, camera, isActive = false }: ProductCardProps
   const [rate, setRate] = useState<number>();
 
   const link = generatePath(AppRoute.Product, {
-    id: `${camera?.id || ''}`,
+    id: `${camera.id || ''}`,
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const ProductCard = ({style, camera, isActive = false }: ProductCardProps
         <button className="btn btn--purple product-card__btn" type="button">
           Купить
         </button>
-        {camera?.id && <Link className="btn btn--transparent" to={link}>Подробнее</Link>}
+        {camera.id && <Link className="btn btn--transparent" to={link}>Подробнее</Link>}
       </div>
     </div>
   );

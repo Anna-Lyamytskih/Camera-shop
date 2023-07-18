@@ -5,6 +5,7 @@ import { ProductCard } from '../product-card';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.min.css';
+import { LoadingScreen } from '../loading-screen';
 
 export const ProductSlider = ({ slides }: ProductSliderProps) => {
   const [active, setActive] = useState<number[]>([]);
@@ -42,7 +43,10 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
       .slice(startEndPoints[0], startEndPoints[1]));
   }, [startEndPoints, slides]);
 
-  const getEndItem = () => Math.ceil((slides?.length || 0) / MAX_SLIDE_COUNT) * MAX_SLIDE_COUNT;
+  const getEndItem = () =>{
+    if(slides){
+      return Math.ceil((slides.length || 0) / MAX_SLIDE_COUNT) * MAX_SLIDE_COUNT;}
+  };
 
   const isDisabledNext = (): boolean => startEndPoints[1] === getEndItem();
 
@@ -64,19 +68,21 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
           }
         }
       >
-        {slides?.map((item) => (
-          <SwiperSlide key={item.id}>
-            <ProductCard
-              style={{
-                width: '100%',
-                margin: 0
-              }}
-              camera={item}
-              key={item.id}
-              isActive={active.includes(item.id)}
-            />
-          </SwiperSlide>
-        ))}
+        {slides ?
+          slides.map((item) => (
+            <SwiperSlide key={item.id}>
+              <ProductCard
+                style={{
+                  width: '100%',
+                  margin: 0
+                }}
+                camera={item}
+                key={item.id}
+                isActive={active.includes(item.id)}
+              />
+            </SwiperSlide>))
+          :
+          <LoadingScreen/>}
       </Swiper>
       <button
         className="slider-controls slider-controls--prev"
