@@ -17,6 +17,11 @@ export const Tabs = ({ tabs }: {
     }
   },[activeTab, tabsState, initKey, setSearchParams]);
 
+  useEffect(()=> {
+    if(!activeTab){
+      setTabsState(initKey);
+    }
+  },[activeTab]);
 
   const urlChangeHandler = (item:string) => {
     setTabsState('');
