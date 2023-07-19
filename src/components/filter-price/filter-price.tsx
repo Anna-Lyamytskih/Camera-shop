@@ -1,8 +1,9 @@
-import { KeyboardEvent } from 'react';
+/* eslint-disable no-nested-ternary */
+import { KeyboardEvent} from 'react';
 import { useAppDispatch, useAppSelector, } from '../../hooks';
-import { getPriceValidation } from '../../utils/utils';
 import { Products } from '../../store/products-api/types';
-import { changFilterMaxPrice, changFilterMinPrice } from '../../store/filter-process/filter-process';
+import { changFilterMaxPrice, changFilterMinPrice} from '../../store/filter-process/filter-process';
+import { useGetDataPrice } from '../../hooks/use-get-data-price/use-get-deta-price';
 
 enum FilterPricesValue {
   From = 'from',
@@ -29,7 +30,7 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
 
   const dispatch = useAppDispatch();
 
-  const { min: minPriceFilter, max: maxPriceFilter } = getPriceValidation(sortingProducts);
+  const {minPriceFilter, maxPriceFilter} = useGetDataPrice(sortingProducts);
 
   const defaultValues = {
     min: minPriceFilter,
@@ -38,7 +39,6 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
 
   const handlePrice = (evt: React.ChangeEvent<HTMLInputElement>, price: string) => {
     const priceValue = +evt.target.value < 0 ? '' : evt.target.value;
-
     switch (price) {
       case FilterPricesValue.From: return dispatch(changFilterMinPrice(Number(priceValue)));
       case FilterPricesValue.To: return dispatch(changFilterMaxPrice(Number(priceValue)));
@@ -46,13 +46,16 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
   };
 
   const handleMinPriceBlur = () => {
-
-    if (filter.maxPrice < filter.minPrice) {
-      dispatch(changFilterMaxPrice(filter.minPrice));
+    if (filter.minPrice > filter.max) {
+      dispatch(changFilterMinPrice(filter.max));
       return;
     }
-    if (filter.minPrice < minPriceFilter) {
-      dispatch(changFilterMinPrice(minPriceFilter));
+    if (filter.minPrice < filter.min) {
+      dispatch(changFilterMinPrice(filter.min));
+      return;
+    }
+    if (filter.maxPrice < filter.minPrice) {
+      dispatch(changFilterMaxPrice(filter.minPrice));
       return;
     }
     if (filter.minPrice > maxPriceFilter) {
@@ -63,7 +66,10 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
   };
 
   const handleMaxPriceBlur = () => {
-
+    if (filter.minPrice < filter.min) {
+      dispatch(changFilterMinPrice(filter.min));
+      return;
+    }
     if (filter.maxPrice < filter.minPrice) {
       dispatch(changFilterMaxPrice(filter.minPrice));
       return;
@@ -101,7 +107,12 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
                 type="number"
                 key={item.title}
                 name={item.title}
-                placeholder={item.title === 'priceFrom' ? String(defaultValues.min) : String(defaultValues.max)}
+                placeholder={
+                  item.title === 'priceFrom' ?
+                    (defaultValues.min === 0 ? String(filter.min) : String(defaultValues.min))
+                    :
+                    (defaultValues.max === 0 ? String(filter.max) : String(defaultValues.max))
+                }
                 value={item.title === 'priceFrom' ? minPriceValue : maxPriceValue}
                 onChange={(evt) => handlePrice(evt, item.key)}
                 onBlur={item.title === 'priceFrom' ? handleMinPriceBlur : handleMaxPriceBlur}

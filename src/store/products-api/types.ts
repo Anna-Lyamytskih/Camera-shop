@@ -81,6 +81,8 @@ export type FilterProcess = {
   category:FilterTypeCategory | null;
   type:FilterTypeTypes[];
   level:FilterTypeLevel[];
+  max: number;
+  min: number;
 };
 }
 

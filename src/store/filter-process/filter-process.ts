@@ -8,7 +8,9 @@ export const initialState: FilterProcess = {
     minPrice: 0,
     category: null,
     type: [],
-    level: []
+    level: [],
+    max:0,
+    min:0
   }
 };
 
@@ -52,17 +54,25 @@ export const filterProcessSlice = createSlice({
         state.filter.level = action.payload;
       }
     },
+    changMaxPrice: (state, action: PayloadAction<number>) => {
+      state.filter.max = action.payload;
+    },
+    changMinPrice: (state, action: PayloadAction<number>) => {
+      state.filter.min = action.payload;
+    },
     resetFilters: (state) => {
       state.filter.category = null;
       state.filter.type = [];
       state.filter.level = [];
       state.filter.maxPrice = 0;
       state.filter.minPrice = 0;
+      state.filter.max = 0;
+      state.filter.min = 0;
     }
   }
 });
 
 export const {
   changFilterMinPrice, changFilterMaxPrice, changFilterCategory,
-  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel
+  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel, changMaxPrice, changMinPrice
 } = filterProcessSlice.actions;

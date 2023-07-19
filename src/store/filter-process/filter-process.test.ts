@@ -11,7 +11,9 @@ describe('reducer: filterProcessSlice', () => {
         minPrice:0,
         category:null,
         type:[],
-        level:[]
+        level:[],
+        min:0,
+        max:0
       }};});
 
   it('Category', () => {
@@ -25,7 +27,9 @@ describe('reducer: filterProcessSlice', () => {
         maxPrice: 0,
         minPrice:0,
         type:[],
-        level:[]
+        level:[],
+        min:0,
+        max:0
       }});
   });
 
@@ -40,7 +44,9 @@ describe('reducer: filterProcessSlice', () => {
         maxPrice: 0,
         minPrice:0,
         category:null,
-        level:[]
+        level:[],
+        min:0,
+        max:0
       }});});
 
   it('Level', () => {
@@ -54,7 +60,9 @@ describe('reducer: filterProcessSlice', () => {
         maxPrice: 0,
         minPrice:0,
         category:null,
-        level:['Нулевой']
+        level:['Нулевой'],
+        min:0,
+        max:0
       }});});
 
   it('MinPrice', () => {
@@ -68,7 +76,9 @@ describe('reducer: filterProcessSlice', () => {
         maxPrice: 0,
         minPrice:'min',
         category:null,
-        level:[]
+        level:[],
+        min:0,
+        max:0
       }});});
 
   it('MaxPrice', () => {
@@ -82,7 +92,9 @@ describe('reducer: filterProcessSlice', () => {
         maxPrice: 'max',
         minPrice:0,
         category:null,
-        level:[]
+        level:[],
+        min:0,
+        max:0
       }});});
 
 });

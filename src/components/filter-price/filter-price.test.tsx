@@ -22,7 +22,9 @@ describe('Component: filterPrice', () => {
         minPrice:0,
         category:null,
         type:[],
-        level:[]
+        level:[],
+        max:0,
+        min:0,
       }}
     });
 
