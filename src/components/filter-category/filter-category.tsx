@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changFilterCategory } from '../../store/filter-process/filter-process';
+import { changFilterCategory, resetFiltersTypes } from '../../store/filter-process/filter-process';
 import { FilterTypeCategory } from '../../store/products-api/types';
 
 const CategoryProduct = [
@@ -27,6 +27,7 @@ export const FilterCategory = () => {
       return;
     }
     dispatch(changFilterCategory(filterName));
+    dispatch(resetFiltersTypes());
   };
 
   return(

@@ -68,11 +68,14 @@ export const filterProcessSlice = createSlice({
       state.filter.minPrice = 0;
       state.filter.max = 0;
       state.filter.min = 0;
+    },
+    resetFiltersTypes: (state) => {
+      state.filter.type = [];
     }
   }
 });
 
 export const {
   changFilterMinPrice, changFilterMaxPrice, changFilterCategory,
-  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel, changMaxPrice, changMinPrice
+  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel, changMaxPrice, changMinPrice, resetFiltersTypes
 } = filterProcessSlice.actions;

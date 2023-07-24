@@ -40,7 +40,7 @@ export const FilterTypes = () => {
           <div className="custom-checkbox catalog-filter__item" key={item.title}>
             <label key={item.title}>
               <input
-                checked={ isVideocamera ? false : filter.type.includes(item.value as FilterTypeTypes)}
+                checked={filter.type.includes(item.value as FilterTypeTypes)}
                 type="checkbox"
                 key={item.title}
                 name={item.title}
