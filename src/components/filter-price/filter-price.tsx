@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { KeyboardEvent} from 'react';
+import { KeyboardEvent, useEffect} from 'react';
 import { useAppDispatch, useAppSelector, } from '../../hooks';
 import { Products } from '../../store/products-api/types';
 import { changFilterMaxPrice, changFilterMinPrice} from '../../store/filter-process/filter-process';
@@ -92,6 +92,11 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
       handleMaxPriceBlur();
     }
   };
+  useEffect(()=>{
+    if(filter.maxPrice === 0){
+      dispatch(changFilterMaxPrice(Infinity));
+    }
+  },[filter.maxPrice]);
 
   const minPriceValue = filter.minPrice === 0 ? '' : String(filter.minPrice);
   const maxPriceValue = filter.maxPrice === 0 ? '' : String(filter.maxPrice);
