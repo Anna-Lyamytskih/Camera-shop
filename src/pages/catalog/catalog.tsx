@@ -55,7 +55,7 @@ const useLocationState = () => {
 
   useEffect(() => {
     setSearchParams(currentParams);
-  }, [filter]);
+  }, [filter, sort]);
 
   useEffect(() => {
     const sortType = searchParams.get('sortBy');
