@@ -1,9 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import { KeyboardEvent, useEffect} from 'react';
+import { KeyboardEvent, useEffect, useState} from 'react';
 import { useAppDispatch, useAppSelector, } from '../../hooks';
 import { Products } from '../../store/products-api/types';
 import { changFilterMaxPrice, changFilterMinPrice} from '../../store/filter-process/filter-process';
 import { useGetDataPrice } from '../../hooks/use-get-data-price/use-get-deta-price';
+import { productsApi } from '../../store/products-api/products-api';
+import { getPriceValidation } from '../../utils/utils';
 
 enum FilterPricesValue {
   From = 'from',
@@ -23,62 +25,105 @@ const filterPrices = [
 
 type FilterPriceProps = {
   sortingProducts: Products;
+  resetFilters: boolean;
 }
 
-export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
+export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps) => {
   const filter = useAppSelector((state) => state.FILTER.filter);
 
   const dispatch = useAppDispatch();
 
   const {minPriceFilter, maxPriceFilter} = useGetDataPrice(sortingProducts);
 
+  const { data } = productsApi.useGetListQuery();
+  const { min: minPriceAll, max: maxPriceAll } = getPriceValidation(data);
+
   const defaultValues = {
     min: minPriceFilter,
     max: maxPriceFilter,
   };
 
+  const [minValue, setMinPriceValue] = useState(filter.minPrice);
+  const [maxValue, setMaxPriceValue] = useState(filter.maxPrice);
+
   const handlePrice = (evt: React.ChangeEvent<HTMLInputElement>, price: string) => {
     const priceValue = +evt.target.value < 0 ? '' : evt.target.value;
     switch (price) {
-      case FilterPricesValue.From: return dispatch(changFilterMinPrice(Number(priceValue)));
-      case FilterPricesValue.To: return dispatch(changFilterMaxPrice(Number(priceValue)));
+      case FilterPricesValue.From:{ return setMinPriceValue(Number(priceValue));}
+      case FilterPricesValue.To:{ return setMaxPriceValue(Number(priceValue));}
     }
   };
 
+  useEffect(() => {
+    if (resetFilters) {
+      setMinPriceValue(0);
+      setMaxPriceValue(0);
+    }
+  }, [resetFilters]);
+
   const handleMinPriceBlur = () => {
-    if (filter.minPrice > filter.max) {
-      dispatch(changFilterMinPrice(filter.max));
+    if (!minValue) {
+      setMinPriceValue(0);
+      dispatch(changFilterMinPrice(0));
       return;
     }
-    if (filter.minPrice < filter.min) {
-      dispatch(changFilterMinPrice(filter.min));
+    if(minValue && filter.min === minPriceAll && minValue < minPriceAll){
+      setMinPriceValue(minPriceAll);
+      dispatch(changFilterMinPrice(minPriceAll));
       return;
     }
-    if (filter.maxPrice < filter.minPrice) {
-      dispatch(changFilterMaxPrice(filter.minPrice));
+    if(maxValue && minValue > maxValue){
+      setMinPriceValue(maxValue);
+      dispatch(changFilterMinPrice(maxValue));
       return;
     }
-    if (filter.minPrice > maxPriceFilter) {
+    if(minValue > minPriceFilter && minValue < maxPriceFilter){
+      setMinPriceValue(minValue);
+      dispatch(changFilterMinPrice(minValue));
+      return;
+    }
+    if(minValue < minPriceFilter) {
+      setMinPriceValue(minPriceFilter);
+      dispatch(changFilterMinPrice(minPriceFilter));
+      return;
+    }
+    if(minValue > maxPriceFilter) {
+      setMinPriceValue(maxPriceFilter);
       dispatch(changFilterMinPrice(maxPriceFilter));
       return;
     }
-    dispatch(changFilterMinPrice(filter.minPrice));
+
+    dispatch(changFilterMinPrice(minValue));
   };
 
   const handleMaxPriceBlur = () => {
-    if (filter.minPrice < filter.min) {
-      dispatch(changFilterMinPrice(filter.min));
+    if (!maxValue) {
+      setMaxPriceValue(0);
+      dispatch(changFilterMaxPrice(0));
       return;
     }
-    if (filter.maxPrice < filter.minPrice) {
-      dispatch(changFilterMaxPrice(filter.minPrice));
+    if(maxValue && filter.max === maxPriceAll && maxValue > maxPriceAll){
+      setMaxPriceValue(maxPriceAll);
+      dispatch(changFilterMaxPrice(maxPriceAll));
       return;
     }
-    if (filter.maxPrice > maxPriceFilter) {
+    if(maxValue && maxValue < minValue){
+      setMaxPriceValue(minValue);
+      dispatch(changFilterMaxPrice(minValue));
+      return;
+    }
+    if (maxValue > maxPriceFilter) {
+      setMaxPriceValue(maxPriceFilter);
       dispatch(changFilterMaxPrice(maxPriceFilter));
       return;
     }
-    dispatch(changFilterMaxPrice(filter.maxPrice));
+    if (maxValue < minValue) {
+      setMaxPriceValue(minValue);
+      dispatch(changFilterMaxPrice(minValue));
+      return;
+    }
+
+    dispatch(changFilterMaxPrice(maxValue));
   };
 
   const handleMinPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
@@ -98,8 +143,8 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
     }
   },[filter.maxPrice]);
 
-  const minPriceValue = filter.minPrice === 0 ? '' : String(filter.minPrice);
-  const maxPriceValue = filter.maxPrice === 0 ? '' : String(filter.maxPrice);
+  const minPriceValue = minValue === 0 ? '' : String(minValue);
+  const maxPriceValue = maxValue === 0 ? '' : String(maxValue);
 
   return (
     <fieldset className="catalog-filter__block">

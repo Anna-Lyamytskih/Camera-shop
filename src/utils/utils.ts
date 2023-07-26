@@ -32,7 +32,7 @@ export const getFilterProducts = (
   filterMinPrice: number,
   filterMaxPrice: number,
 ) =>{
-  const filterProducts = products as Products;
+  const filterProducts = products?.slice() as Products;
 
   const productCategoryFilter = (product:Products, category:FilterTypeCategory | null) => {
     if(!category) {

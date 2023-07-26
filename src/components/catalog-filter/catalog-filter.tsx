@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { resetFilters } from '../../store/filter-process/filter-process';
 import { Products } from '../../store/products-api/types';
@@ -12,15 +13,23 @@ type CatalogFilterProps = {
 
 export const CatalogFilter = ({sortingProducts}:CatalogFilterProps) => {
   const dispatch = useAppDispatch();
+  const [isReset, setIsReset] = useState(false);
 
   const handleClick = () => {
+    setIsReset(true);
     dispatch(resetFilters());
   };
+
+  useEffect(() => {
+    if (isReset) {
+      setIsReset(false);
+    }
+  }, [isReset]);
 
   return(
     <form action="#">
       <h2 className="visually-hidden">Фильтр</h2>
-      <FilterPrice sortingProducts={sortingProducts}/>
+      <FilterPrice sortingProducts={sortingProducts} resetFilters={isReset}/>
       <FilterCategory/>
       <FilterTypes/>
       <FilterLevel/>
