@@ -6,6 +6,7 @@ import { changFilterMaxPrice, changFilterMinPrice} from '../../store/filter-proc
 import { useGetDataPrice } from '../../hooks/use-get-data-price/use-get-deta-price';
 import { productsApi } from '../../store/products-api/products-api';
 import { getPriceValidation } from '../../utils/utils';
+import { useSearchParams } from 'react-router-dom';
 
 enum FilterPricesValue {
   From = 'from',
@@ -31,6 +32,11 @@ type FilterPriceProps = {
 export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps) => {
   const filter = useAppSelector((state) => state.FILTER.filter);
 
+  const [searchParams] = useSearchParams();
+
+  const priceGte = searchParams.get('price_gte');
+  const priceLte = searchParams.get('price_lte');
+
   const dispatch = useAppDispatch();
 
   const {minPriceFilter, maxPriceFilter} = useGetDataPrice(sortingProducts);
@@ -53,6 +59,14 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
       case FilterPricesValue.To:{ return setMaxPriceValue(Number(priceValue));}
     }
   };
+  useEffect(()=>{
+    if(!minValue && priceGte){
+      setMinPriceValue(+priceGte);
+    }
+    if(!maxValue && priceLte){
+      setMaxPriceValue(+priceLte);
+    }
+  },[minValue, priceGte, maxValue, priceLte]);
 
   useEffect(() => {
     if (resetFilters) {
@@ -92,7 +106,6 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
       dispatch(changFilterMinPrice(maxPriceFilter));
       return;
     }
-
     dispatch(changFilterMinPrice(minValue));
   };
 
