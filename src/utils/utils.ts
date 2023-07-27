@@ -112,3 +112,48 @@ export const getPriceValidation = (products:Products | undefined) => {
 
   return {min, max};
 };
+
+export const getFilterProductsForPrice = (
+  products: Products | undefined,
+  filterCategory: FilterTypeCategory | null,
+  filterLevel: FilterTypeLevel[] | null,
+  filterType: FilterTypeTypes[] | null,
+) =>{
+  const filterProducts = products?.slice() as Products;
+
+  const productCategoryFilter = (product:Products, category:FilterTypeCategory | null) => {
+    if(!category) {
+      return product;
+    }
+
+    const isCategoryProduct = (item:Product) => item.category === category;
+
+    return product.filter(isCategoryProduct);
+  };
+
+  const productLevelsFilter = (product:Products, level:FilterTypeLevel[] | null) => {
+    if(!level?.length) {
+      return product;
+    }
+
+    const isLevelProduct = (item:Product) => level.includes(item.level as FilterTypeLevel);
+
+    return product.filter(isLevelProduct);
+  };
+
+  const productTypesFilter = (product:Products, type:FilterTypeTypes[] | null) => {
+    if(!type?.length) {
+      return product;
+    }
+
+    const isTypesFilter = (item:Product) => type.includes(item.type as FilterTypeTypes);
+
+    return product.filter(isTypesFilter);
+  };
+
+  const filteredProductsByCategory = productCategoryFilter(filterProducts, filterCategory);
+  const filteredProductsByTypes = productTypesFilter(filteredProductsByCategory, filterType);
+  const filteredCamerasByLevels = productLevelsFilter(filteredProductsByTypes, filterLevel);
+
+  return filteredCamerasByLevels;
+};

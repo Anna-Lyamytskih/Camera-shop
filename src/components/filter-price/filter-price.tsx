@@ -5,7 +5,7 @@ import { Products } from '../../store/products-api/types';
 import { changFilterMaxPrice, changFilterMinPrice } from '../../store/filter-process/filter-process';
 import { useGetDataPrice } from '../../hooks/use-get-data-price/use-get-deta-price';
 import { productsApi } from '../../store/products-api/products-api';
-import { getPriceValidation } from '../../utils/utils';
+import { getFilterProductsForPrice, getPriceValidation } from '../../utils/utils';
 import { useSearchParams } from 'react-router-dom';
 
 enum FilterPricesValue {
@@ -36,13 +36,18 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
 
   const priceGte = searchParams.get('price_gte');
   const priceLte = searchParams.get('price_lte');
+  const filterType = filter.type;
+  const filterLevel = filter.level;
+  const filterCategory = filter.category;
 
   const dispatch = useAppDispatch();
 
   const { minPriceFilter, maxPriceFilter } = useGetDataPrice(sortingProducts);
 
   const { data } = productsApi.useGetListQuery();
+  const productsFilter = getFilterProductsForPrice(data, filterCategory, filterLevel, filterType);
   const { min: minPriceAll, max: maxPriceAll } = getPriceValidation(data);
+  const { min: minPriceAllFilter, max: maxPriceAllFilter } = getPriceValidation(productsFilter);
 
   const defaultValues = {
     min: minPriceFilter,
@@ -91,19 +96,19 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
       dispatch(changFilterMinPrice(maxValue));
       return;
     }
-    if (minValue > minPriceFilter && minValue < maxPriceFilter) {
+    if (minValue > minPriceAllFilter && minValue < maxPriceAllFilter) {
       setMinPriceValue(minValue);
       dispatch(changFilterMinPrice(minValue));
       return;
     }
-    if (minValue < minPriceFilter) {
-      setMinPriceValue(minPriceFilter);
-      dispatch(changFilterMinPrice(minPriceFilter));
+    if (minValue < minPriceAllFilter) {
+      setMinPriceValue(minPriceAllFilter);
+      dispatch(changFilterMinPrice(minPriceAllFilter));
       return;
     }
-    if (minValue > maxPriceFilter) {
-      setMinPriceValue(maxPriceFilter);
-      dispatch(changFilterMinPrice(maxPriceFilter));
+    if (minValue > maxPriceAllFilter) {
+      setMinPriceValue(maxPriceAllFilter);
+      dispatch(changFilterMinPrice(maxPriceAllFilter));
       return;
     }
     dispatch(changFilterMinPrice(minValue));
@@ -125,9 +130,9 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
       dispatch(changFilterMaxPrice(minValue));
       return;
     }
-    if (maxValue > maxPriceFilter) {
-      setMaxPriceValue(maxPriceFilter);
-      dispatch(changFilterMaxPrice(maxPriceFilter));
+    if (maxValue > maxPriceAllFilter) {
+      setMaxPriceValue(maxPriceAllFilter);
+      dispatch(changFilterMaxPrice(maxPriceAllFilter));
       return;
     }
     if (maxValue < minValue) {
