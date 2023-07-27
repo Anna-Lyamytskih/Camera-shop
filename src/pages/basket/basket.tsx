@@ -2,10 +2,10 @@ import { Helmet } from 'react-helmet-async';
 import { BasketForm } from '../../components/basket-form';
 import { BasketList } from '../../components/basket-list';
 import { Footer } from '../../components/footer';
-import { FormSearch } from '../../components/form-search';
 import { Logo } from '../../components/logo';
 import { NavigationList } from '../../components/navigation-list';
 import { Path } from '../../components/path';
+import { SearchForm } from '../../components/search-form';
 
 export const Basket = () => (
   <>
@@ -19,7 +19,7 @@ export const Basket = () => (
           <Logo />
           <NavigationList />
           <div className="form-search">
-            <FormSearch />
+            <SearchForm />
             <button className="form-search__reset" type="reset">
               <svg width="10" height="10" aria-hidden="true">
                 <use xlinkHref="#icon-close"></use>

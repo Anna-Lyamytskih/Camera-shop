@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import { Path } from '../../components/path';
 import { Logo } from '../../components/logo';
 import { NavigationList } from '../../components/navigation-list';
-import { FormSearch } from '../../components/form-search';
 import { BreadcrumbsList } from '../../components/breadcrumbs-list';
 import { ProductItem } from '../../components/product-item';
 import { ProductSlider } from '../../components/product-slider';
@@ -19,6 +18,7 @@ import NotFound from '../not-found';
 import { LoadingScreen } from '../../components/loading-screen';
 import { AppRoute } from '../../router/constants';
 import { Link} from 'react-scroll';
+import { SearchForm } from '../../components/search-form';
 
 const Product = () => {
   const { id } = useParams();
@@ -64,7 +64,7 @@ const Product = () => {
             <Logo />
             <NavigationList />
             <div className="form-search">
-              <FormSearch />
+              <SearchForm />
               <button className="form-search__reset" type="reset">
                 <svg width="10" height="10" aria-hidden="true">
                   <use xlinkHref="#icon-close"></use>

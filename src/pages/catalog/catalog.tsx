@@ -2,7 +2,6 @@ import { useGetSortProducts } from '../../hooks/use-get-sort-products/use-get-so
 import { Path } from '../../components/path';
 import { Logo } from '../../components/logo';
 import { NavigationList } from '../../components/navigation-list';
-import { FormSearch } from '../../components/form-search';
 import { Banner } from '../../components/banner';
 import { BreadcrumbsList } from '../../components/breadcrumbs-list';
 import { CatalogFilter } from '../../components/catalog-filter';
@@ -26,6 +25,7 @@ import {
   setInitialTypes, setInitialLevel,
 } from '../../store/filter-process/filter-process';
 import { QueryParam } from './types';
+import { SearchForm } from '../../components/search-form';
 
 const useLocationState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -125,7 +125,7 @@ export const Catalog = () => {
           <div className="container">
             <Logo />
             <NavigationList />
-            <FormSearch />
+            <SearchForm />
             <a className="header__basket-link" href='/'>
               <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-basket"></use>
