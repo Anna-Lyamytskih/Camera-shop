@@ -35,12 +35,12 @@ export const SearchForm = () => {
     cameras?.filter((camera) =>
       camera.name.toLowerCase().includes(searchQuery.toLowerCase())), [cameras, searchQuery]);
 
-  const isUpArrowPressed = searchQuery && searchedCameras?.length && upArrow;
-  const isDownArrowPressed = searchQuery && searchedCameras?.length && downArrow;
-  const isEscPressed = searchQuery && searchedCameras?.length && esc;
+  const isUpArrowPressed = searchQuery && (searchedCameras && searchedCameras.length && upArrow);
+  const isDownArrowPressed = searchQuery && (searchedCameras && searchedCameras.length && downArrow);
+  const isEscPressed = searchQuery && (searchedCameras && searchedCameras.length && esc);
 
   useEffect(() => {
-    if (searchedCameras?.length && isUpArrowPressed) {
+    if ((searchedCameras && searchedCameras.length) && isUpArrowPressed) {
       setCurrentCameraIndex((prev) => (prev ? prev - 1 : prev));
 
       if (!currentCameraIndex) {
@@ -48,14 +48,14 @@ export const SearchForm = () => {
         setCurrentCameraIndex(-1);
       }
 
-    } else if (searchedCameras?.length && isDownArrowPressed) {
+    } else if ((searchedCameras && searchedCameras.length) && isDownArrowPressed) {
       setCurrentCameraIndex((prev) => (prev < searchedCameras.length - 1 ? prev + 1 : prev));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpArrowPressed, isDownArrowPressed, searchedCameras?.length]);
 
   useEffect(()=> {
-    if (searchedCameras?.length && isEscPressed) {
+    if ((searchedCameras && searchedCameras.length) && isEscPressed) {
       handleResetClick();}
   },[isEscPressed, searchedCameras?.length]);
 
@@ -75,7 +75,7 @@ export const SearchForm = () => {
 
   return (
     <div
-      className={clsx('form-search', searchedCameras?.length && searchQuery && 'list-opened')}
+      className={clsx('form-search', (searchedCameras && searchedCameras.length) && searchQuery && 'list-opened')}
       ref={listRef}
       tabIndex={-1}
       data-testid="search-form"
