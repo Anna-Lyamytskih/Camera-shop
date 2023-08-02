@@ -19,6 +19,7 @@ import { LoadingScreen } from '../../components/loading-screen';
 import { AppRoute } from '../../router/constants';
 import { Link} from 'react-scroll';
 import { SearchForm } from '../../components/search-form';
+import { BasketCount } from '../../components/basket-count';
 
 const Product = () => {
   const { id } = useParams();
@@ -65,17 +66,8 @@ const Product = () => {
             <NavigationList />
             <div className="form-search">
               <SearchForm />
-              <button className="form-search__reset" type="reset">
-                <svg width="10" height="10" aria-hidden="true">
-                  <use xlinkHref="#icon-close"></use>
-                </svg><span className="visually-hidden">Сбросить поиск</span>
-              </button>
             </div>
-            <a className="header__basket-link" href='/'>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-basket"></use>
-              </svg><span className="header__basket-count">3</span>
-            </a>
+            <BasketCount />
           </div>
         </header>
         <main>

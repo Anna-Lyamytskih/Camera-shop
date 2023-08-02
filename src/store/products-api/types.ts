@@ -13,6 +13,7 @@ export type Product= {
   previewImgWebp: string;
   previewImgWebp2x: string;
   rating?: number;
+  count?: number | undefined;
   }
 
 export type Products = Product[];
@@ -47,7 +48,9 @@ export const initialState: ProductProcess = {
 
 export enum NameSpace {
     ProductItem = 'PRODUCT',
-    Filter = 'FILTER'
+    Filter = 'FILTER',
+    Basket = 'BASKET',
+    Notification = 'NOTIFICATION'
   }
 
 export enum FilterTypePrice {

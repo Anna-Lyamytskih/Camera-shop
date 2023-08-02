@@ -1,19 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import { Basket } from './basket';
 import { createMemoryHistory } from 'history';
 import { HistoryRouter } from '../../components/history-router';
 import { HelmetProvider } from 'react-helmet-async';
-import { makeFakeProducts } from '../../utils/mocks';
+import { makeFakeProducts} from '../../utils/mocks';
 import { setupApiStore } from '../../utils/mockStore';
 import { Provider } from 'react-redux';
 import { productsApi } from '../../store/products-api/products-api';
+import { basketProcessSlice } from '../../store/basket-process/basket-process';
 
 describe('Component: Basket', () => {
   it('should render correctly', () => {
     const history = createMemoryHistory();
     const fakeProducts = makeFakeProducts();
+    // const cameras = makeFakeProducts();
+    // const fakeProduct = makeFakerProduct();
     fetchMock.mockResponse(JSON.stringify(fakeProducts));
-    const storeRef = setupApiStore(productsApi);
+    const storeRef = setupApiStore(productsApi, { BASKET: basketProcessSlice.reducer
+      // BASKET: {
+      // discounts: 0,
+      // basketProducts: cameras,
+      // totalCount: 0,
+      // discount: 0,
+      // coupon: null,
+      // orderStatus: Status.Idle}
+    } as any);
+
     render(
       <HistoryRouter history={history}>
         <Provider store={storeRef.store}>

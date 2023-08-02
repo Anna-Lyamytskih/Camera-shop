@@ -26,6 +26,7 @@ import {
 } from '../../store/filter-process/filter-process';
 import { QueryParam } from './types';
 import { SearchForm } from '../../components/search-form';
+import { BasketCount } from '../../components/basket-count';
 
 const useLocationState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -126,11 +127,7 @@ export const Catalog = () => {
             <Logo />
             <NavigationList />
             <SearchForm />
-            <a className="header__basket-link" href='/'>
-              <svg width="16" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-basket"></use>
-              </svg>
-            </a>
+            <BasketCount />
           </div>
         </header>
         <main>

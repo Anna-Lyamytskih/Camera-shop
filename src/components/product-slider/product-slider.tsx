@@ -6,8 +6,24 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import { LoadingScreen } from '../loading-screen';
+import { BasketItemModal } from '../basket-item-modal';
+import { BasketSuccessModal } from '../basket-success-modal';
+import { Product } from '../../store/products-api/types';
 
 export const ProductSlider = ({ slides }: ProductSliderProps) => {
+  const [openedAddModal, setOpenedAddModal] = useState(false);
+  const [openedAddSuccessModal, setOpenedAddSuccessModal] = useState(false);
+  const [currentCamera, setCurrentCamera] = useState(slides?.[0]);
+
+  const handleAddModalCloseClick = () => {
+    setOpenedAddModal(false);
+  };
+
+  const handleAddSuccessModalCloseClick = () => {
+    setOpenedAddSuccessModal(false);
+  };
+
+
   const [active, setActive] = useState<number[]>([]);
   const [startEndPoints, setStartEndPoints] = useState<[number, number]>([0, MAX_SLIDE_COUNT]);
 
@@ -79,6 +95,8 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
                 camera={item}
                 key={item.id}
                 isActive={active.includes(item.id)}
+                setCurrentCamera={setCurrentCamera}
+                setOpenedAddModal={setOpenedAddModal}
               />
             </SwiperSlide>))
           :
@@ -112,6 +130,8 @@ export const ProductSlider = ({ slides }: ProductSliderProps) => {
           <use xlinkHref="#icon-arrow"></use>
         </svg>
       </button>
+      <BasketItemModal isOpen={openedAddModal} camera={currentCamera as Product} setOpenedAddSuccessModal={setOpenedAddSuccessModal} onCloseCLick={handleAddModalCloseClick}/>
+      <BasketSuccessModal isOpen={openedAddSuccessModal} onCloseCLick={handleAddSuccessModalCloseClick} />
     </div>
   );
 };

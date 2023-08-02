@@ -2,6 +2,8 @@ import faker from 'faker';
 import { Product} from '../store/products-api/types';
 import { PromoType } from '../store/promo-api/types';
 import { Review } from '../store/review-list-api/type';
+import { Coupon } from '../store/basket-process/const';
+import { Notification } from '../store/notifications/notifications';
 
 const mockTypes = [
   'Коллекционная',
@@ -68,3 +70,12 @@ export const makeFakeReviewItem = ():Review => ({
 
 export const makeFakeReviewItems = (): Review[] =>
   Array.from({ length: 10 }, makeFakeReviewItem);
+
+export const makeFakeCoupon = (): Coupon => faker.lorem.word() as Coupon;
+
+export const makeFakeNotification = (): Notification => ({
+  id: faker.datatype.uuid(),
+  type: 'error',
+  message: faker.lorem.text(),
+  duration: faker.datatype.number({ min: 1000, max: 4000 })
+});

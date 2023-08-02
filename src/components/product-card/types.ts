@@ -5,4 +5,6 @@ export type ProductCardProps = {
   camera: Product;
   isActive?: boolean;
   style?: CSSProperties;
+  setCurrentCamera?: (camera: Product) => void;
+  setOpenedAddModal?: (arg: boolean) => void;
 }

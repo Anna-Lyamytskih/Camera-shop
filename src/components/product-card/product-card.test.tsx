@@ -10,26 +10,32 @@ import { setupApiStore } from '../../utils/mockStore';
 import { AnyAction } from '@reduxjs/toolkit';
 import { makeFakeProducts} from '../../utils/mocks';
 import fetchMock from 'jest-fetch-mock';
+import { reviewListApi } from '../../store/review-list-api/review-list-api';
+import { basketProcessSlice } from '../../store/basket-process/basket-process';
 
+const history = createMemoryHistory();
+const camera = makeFakerProduct();
 describe('Component: ProductCard', () => {
-  const history = createMemoryHistory();
+
   const fakeProducts = makeFakeProducts();
   fetchMock.mockResponse(JSON.stringify(fakeProducts));
-  const storeRef = setupApiStore(productsApi);
+  const storeRef = setupApiStore(productsApi, { BASKET: basketProcessSlice.reducer,
+    reviewListApi: reviewListApi.reducer,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any);
   storeRef.store
     .dispatch(
       productsApi.endpoints.getList.initiate(undefined) as unknown as AnyAction
     );
-  const camera = makeFakerProduct();
   it('should render correctly', () => {
     render(
-      <HistoryRouter history={history}>
-        <Provider store={storeRef.store}>
+      <Provider store={storeRef.store}>
+        <HistoryRouter history={history}>
           <HelmetProvider>
             <ProductCard camera={camera} isActive={false}/>
           </HelmetProvider>
-        </Provider>
-      </HistoryRouter>
+        </HistoryRouter>
+      </Provider>
     );
 
     expect(screen.getByText('Всего оценок:')).toBeInTheDocument();

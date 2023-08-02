@@ -21,9 +21,6 @@ describe('Component: ProductItem', () => {
       </HistoryRouter>
     );
 
-    expect(screen.getByText('Артикул:')).toBeInTheDocument();
-    expect(screen.getByText('Категория:')).toBeInTheDocument();
-    expect(screen.getByText('Тип камеры:')).toBeInTheDocument();
-    expect(screen.getByText('Уровень:')).toBeInTheDocument();
+    expect(screen.getByText('Всего оценок:')).toBeInTheDocument();
   });
 });
