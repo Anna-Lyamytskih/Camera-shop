@@ -14,17 +14,8 @@ describe('Component: Basket', () => {
   it('should render correctly', () => {
     const history = createMemoryHistory();
     const fakeProducts = makeFakeProducts();
-    // const cameras = makeFakeProducts();
-    // const fakeProduct = makeFakerProduct();
     fetchMock.mockResponse(JSON.stringify(fakeProducts));
     const storeRef = setupApiStore(productsApi, { BASKET: basketProcessSlice.reducer
-      // BASKET: {
-      // discounts: 0,
-      // basketProducts: cameras,
-      // totalCount: 0,
-      // discount: 0,
-      // coupon: null,
-      // orderStatus: Status.Idle}
     } as any);
 
     render(

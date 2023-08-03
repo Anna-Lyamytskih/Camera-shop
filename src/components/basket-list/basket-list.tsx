@@ -20,7 +20,7 @@ export const BasketList = () => {
 
   return (
     <ul className="basket__list" data-testid='basket-list'>
-      {!basketCameras?.length
+      {!basketCameras.length
         ? <BasketListEmpty />
         : basketCameras.map((camera) => (
           <BasketItem

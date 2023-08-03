@@ -14,8 +14,6 @@ import { createMemoryHistory } from 'history';
 import { filterProcessSlice } from '../../store/filter-process/filter-process';
 import { basketProcessSlice } from '../../store/basket-process/basket-process';
 
-// const cameras = [makeFakerProduct()];
-
 describe('Component: Catalog', () => {
 
   it('should render correctly', () => {
@@ -24,13 +22,6 @@ describe('Component: Catalog', () => {
     fetchMock.mockResponse(JSON.stringify(fakeProducts));
 
     const storeRef = setupApiStore(productsApi, {PRODUCT: productProcessSlice.reducer, promoApi: promoApi.reducer, FILTER: filterProcessSlice.reducer, BASKET: basketProcessSlice.reducer});
-    //   [NameSpace.Basket]: {
-    //   basketProducts: cameras,
-    //   coupon: null,
-    //   discount: 0,
-    //   orderStatus: Status.Idle,
-    //   totalCount: 0
-    // },} as any);
 
     render(
       <HistoryRouter history={history}>
