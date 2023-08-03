@@ -23,14 +23,14 @@ export type BasketSlice = {
   orderStatus: Status;
 };
 
-const basketStorage = localStorage.getItem('persist-state');
+const basketStorage = localStorage.getItem('basket-state');
 const basketStorageTotalCount = localStorage.getItem('totalCount-state');
 const basketStorageDiscountPercent = localStorage.getItem('discountPercent-state');
 
 export const initialState: BasketSlice = {
-  discounts: JSON.parse(basketStorageDiscountPercent as unknown as string),
-  basketProducts: JSON.parse(basketStorage as unknown as string),
-  totalCount: JSON.parse(basketStorageTotalCount as unknown as string),
+  discounts: JSON.parse(basketStorageDiscountPercent as unknown as string) || 0,
+  basketProducts: JSON.parse(basketStorage as unknown as string) || [],
+  totalCount: JSON.parse(basketStorageTotalCount as unknown as string) || 0,
   discount: 0,
   coupon: null,
   orderStatus: Status.Idle,

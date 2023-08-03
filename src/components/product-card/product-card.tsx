@@ -23,7 +23,7 @@ export const ProductCard = ({style, camera, isActive = false, setCurrentCamera, 
     setRate(Math.ceil(data.map((i)=>(evaluationNumber += i.rating)).reverse()[0] / data.length));
   }, [data, camera]);
   const basket = useAppSelector((state) => state.BASKET.basketProducts);
-  const inBasket = basket?.find((basketCamera) => basketCamera.id === camera.id);
+  const inBasket = basket.find((basketCamera) => basketCamera.id === camera.id);
 
   const handleClick = () => {
     if (setOpenedAddModal && setCurrentCamera) {

@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../router/constants';
 import { useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
 
 export const BasketCount = () => {
   const basketCount = useAppSelector((state) => state.BASKET.totalCount);
+  const basket = useAppSelector((state) => state.BASKET.basketProducts);
 
-  localStorage.setItem('totalCount-state', JSON.stringify(basketCount));
+  useEffect(()=>{
+    localStorage.setItem('basket-state', JSON.stringify(basket));
+  },[basket]);
+
+  useEffect(()=>{
+    localStorage.setItem('totalCount-state', JSON.stringify(basketCount));
+  },[basketCount]);
 
   return (
     <Link className="header__basket-link" to={AppRoute.Basket} data-testid="basket-btn">

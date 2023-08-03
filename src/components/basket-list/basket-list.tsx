@@ -9,8 +9,6 @@ import { BasketRemoveCameraModal } from '../basket-remove-camera-modal';
 export const BasketList = () => {
   const basketCameras = useAppSelector((state) => state.BASKET.basketProducts);
 
-  localStorage.setItem('persist-state', JSON.stringify(basketCameras));
-
   const [openedRemoveModal, setOpenedRemoveModal] = useState(false);
   const [currentCamera, setCurrentCamera] = useState<Product>({} as Product);
 
