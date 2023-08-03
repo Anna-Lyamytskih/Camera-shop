@@ -20,16 +20,17 @@ export const BasketList = () => {
 
   return (
     <ul className="basket__list" data-testid='basket-list'>
-      {!basketCameras?.length
-        ? <BasketListEmpty />
-        : basketCameras.map((camera) => (
+      {basketCameras && basketCameras.length ?
+        basketCameras.map((camera) => (
           <BasketItem
             camera={camera}
             type={BasketItemType.Standart}
             setOpenedRemoveModal={setOpenedRemoveModal}
             setCurrentCamera={setCurrentCamera}
             key={camera.id}
-          />))}
+          />))
+        :
+        <BasketListEmpty />}
       <BasketRemoveCameraModal camera={currentCamera} isOpen={openedRemoveModal} onCloseCLick={handleRemoveModalCloseClick} />
     </ul>
   );
