@@ -7,18 +7,18 @@ export const basketProcessSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
-      const productFind = state.basketProducts?.find((item) => item.id === action.payload.id);
+      const productFind = state.basketProducts.find((item) => item.id === action.payload.id);
 
       if (productFind && productFind.count) {
         productFind.count++;
         state.totalCount++;
       } else {
-        state.basketProducts?.push({ ...action.payload, count: 1 });
+        state.basketProducts.push({ ...action.payload, count: 1 });
         state.totalCount++;
       }
     },
     decrementProductCount: (state, action: PayloadAction<Product>) => {
-      const productFind = state.basketProducts?.find((item) => item.id === action.payload.id);
+      const productFind = state.basketProducts.find((item) => item.id === action.payload.id);
 
       if (productFind && productFind.count) {
         productFind.count--;
@@ -26,15 +26,15 @@ export const basketProcessSlice = createSlice({
       }
     },
     removeProduct: (state, action: PayloadAction<Product>) => {
-      state.basketProducts = state.basketProducts?.filter((item) => item.id !== action.payload.id);
-      state.totalCount = state.basketProducts?.reduce((acc, item) => acc + (item.count as number), 0);
+      state.basketProducts = state.basketProducts.filter((item) => item.id !== action.payload.id);
+      state.totalCount = state.basketProducts.reduce((acc, item) => acc + (item.count as number), 0);
     },
     setProductCount: (state, action: PayloadAction<{ id: number; count: number }>) => {
-      const productFind = state.basketProducts?.find((item) => item.id === action.payload.id);
+      const productFind = state.basketProducts.find((item) => item.id === action.payload.id);
 
       if (productFind) {
         productFind.count = action.payload.count;
-        state.totalCount = state.basketProducts?.reduce((acc, item) => acc + (item.count as number), 0);
+        state.totalCount = state.basketProducts.reduce((acc, item) => acc + (item.count as number), 0);
       }
     },
     setCoupon: (state, action: PayloadAction<Coupon>) => {
