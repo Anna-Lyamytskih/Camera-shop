@@ -7,7 +7,7 @@ export const basketProcessSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
-      const productFind = state.basketProducts.find((item) => item.id === action.payload.id);
+      const productFind = state.basketProducts?.find((item) => item.id === action.payload.id);
 
       if (productFind && productFind.count) {
         productFind.count++;
