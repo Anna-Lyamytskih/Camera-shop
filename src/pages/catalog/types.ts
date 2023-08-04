@@ -3,7 +3,7 @@ export type UsePagination = {
   paginate: (pageNumber: number) => void;
   goToNext: () => void;
   goToPrev: () => void;
-  qty: number;
+  pagesCount: number;
   limit: number;
 }
 

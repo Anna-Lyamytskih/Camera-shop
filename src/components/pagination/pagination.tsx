@@ -21,7 +21,7 @@ export const Pagination = ({ item, paginate, currentPage }: PaginationProps) => 
       <Link
         className={`pagination__link ${item === currentPage ? 'pagination__link--active' : ''}`}
         to={`${AppRoute.Root}?page=${item}${updateUrl()}`}
-        onClick={(evt) => {
+        onClick={() => {
           paginate(item);
         }}
       >

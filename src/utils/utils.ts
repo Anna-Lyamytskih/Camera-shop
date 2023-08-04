@@ -120,7 +120,9 @@ export const getFilterProductsForPrice = (
   filterType: FilterTypeTypes[] | null,
 ) =>{
   const filterProducts = products?.slice() as Products;
-
+  if(!filterProducts){
+    return;
+  }
   const productCategoryFilter = (product:Products, category:FilterTypeCategory | null) => {
     if(!category) {
       return product;

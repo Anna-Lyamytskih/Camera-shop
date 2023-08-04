@@ -7,7 +7,7 @@ import { HistoryRouter } from '../history-router';
 describe('Component: PaginationList', () => {
   const fakePagination = {
     paginate:jest.fn,
-    qty:1,
+    pagesCount:1,
     currentPage:1,
     goToNext: jest.fn,
     goToPrev: jest.fn,

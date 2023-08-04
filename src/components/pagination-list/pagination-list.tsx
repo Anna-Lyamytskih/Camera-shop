@@ -5,10 +5,10 @@ import queryString from 'query-string';
 import { AppRoute } from '../../router/constants';
 
 export const PaginationList = ({ pagination }: PaginationListProps) => {
-  const { paginate, qty, currentPage, goToNext, goToPrev } = pagination;
+  const { paginate, pagesCount, currentPage, goToNext, goToPrev } = pagination;
   const pageNumber = [];
 
-  for (let i = 1; i <= qty; i++) {
+  for (let i = 1; i <= pagesCount; i++) {
     pageNumber.push(i);
   }
 
@@ -33,7 +33,7 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
               <li className="pagination__item">
                 <Link
                   className="pagination__link pagination__link--text"
-                  onClick={(evt) => {
+                  onClick={() => {
                     goToPrev();
                   }}
                   to={`${AppRoute.Root}?page=${currentPage - 1}${updateUrl()}`}
@@ -48,12 +48,12 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
           <Pagination item={item} currentPage={currentPage} key={item} paginate={paginate} />
         ))}
         {
-          currentPage !== qty
+          currentPage !== pagesCount
             ? (
               <li className="pagination__item">
                 <Link
                   className="pagination__link pagination__link--text"
-                  onClick={(evt) => {
+                  onClick={() => {
                     goToNext();
                   }}
                   to={`${AppRoute.Root}?page=${currentPage + 1}${updateUrl()}`}

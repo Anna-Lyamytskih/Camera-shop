@@ -1,31 +1,31 @@
-import { LIMIT_PRODUCT, MAX_COUNT_PAGE_PGINATION } from '../../pages/catalog/constants';
+import { LIMIT_PRODUCT, DEFAULT_PAGE_NUMBER } from '../../pages/catalog/constants';
 import { UsePagination } from '../../pages/catalog/types';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 
 export const usePagination = ({ total, limit = LIMIT_PRODUCT }: {
   total: number;
   limit?: number;
 }): UsePagination => {
-  const [currentPage, setCurrentPage] = useState(MAX_COUNT_PAGE_PGINATION);
-  const [_total, _setTotal] = useState(total);
-  const [_limit] = useState(limit);
-  const qty = Math.ceil(_total / _limit);
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE_NUMBER);
+  // const [_total, _setTotal] = useState(total);
+  // const [_limit] = useState(limit);
+  const pagesCount = Math.ceil(total / limit);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
   const goToNext = () => {
-    setCurrentPage((prev) => prev + MAX_COUNT_PAGE_PGINATION);
+    setCurrentPage((prev) => prev + DEFAULT_PAGE_NUMBER);
   };
 
   const goToPrev = () => {
-    setCurrentPage((prev) => prev - MAX_COUNT_PAGE_PGINATION);
+    setCurrentPage((prev) => prev - DEFAULT_PAGE_NUMBER);
   };
 
-  useEffect(() => {
-    _setTotal(total);
-  }, [total]);
+  // useEffect(() => {
+  //   _setTotal(total);
+  // }, [total]);
 
-  return { currentPage, paginate, goToNext, goToPrev, qty, limit: _limit };
+  return { currentPage, paginate, goToNext, goToPrev, pagesCount, limit };
 };
