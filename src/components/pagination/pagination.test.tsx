@@ -8,8 +8,7 @@ describe('Component: Pagination', () => {
 
   const fakePagination = {
     item: 1,
-    paginate: jest.fn,
-    currentPage: 1,
+    currentPages: 1,
   };
 
   const history = createMemoryHistory();
@@ -19,7 +18,7 @@ describe('Component: Pagination', () => {
     render(
       <ProviderWrapper>
         <HistoryRouter history={history}>
-          <Pagination item={fakePagination.item} paginate={fakePagination.paginate} currentPage={fakePagination.currentPage} />
+          <Pagination item={fakePagination.item} currentPages={fakePagination.currentPages} />
         </HistoryRouter>
       </ProviderWrapper>
     );

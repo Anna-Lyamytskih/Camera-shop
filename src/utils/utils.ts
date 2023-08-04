@@ -69,6 +69,10 @@ export const getFilterProducts = (
       return product;
     }
 
+    if (!maxPrice) {
+      maxPrice = Infinity;
+    }
+
     const isPriceFilter = (item:Product) => item.price >= minPrice && item.price <= maxPrice;
 
     return product.filter(isPriceFilter);

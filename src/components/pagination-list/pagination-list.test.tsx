@@ -8,9 +8,7 @@ describe('Component: PaginationList', () => {
   const fakePagination = {
     paginate:jest.fn,
     pagesCount:1,
-    currentPage:1,
-    goToNext: jest.fn,
-    goToPrev: jest.fn,
+    currentPages:1,
   };
 
   const history = createMemoryHistory();

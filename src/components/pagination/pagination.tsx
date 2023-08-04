@@ -1,29 +1,21 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { PaginationProps } from './types';
 import { AppRoute } from '../../router/constants';
-import queryString from 'query-string';
 
-export const Pagination = ({ item, paginate, currentPage }: PaginationProps) => {
+export const Pagination = ({ item, currentPages }: PaginationProps) => {
   const [searchParams] = useSearchParams();
 
-  const updateUrl = () => {
-    const url = queryString.parse(searchParams.toString());
-
-    delete url['page'];
-
-    const newUrl = queryString.stringify(url);
-
-    return newUrl && `&${newUrl}`;
+  const getUrl = (pageNumber: number) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('page', String(pageNumber));
+    return newSearchParams.toString();
   };
 
   return(
     <li className="pagination__item">
       <Link
-        className={`pagination__link ${item === currentPage ? 'pagination__link--active' : ''}`}
-        to={`${AppRoute.Root}?page=${item}${updateUrl()}`}
-        onClick={() => {
-          paginate(item);
-        }}
+        className={`pagination__link ${item === currentPages ? 'pagination__link--active' : ''}`}
+        to={`${AppRoute.Root}?${getUrl(item)}`}
       >
         {item}
       </Link>

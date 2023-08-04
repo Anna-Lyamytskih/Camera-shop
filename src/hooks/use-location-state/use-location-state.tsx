@@ -28,7 +28,7 @@ export const useLocationState = () => {
     if (filter.type) { params.type = filter.type; }
     if (filter.level) { params.level = filter.level; }
     if (filter.minPrice) { params['price_gte'] = filter.minPrice.toString(); }
-    if (filter.maxPrice) { params['price_lte'] = filter.maxPrice.toString(); }
+    if (filter.maxPrice && filter.maxPrice !== Infinity) { params['price_lte'] = filter.maxPrice.toString(); }
 
     return params;
   }, [sort.by, sort.order, filter.category, filter.type, filter.level, filter.minPrice, filter.maxPrice]);

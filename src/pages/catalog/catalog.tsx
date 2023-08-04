@@ -25,9 +25,9 @@ export const Catalog = () => {
   const { filterProducts: sortingProducts, isLoading } = useGetSortProducts();
 
   const pagination = usePagination({ total: sortingProducts.length });
-  const { currentPage, limit } = pagination;
+  const { currentPages, limit } = pagination;
 
-  const slicedList = sortingProducts.slice((currentPage - DEFAULT_PAGE_NUMBER) * limit, currentPage * limit);
+  const slicedList = sortingProducts.slice((currentPages - DEFAULT_PAGE_NUMBER) * limit, currentPages * limit);
 
   return (
     <>

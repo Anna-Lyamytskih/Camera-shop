@@ -1,11 +1,10 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../pagination';
 import { PaginationListProps } from './types';
-import queryString from 'query-string';
 import { AppRoute } from '../../router/constants';
 
 export const PaginationList = ({ pagination }: PaginationListProps) => {
-  const { paginate, pagesCount, currentPage, goToNext, goToPrev } = pagination;
+  const { pagesCount, currentPages} = pagination;
   const pageNumber = [];
 
   for (let i = 1; i <= pagesCount; i++) {
@@ -14,29 +13,22 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
 
   const [searchParams] = useSearchParams();
 
-  const updateUrl = () => {
-    const url = queryString.parse(searchParams.toString());
-
-    delete url['page'];
-
-    const newUrl = queryString.stringify(url);
-
-    return newUrl && `&${newUrl}`;
+  const getUrl = (pageNumbers: number) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('page', String(pageNumbers));
+    return newSearchParams.toString();
   };
 
   return (
     <div className="pagination">
       <ul className="pagination__list">
         {
-          currentPage !== 1
+          currentPages !== 1
             ? (
               <li className="pagination__item">
                 <Link
                   className="pagination__link pagination__link--text"
-                  onClick={() => {
-                    goToPrev();
-                  }}
-                  to={`${AppRoute.Root}?page=${currentPage - 1}${updateUrl()}`}
+                  to={`${AppRoute.Root}?${getUrl(currentPages - 1)}`}
                 >
                   Назад
                 </Link>
@@ -45,18 +37,15 @@ export const PaginationList = ({ pagination }: PaginationListProps) => {
             : null
         }
         {pageNumber.map((item: number) => (
-          <Pagination item={item} currentPage={currentPage} key={item} paginate={paginate} />
+          <Pagination item={item} currentPages={currentPages} key={item}/>
         ))}
         {
-          currentPage !== pagesCount
+          currentPages !== pagesCount
             ? (
               <li className="pagination__item">
                 <Link
                   className="pagination__link pagination__link--text"
-                  onClick={() => {
-                    goToNext();
-                  }}
-                  to={`${AppRoute.Root}?page=${currentPage + 1}${updateUrl()}`}
+                  to={`${AppRoute.Root}?${getUrl(currentPages + 1)}`}
                 >
                   Вперед
                 </Link>

@@ -50,7 +50,7 @@ export enum NameSpace {
     ProductItem = 'PRODUCT',
     Filter = 'FILTER',
     Basket = 'BASKET',
-    Notification = 'NOTIFICATION'
+    Paginate = 'PAGINATE'
   }
 
 export enum FilterTypePrice {

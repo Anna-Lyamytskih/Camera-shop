@@ -155,11 +155,6 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
       handleMaxPriceBlur();
     }
   };
-  useEffect(() => {
-    if (filter.maxPrice === 0) {
-      dispatch(changFilterMaxPrice(Infinity));
-    }
-  }, [filter.maxPrice]);
 
   const minPriceValue = minValue === 0 ? '' : String(minValue);
   const maxPriceValue = maxValue === 0 ? '' : String(maxValue);
