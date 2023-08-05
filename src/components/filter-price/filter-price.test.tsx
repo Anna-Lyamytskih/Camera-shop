@@ -12,27 +12,27 @@ const mockStore = configureMockStore([thunk]);
 
 describe('Component: filterPrice', () => {
   const sortingProducts = makeFakeProducts();
-  const resetFilters = false;
   it('should render correctly', () => {
     const history = createMemoryHistory();
     const store = mockStore({
-      [NameSpace.Filter]:{
+      [NameSpace.Filter]: {
         filter:
-      {
-        maxPrice: 0,
-        minPrice:0,
-        category:null,
-        type:[],
-        level:[],
-        max:0,
-        min:0,
-      }}
+        {
+          maxPrice: 0,
+          minPrice: 0,
+          category: null,
+          type: [],
+          level: [],
+          max: 0,
+          min: 0,
+        }
+      }
     });
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <FilterPrice sortingProducts={sortingProducts} resetFilters={resetFilters}/>
+          <FilterPrice sortingProducts={sortingProducts} />
         </HistoryRouter>
       </Provider>
     );

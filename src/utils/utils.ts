@@ -1,9 +1,9 @@
-import { FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, Product, Products, SortingProductKey, SortingTypeOrder } from '../store/products-api/types';
+import { FilterTypeCategory, FilterTypeLevel, FilterTypeType, Product, Products, SortingProductKey, SortingTypeOrder } from '../store/products-api/types';
 import { Reviews } from '../store/review-list-api/type';
 
 export const getSortingOrder = (
   products: Products | undefined,
-  sortOrder: SortingTypeOrder | null,
+  sortOrder: SortingTypeOrder | undefined,
   sortBy: SortingProductKey | null,
 ) => {
   const sortingProducts = (products || []).slice();
@@ -26,15 +26,15 @@ export const getSortingOrder = (
 
 export const getFilterProducts = (
   products: Products | undefined,
-  filterCategory: FilterTypeCategory | null,
-  filterLevel: FilterTypeLevel[] | null,
-  filterType: FilterTypeTypes[] | null,
-  filterMinPrice: number,
-  filterMaxPrice: number,
+  filterCategory: FilterTypeCategory | undefined,
+  filterLevel: FilterTypeLevel[] | undefined,
+  filterType: FilterTypeType[] | undefined,
+  filterMinPrice: string | undefined,
+  filterMaxPrice: string | undefined,
 ) =>{
   const filterProducts = products?.slice() as Products;
 
-  const productCategoryFilter = (product:Products, category:FilterTypeCategory | null) => {
+  const productCategoryFilter = (product:Products, category:FilterTypeCategory | undefined) => {
     if(!category) {
       return product;
     }
@@ -44,7 +44,7 @@ export const getFilterProducts = (
     return product.filter(isCategoryProduct);
   };
 
-  const productLevelsFilter = (product:Products, level:FilterTypeLevel[] | null) => {
+  const productLevelsFilter = (product:Products, level:FilterTypeLevel[] | undefined) => {
     if(!level?.length) {
       return product;
     }
@@ -54,26 +54,25 @@ export const getFilterProducts = (
     return product.filter(isLevelProduct);
   };
 
-  const productTypesFilter = (product:Products, type:FilterTypeTypes[] | null) => {
+  const productTypesFilter = (product:Products, type:FilterTypeType[] | undefined) => {
     if(!type?.length) {
       return product;
     }
 
-    const isTypesFilter = (item:Product) => type.includes(item.type as FilterTypeTypes);
+    const isTypesFilter = (item:Product) => type.includes(item.type as FilterTypeType);
 
     return product.filter(isTypesFilter);
   };
 
-  const productPriceFilter = (product:Products, minPrice:number, maxPrice:number) => {
+  const productPriceFilter = (product:Products, minPrice:string | undefined, maxPrice:string | undefined) => {
     if (!minPrice && !maxPrice) {
       return product;
     }
 
-    if (!maxPrice) {
-      maxPrice = Infinity;
-    }
+    const min = minPrice ? Number(minPrice) : 0;
+    const max = maxPrice ? Number(maxPrice) : Infinity;
 
-    const isPriceFilter = (item:Product) => item.price >= minPrice && item.price <= maxPrice;
+    const isPriceFilter = (item:Product) => item.price >= min && item.price <= max;
 
     return product.filter(isPriceFilter);
   };
@@ -119,15 +118,15 @@ export const getPriceValidation = (products:Products | undefined) => {
 
 export const getFilterProductsForPrice = (
   products: Products | undefined,
-  filterCategory: FilterTypeCategory | null,
-  filterLevel: FilterTypeLevel[] | null,
-  filterType: FilterTypeTypes[] | null,
+  filterCategory: FilterTypeCategory | undefined,
+  filterLevel: FilterTypeLevel[] | undefined,
+  filterType: FilterTypeType[] | undefined,
 ) =>{
   const filterProducts = products?.slice() as Products;
   if(!filterProducts){
     return;
   }
-  const productCategoryFilter = (product:Products, category:FilterTypeCategory | null) => {
+  const productCategoryFilter = (product:Products, category:FilterTypeCategory | undefined) => {
     if(!category) {
       return product;
     }
@@ -137,7 +136,7 @@ export const getFilterProductsForPrice = (
     return product.filter(isCategoryProduct);
   };
 
-  const productLevelsFilter = (product:Products, level:FilterTypeLevel[] | null) => {
+  const productLevelsFilter = (product:Products, level:FilterTypeLevel[] | undefined) => {
     if(!level?.length) {
       return product;
     }
@@ -147,12 +146,12 @@ export const getFilterProductsForPrice = (
     return product.filter(isLevelProduct);
   };
 
-  const productTypesFilter = (product:Products, type:FilterTypeTypes[] | null) => {
+  const productTypesFilter = (product:Products, type:FilterTypeType[] | undefined) => {
     if(!type?.length) {
       return product;
     }
 
-    const isTypesFilter = (item:Product) => type.includes(item.type as FilterTypeTypes);
+    const isTypesFilter = (item:Product) => type.includes(item.type as FilterTypeType);
 
     return product.filter(isTypesFilter);
   };

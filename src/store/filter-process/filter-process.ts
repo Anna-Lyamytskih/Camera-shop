@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { FilterProcess, FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, NameSpace } from '../products-api/types';
+import { FilterProcess, NameSpace } from '../products-api/types';
 
 export const initialState: FilterProcess = {
   filter:
@@ -24,36 +24,6 @@ export const filterProcessSlice = createSlice({
     changFilterMinPrice: (state, action: PayloadAction<number>) => {
       state.filter.minPrice = action.payload;
     },
-    changFilterCategory: (state, action: PayloadAction<FilterTypeCategory | null>) => {
-      state.filter.category = action.payload;
-    },
-    changFilterLevel: (state, action: PayloadAction<FilterTypeLevel>) => {
-      if (state.filter.level.includes(action.payload)) {
-        state.filter.level = state.filter.level.filter((level) => level !== action.payload);
-
-        return;
-      }
-
-      state.filter.level.push(action.payload);
-    },
-    changFilterLTypes: (state, action: PayloadAction<FilterTypeTypes>) => {
-      if (state.filter.type.includes(action.payload)) {
-        state.filter.type = state.filter.type.filter((type) => type !== action.payload);
-
-        return;
-      }
-      state.filter.type.push(action.payload);
-    },
-    setInitialTypes: (state, action: PayloadAction<FilterTypeTypes[]>) => {
-      if (action.payload.length) {
-        state.filter.type = action.payload;
-      }
-    },
-    setInitialLevel: (state, action: PayloadAction<FilterTypeLevel[]>) => {
-      if (action.payload.length) {
-        state.filter.level = action.payload;
-      }
-    },
     changMaxPrice: (state, action: PayloadAction<number>) => {
       state.filter.max = action.payload;
     },
@@ -76,6 +46,10 @@ export const filterProcessSlice = createSlice({
 });
 
 export const {
-  changFilterMinPrice, changFilterMaxPrice, changFilterCategory,
-  changFilterLevel, changFilterLTypes, resetFilters, setInitialTypes, setInitialLevel, changMaxPrice, changMinPrice, resetFiltersTypes
+  changFilterMinPrice,
+  changFilterMaxPrice,
+  resetFilters,
+  changMaxPrice,
+  changMinPrice,
+  resetFiltersTypes
 } = filterProcessSlice.actions;

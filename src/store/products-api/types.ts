@@ -35,14 +35,14 @@ export enum SortingTypeOrder {
 export type ProductProcess = {
     filter: {
       by: SortingProductKey | null;
-      order: SortingTypeOrder | null;
+      order: SortingTypeOrder | undefined;
     };
   }
 
 export const initialState: ProductProcess = {
   filter: {
     by: null,
-    order: null,
+    order: undefined,
   },
 };
 
@@ -63,7 +63,7 @@ export enum FilterTypeCategory {
   Videocamera = 'Видеокамера',
   }
 
-export enum FilterTypeTypes {
+export enum FilterTypeType {
   Digital = 'Цифровая',
   Film = 'Плёночная',
   Snapshot = 'Моментальная',
@@ -82,7 +82,7 @@ export type FilterProcess = {
   maxPrice: number;
   minPrice: number;
   category:FilterTypeCategory | null;
-  type:FilterTypeTypes[];
+  type:FilterTypeType[];
   level:FilterTypeLevel[];
   max: number;
   min: number;

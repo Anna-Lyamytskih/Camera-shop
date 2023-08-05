@@ -1,88 +1,133 @@
 import { useSearchParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect, useMemo } from 'react';
-import { changeSortBy, changeSortOrder } from '../../store/products-api/products-process';
-import { FilterTypeCategory, FilterTypeLevel, FilterTypeTypes, SortingTypeBy, SortingTypeOrder } from '../../store/products-api/types';
-import {
-  changFilterCategory, changFilterMaxPrice, changFilterMinPrice,
-  setInitialTypes, setInitialLevel,
-} from '../../store/filter-process/filter-process';
+import { useMemo } from 'react';
+
 import { QueryParam } from '../../pages/catalog/types';
+import { FilterTypeType, FilterTypeLevel } from '../../store/products-api/types';
 
 export const useLocationState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const sort = useAppSelector((state) => state.PRODUCT.filter);
-  const filter = useAppSelector((state) => state.FILTER.filter);
+  const setArrayInParams = (newState: FilterTypeType[] | FilterTypeLevel[], key: 'types' | 'levels') => {
+    searchParams.delete(key);
+    newState.forEach((el: string) => {
+      searchParams.append(key, el);
+    });
+  };
 
-  const currentParams = useMemo(() => {
-    const params: QueryParam = {};
+  const params = useMemo(() => {
+    const sortBy = searchParams.get('sortBy') as unknown as QueryParam['sortBy'];
+    const sortOrder = searchParams.get('order') as unknown as QueryParam['order'];
+    const category = searchParams.get('category') as unknown as QueryParam['category'];
+    const types = searchParams.getAll('types') as unknown as QueryParam['types'];
+    const levels = searchParams.getAll('levels') as unknown as QueryParam['levels'];
+    const priceGte = searchParams.get('priceGte') as unknown as QueryParam['priceGte'];
+    const priceLte = searchParams.get('priceLte') as unknown as QueryParam['priceLte'];
 
-    if (sort.by && sort.order) {
-      params.sortBy = sort.by;
-      params.order = sort.order;
-    } else if (!filter.category && !filter.type.length && !filter.level.length && !filter.minPrice && !filter.maxPrice) {
+    const queryParams: QueryParam = {
+      sortBy: null,
+    };
+
+    if (sortBy && sortOrder) {
+      queryParams.sortBy = sortBy;
+      queryParams.order = sortOrder;
+    }
+    if (category) { queryParams.category = category; }
+    if (types?.length) { queryParams.types = types; }
+    if (levels?.length) { queryParams.levels = levels; }
+    if (priceGte) { queryParams.priceGte = priceGte; }
+    if (priceLte) { queryParams.priceLte = priceLte; }
+
+    return queryParams;
+  }, [searchParams]);
+
+  const changeSortBy = (newKey: QueryParam['sortBy']) => {
+    if (newKey) {
+      searchParams.set('sortBy', newKey);
+      setSearchParams(searchParams);
+    }
+  };
+
+  const changeSortOrder = (newKey: QueryParam['order']) => {
+    if (newKey) {
+      searchParams.set('order', newKey);
+      setSearchParams(searchParams);
+    }
+  };
+
+  const changFilterCategory = (newKey: QueryParam['category']) => {
+    if (params.category === newKey) {
+      searchParams.delete('category');
+      setSearchParams(searchParams);
+    } else if (newKey) {
+      searchParams.set('category', newKey);
+      setSearchParams(searchParams);
+    }
+  };
+
+  const resetFiltersTypes = () => {
+    searchParams.delete('types');
+    setSearchParams(searchParams);
+  };
+
+  const changFilterTypes = (newKey: FilterTypeType) => {
+    if (params.types?.length && params.types?.includes(newKey)) {
+      const newState = params.types.filter((type) => type !== newKey);
+      if (newState.length === 0) {
+        searchParams.delete('types');
+      } else {
+        setArrayInParams(newState, 'types');
+      }
+      setSearchParams(searchParams);
       return;
     }
-    if (filter.category) { params.category = filter.category; }
-    if (filter.type) { params.type = filter.type; }
-    if (filter.level) { params.level = filter.level; }
-    if (filter.minPrice) { params['price_gte'] = filter.minPrice.toString(); }
-    if (filter.maxPrice && filter.maxPrice !== Infinity) { params['price_lte'] = filter.maxPrice.toString(); }
+    const newState = [...(params?.types || []), newKey];
+    setArrayInParams(newState, 'types');
+    setSearchParams(searchParams);
+  };
 
-    return params;
-  }, [sort.by, sort.order, filter.category, filter.type, filter.level, filter.minPrice, filter.maxPrice]);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    setSearchParams(currentParams);
-  }, [filter, sort]);
-
-  useEffect(() => {
-    const sortType = searchParams.get('sortBy');
-    const sortOrder = searchParams.get('order');
-    const category = searchParams.get('category');
-    const priceGte = searchParams.get('price_gte');
-    const priceLte = searchParams.get('price_lte');
-    const type: string[] = [];
-    const level: string[] = [];
-
-    for (const [key, value] of searchParams.entries()) {
-      if (key === 'type' && !type.includes(value)) {
-        type.push(value);
+  const changFilterLevels = (newKey: FilterTypeLevel) => {
+    if (params.levels?.length && params.levels?.includes(newKey)) {
+      const newState = params.levels.filter((level) => level !== newKey);
+      if (newState.length === 0) {
+        searchParams.delete('levels');
+      } else {
+        setArrayInParams(newState, 'levels');
       }
+      setSearchParams(searchParams);
+      return;
+    }
+    const newState = [...(params?.levels || []), newKey];
+    setArrayInParams(newState, 'levels');
+    setSearchParams(searchParams);
+  };
 
-      if (key === 'level' && !level.includes(value)) {
-        level.push(value);
-      }
+  const changePriceGte = (newKey: QueryParam['priceGte']) => {
+    if (!newKey) {
+      searchParams.delete('priceGte');
+    } else if (newKey) {
+      searchParams.set('priceGte', newKey);
     }
+    setSearchParams(searchParams);
+  };
 
-    if (sortType) {
-      dispatch(changeSortBy(sortType as SortingTypeBy));
+  const changePriceLte = (newKey: QueryParam['priceLte']) => {
+    if (!newKey) {
+      searchParams.delete('priceLte');
+    } else if (newKey) {
+      searchParams.set('priceLte', newKey);
     }
+    setSearchParams(searchParams);
+  };
 
-    if (sortOrder) {
-      dispatch(changeSortOrder(sortOrder as SortingTypeOrder));
-    }
-
-    if (priceGte) {
-      dispatch(changFilterMinPrice(+priceGte));
-    }
-    if (priceLte) {
-      dispatch(changFilterMaxPrice(+priceLte));
-    }
-
-    if (category) {
-      dispatch(changFilterCategory(category as FilterTypeCategory | null));
-    }
-
-    if (type.length) {
-      dispatch(setInitialTypes(type as unknown as FilterTypeTypes[]));
-    }
-
-    if (level.length) {
-      dispatch(setInitialLevel(level as unknown as FilterTypeLevel[]));
-    }
-  }, []);
+  return {
+    params,
+    changeSortBy,
+    changeSortOrder,
+    changFilterCategory,
+    changFilterTypes,
+    resetFiltersTypes,
+    changFilterLevels,
+    changePriceGte,
+    changePriceLte,
+  };
 };

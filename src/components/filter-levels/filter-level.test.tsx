@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history';
 import { NameSpace } from '../../store/products-api/types';
 import { Provider } from 'react-redux';
 import { HistoryRouter } from '../history-router';
-import { FilterLevel } from './filter-level';
+import { FilterLevel } from './filter-levels';
 
 const mockStore = configureMockStore([thunk]);
 

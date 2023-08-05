@@ -1,19 +1,16 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSortBy, changeSortOrder } from '../../store/products-api/products-process';
+import { useLocationState } from '../../hooks/use-location-state/use-location-state';
 import { SortingTypeBy, SortingTypeOrder } from '../../store/products-api/types';
 import { CatalogSortingOrderProps } from './types';
 
-export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
-  const sort = useAppSelector((state) => state.PRODUCT.filter);
-
-  const dispatch = useAppDispatch();
+export const CatalogSortingOrder = ({ id, value }: CatalogSortingOrderProps) => {
+  const { params, changeSortBy, changeSortOrder } = useLocationState();
 
   const handleSortClick = (sortName: SortingTypeOrder) => {
-    if(!sort.by){
-      dispatch(changeSortBy(SortingTypeBy.Price));
+    if (!params.sortBy) {
+      changeSortBy(SortingTypeBy.Price);
     }
 
-    dispatch(changeSortOrder(sortName));
+    changeSortOrder(sortName);
   };
 
   return (
@@ -23,7 +20,7 @@ export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
         type="radio"
         id={id}
         name="sort-icon"
-        checked={sort.order === id}
+        checked={params.order === id}
         aria-label={value}
         onChange={() => handleSortClick(id as SortingTypeOrder)}
       />
@@ -33,7 +30,8 @@ export const CatalogSortingOrder = ({id, value}:CatalogSortingOrderProps) => {
         </svg>
       </label>
     </div>
-  );};
+  );
+};
 
 export default CatalogSortingOrder;
 

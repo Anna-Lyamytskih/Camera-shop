@@ -1,60 +1,57 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changFilterLTypes } from '../../store/filter-process/filter-process';
-import { FilterTypeCategory, FilterTypeTypes } from '../../store/products-api/types';
+import { useLocationState } from '../../hooks/use-location-state/use-location-state';
+import { FilterTypeCategory, FilterTypeType } from '../../store/products-api/types';
 
 const filterTypes = [
   {
-    title:'digital',
-    value:'Цифровая'
+    title: 'digital',
+    value: 'Цифровая'
   },
   {
-    title:'film',
-    value:'Плёночная'
+    title: 'film',
+    value: 'Плёночная'
   },
   {
-    title:'snapshot',
-    value:'Моментальная'
+    title: 'snapshot',
+    value: 'Моментальная'
   },
   {
-    title:'collection',
-    value:'Коллекционная'
+    title: 'collection',
+    value: 'Коллекционная'
   }
 ];
 
 
 export const FilterTypes = () => {
-  const filter = useAppSelector((state) => state.FILTER.filter);
+  const { params, changFilterTypes } = useLocationState();
 
-  const isVideocamera = filter.category === FilterTypeCategory.Videocamera;
+  const isVideocamera = params.category === FilterTypeCategory.Videocamera;
 
-  const dispatch = useAppDispatch();
-
-  const handleFilterClick = (filterName: FilterTypeTypes) => {
-    dispatch(changFilterLTypes(filterName));
+  const handleFilterClick = (filterName: FilterTypeType) => {
+    changFilterTypes(filterName);
   };
-  return(
+
+  return (
     <fieldset className="catalog-filter__block">
       <legend className="title title--h5">Тип камеры</legend>
-      {filterTypes.map((item)=>
-        (
-          <div className="custom-checkbox catalog-filter__item" key={item.title}>
-            <label key={item.title}>
-              <input
-                checked={filter.type.includes(item.value as FilterTypeTypes)}
-                type="checkbox"
-                key={item.title}
-                name={item.title}
-                onChange={()=>handleFilterClick(item.value as FilterTypeTypes)}
-                disabled={isVideocamera && (item.value === FilterTypeTypes.Snapshot || item.value === FilterTypeTypes.Film)}
-              />
-              <span className="custom-checkbox__icon">
-              </span>
-              <span className="custom-checkbox__label">
-                {item.value}
-              </span>
-            </label>
-          </div>
-        )
+      {filterTypes.map((item) => (
+        <div className="custom-checkbox catalog-filter__item" key={item.title}>
+          <label key={item.title}>
+            <input
+              checked={(params.types || []).includes(item.value as FilterTypeType)}
+              type="checkbox"
+              key={item.title}
+              name={item.title}
+              onChange={() => handleFilterClick(item.value as FilterTypeType)}
+              disabled={isVideocamera && (item.value === FilterTypeType.Snapshot || item.value === FilterTypeType.Film)}
+            />
+            <span className="custom-checkbox__icon">
+            </span>
+            <span className="custom-checkbox__label">
+              {item.value}
+            </span>
+          </label>
+        </div>
+      )
       )}
     </fieldset>
   );

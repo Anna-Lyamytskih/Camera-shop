@@ -1,3 +1,5 @@
+import { SortingProductKey, SortingTypeOrder, FilterTypeCategory, FilterTypeLevel, FilterTypeType } from '../../store/products-api/types';
+
 export type UsePagination = {
   currentPages: number;
   pagesCount: number;
@@ -5,11 +7,11 @@ export type UsePagination = {
 }
 
 export type QueryParam = {
-  sortBy?: string;
-  order?: string;
-  category?: string;
-  type?: string[];
-  level?: string[];
-  price_gte?: string;
-  price_lte?: string;
+  sortBy: SortingProductKey | null;
+  order?: SortingTypeOrder;
+  category?: FilterTypeCategory;
+  types?: FilterTypeType[];
+  levels?: FilterTypeLevel[];
+  priceGte?: string;
+  priceLte?: string;
 };

@@ -1,19 +1,16 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSortBy, changeSortOrder } from '../../store/products-api/products-process';
+import { useLocationState } from '../../hooks/use-location-state/use-location-state';
 import { SortingTypeBy, SortingTypeOrder } from '../../store/products-api/types';
 import { CatalogSortingItemProps } from './types';
 
-export const CatalogSortingItem = ({id, value}:CatalogSortingItemProps) => {
-  const sort = useAppSelector((state) => state.PRODUCT.filter);
-
-  const dispatch = useAppDispatch();
+export const CatalogSortingItem = ({ id, value }: CatalogSortingItemProps) => {
+  const { params, changeSortBy, changeSortOrder } = useLocationState();
 
   const handleSortClick = (sortName: SortingTypeBy) => {
-    if(!sort.order){
-      dispatch(changeSortOrder(SortingTypeOrder.Up));
+    if (!params.order) {
+      changeSortOrder(SortingTypeOrder.Up);
     }
 
-    dispatch(changeSortBy(sortName));
+    changeSortBy(sortName);
   };
 
   const getSortName = (sortName: string) => (
@@ -22,16 +19,16 @@ export const CatalogSortingItem = ({id, value}:CatalogSortingItemProps) => {
 
   const sortName = getSortName(id);
 
-  return(
+  return (
     <div className="catalog-sort__btn-text">
       <input
         type="radio"
-        checked={sort.by === sortName}
+        checked={params.sortBy === sortName}
         onChange={() => handleSortClick(sortName as SortingTypeBy)}
         id={`'sort'${id}`}
         name="sort"
       />
       <label htmlFor={`'sort'${id}`}>{value}</label>
     </div>
-  );};
-
+  );
+};

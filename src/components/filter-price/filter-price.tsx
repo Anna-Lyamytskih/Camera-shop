@@ -1,12 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import { KeyboardEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector, } from '../../hooks';
 import { Products } from '../../store/products-api/types';
-import { changFilterMaxPrice, changFilterMinPrice } from '../../store/filter-process/filter-process';
-import { useGetDataPrice } from '../../hooks/use-get-data-price/use-get-deta-price';
 import { productsApi } from '../../store/products-api/products-api';
 import { getFilterProductsForPrice, getPriceValidation } from '../../utils/utils';
-import { useSearchParams } from 'react-router-dom';
+import { useLocationState } from '../../hooks/use-location-state/use-location-state';
 
 enum FilterPricesValue {
   From = 'from',
@@ -26,138 +23,113 @@ const filterPrices = [
 
 type FilterPriceProps = {
   sortingProducts: Products;
-  resetFilters: boolean;
 }
 
-export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps) => {
-  const filter = useAppSelector((state) => state.FILTER.filter);
+const usePriceValues = ({ products }: {
+  products: Products | undefined;
+}) => {
+  const { changePriceGte, changePriceLte } = useLocationState();
+  const { min, max } = getPriceValidation(products);
 
-  const [searchParams] = useSearchParams();
+  const [fromValue, setFrom] = useState<string>('');
+  const [toValue, setTo] = useState<string>('');
 
-  const priceGte = searchParams.get('price_gte');
-  const priceLte = searchParams.get('price_lte');
-  const filterType = filter.type;
-  const filterLevel = filter.level;
-  const filterCategory = filter.category;
+  const setFromValue = (newState: string) => {
+    setFrom(newState);
+    changePriceGte(newState);
+  };
 
-  const dispatch = useAppDispatch();
+  const setToValue = (newState: string) => {
+    setTo(newState);
+    changePriceLte(newState);
+  };
 
-  const { minPriceFilter, maxPriceFilter } = useGetDataPrice(sortingProducts);
+  return {
+    min, max,
+    fromValue, setFromValue,
+    toValue, setToValue,
+  };
+};
+
+export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
+  const { params } = useLocationState();
+
+  const filterTypes = params.types;
+  const filterLevels = params.levels;
+  const filterCategory = params.category;
 
   const { data } = productsApi.useGetListQuery();
-  const productsFilter = getFilterProductsForPrice(data, filterCategory, filterLevel, filterType);
-  const { min: minPriceAll, max: maxPriceAll } = getPriceValidation(data);
-  const { min: minPriceAllFilter, max: maxPriceAllFilter } = getPriceValidation(productsFilter);
 
-  const defaultValues = {
-    min: minPriceFilter,
-    max: maxPriceFilter,
-  };
+  const productsFilter = getFilterProductsForPrice(data, filterCategory, filterLevels, filterTypes);
+  const {
+    min,
+    max,
+    fromValue,
+    setFromValue,
+    toValue,
+    setToValue,
+  } = usePriceValues({ products: productsFilter });
 
-  const [minValue, setMinPriceValue] = useState(filter.minPrice);
-  const [maxValue, setMaxPriceValue] = useState(filter.maxPrice);
-
-  const handlePrice = (evt: React.ChangeEvent<HTMLInputElement>, price: string) => {
-    const priceValue = +evt.target.value < 0 ? '' : evt.target.value;
-    switch (price) {
-      case FilterPricesValue.From: { return setMinPriceValue(Number(priceValue)); }
-      case FilterPricesValue.To: { return setMaxPriceValue(Number(priceValue)); }
+  const handlePrice = (evt: React.ChangeEvent<HTMLInputElement>, type: FilterPricesValue) => {
+    const priceValue = +evt.target.value <= 0 ? '' : evt.target.value;
+    switch (type) {
+      case FilterPricesValue.From: { return setFromValue(priceValue); }
+      case FilterPricesValue.To: { return setToValue(priceValue); }
     }
   };
+
   useEffect(() => {
-    if (!minValue && priceGte) {
-      setMinPriceValue(+priceGte);
+    if (params.priceGte) {
+      setFromValue(params.priceGte);
     }
-    if (!maxValue && priceLte) {
-      setMaxPriceValue(+priceLte);
+    if (params.priceLte) {
+      setToValue(params.priceLte);
     }
   }, []);
 
-  useEffect(() => {
-    if (resetFilters) {
-      setMinPriceValue(0);
-      setMaxPriceValue(0);
+  const handleFromPriceBlur = () => {
+    if (fromValue !== '' && toValue !== '' && +fromValue > +toValue) {
+      setFromValue(toValue);
+      return;
     }
-  }, [resetFilters]);
+    if (fromValue && fromValue !== '' && +fromValue < min) {
+      setFromValue(`${min}`);
+      return;
+    }
+    if (fromValue && fromValue !== '' && +fromValue > max) {
+      setFromValue(`${max}`);
 
-  const handleMinPriceBlur = () => {
-    if (!minValue) {
-      setMinPriceValue(0);
-      dispatch(changFilterMinPrice(0));
-      return;
     }
-    if (minValue && filter.min === minPriceAll && minValue < minPriceAll) {
-      setMinPriceValue(minPriceAll);
-      dispatch(changFilterMinPrice(minPriceAll));
-      return;
-    }
-    if (maxValue && minValue > maxValue) {
-      setMinPriceValue(maxValue);
-      dispatch(changFilterMinPrice(maxValue));
-      return;
-    }
-    if (minValue > minPriceAllFilter && minValue < maxPriceAllFilter) {
-      setMinPriceValue(minValue);
-      dispatch(changFilterMinPrice(minValue));
-      return;
-    }
-    if (minValue < minPriceAllFilter) {
-      setMinPriceValue(minPriceAllFilter);
-      dispatch(changFilterMinPrice(minPriceAllFilter));
-      return;
-    }
-    if (minValue > maxPriceAllFilter) {
-      setMinPriceValue(maxPriceAllFilter);
-      dispatch(changFilterMinPrice(maxPriceAllFilter));
-      return;
-    }
-    dispatch(changFilterMinPrice(minValue));
   };
 
-  const handleMaxPriceBlur = () => {
-    if (!maxValue) {
-      setMaxPriceValue(0);
-      dispatch(changFilterMaxPrice(0));
+  const handleToPriceBlur = () => {
+    if (toValue !== '' && fromValue !== '' && +toValue < +fromValue) {
+      setToValue(fromValue);
       return;
     }
-    if (maxValue && filter.max === maxPriceAll && maxValue > maxPriceAll) {
-      setMaxPriceValue(maxPriceAll);
-      dispatch(changFilterMaxPrice(maxPriceAll));
+    if (toValue && toValue !== '' && +toValue < min) {
+      setToValue(`${min}`);
       return;
     }
-    if (maxValue && maxValue < minValue) {
-      setMaxPriceValue(minValue);
-      dispatch(changFilterMaxPrice(minValue));
-      return;
+    if (toValue && toValue !== '' && +toValue > max) {
+      setToValue(`${max}`);
     }
-    if (maxValue > maxPriceAllFilter) {
-      setMaxPriceValue(maxPriceAllFilter);
-      dispatch(changFilterMaxPrice(maxPriceAllFilter));
-      return;
-    }
-    if (maxValue < minValue) {
-      setMaxPriceValue(minValue);
-      dispatch(changFilterMaxPrice(minValue));
-      return;
-    }
-
-    dispatch(changFilterMaxPrice(maxValue));
   };
 
-  const handleMinPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+  const handleFromPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
     if (evt.code === 'Enter') {
-      handleMinPriceBlur();
+      handleFromPriceBlur();
     }
   };
 
-  const handleMaxPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+  const handleToPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
     if (evt.code === 'Enter') {
-      handleMaxPriceBlur();
+      handleToPriceBlur();
     }
   };
 
-  const minPriceValue = minValue === 0 ? '' : String(minValue);
-  const maxPriceValue = maxValue === 0 ? '' : String(maxValue);
+  const from = +fromValue === 0 ? '' : String(fromValue);
+  const to = +toValue === 0 ? '' : String(toValue);
 
   return (
     <fieldset className="catalog-filter__block">
@@ -170,16 +142,11 @@ export const FilterPrice = ({ sortingProducts, resetFilters }: FilterPriceProps)
                 type="number"
                 key={item.title}
                 name={item.title}
-                placeholder={
-                  item.title === 'priceFrom' ?
-                    (defaultValues.min === 0 ? String(filter.min) : String(defaultValues.min))
-                    :
-                    (defaultValues.max === 0 ? String(filter.max) : String(defaultValues.max))
-                }
-                value={item.title === 'priceFrom' ? minPriceValue : maxPriceValue}
+                placeholder={item.title === 'priceFrom' ? String(min) : String(max)}
+                value={item.title === 'priceFrom' ? from : to}
                 onChange={(evt) => handlePrice(evt, item.key)}
-                onBlur={item.title === 'priceFrom' ? handleMinPriceBlur : handleMaxPriceBlur}
-                onKeyDown={item.title === 'priceFrom' ? handleMinPriceKeyDown : handleMaxPriceKeyDown}
+                onBlur={item.title === 'priceFrom' ? handleFromPriceBlur : handleToPriceBlur}
+                onKeyDown={item.title === 'priceFrom' ? handleFromPriceKeyDown : handleToPriceKeyDown}
               />
             </label>
           </div>
