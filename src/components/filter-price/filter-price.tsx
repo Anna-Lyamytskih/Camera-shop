@@ -4,6 +4,7 @@ import { Products } from '../../store/products-api/types';
 import { productsApi } from '../../store/products-api/products-api';
 import { getFilterProductsForPrice, getPriceValidation } from '../../utils/utils';
 import { useLocationState } from '../../hooks/use-location-state/use-location-state';
+import { useSearchParams } from 'react-router-dom';
 
 enum FilterPricesValue {
   From = 'from',
@@ -20,10 +21,6 @@ const filterPrices = [
     key: FilterPricesValue.To,
   }
 ];
-
-type FilterPriceProps = {
-  sortingProducts: Products;
-}
 
 const usePriceValues = ({ products }: {
   products: Products | undefined;
@@ -51,8 +48,9 @@ const usePriceValues = ({ products }: {
   };
 };
 
-export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
+export const FilterPrice = () => {
   const { params } = useLocationState();
+  const [searchParams] = useSearchParams();
 
   const filterTypes = params.types;
   const filterLevels = params.levels;
@@ -86,6 +84,15 @@ export const FilterPrice = ({ sortingProducts }: FilterPriceProps) => {
       setToValue(params.priceLte);
     }
   }, []);
+
+  useEffect(() => {
+    if (!searchParams.get('priceGte')) {
+      setFromValue('');
+    }
+    if (!searchParams.get('priceLte')) {
+      setToValue('');
+    }
+  }, [searchParams]);
 
   const handleFromPriceBlur = () => {
     if (fromValue !== '' && toValue !== '' && +fromValue > +toValue) {

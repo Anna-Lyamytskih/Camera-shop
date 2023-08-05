@@ -1,35 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useAppDispatch } from '../../hooks';
-import { resetFilters } from '../../store/filter-process/filter-process';
-import { Products } from '../../store/products-api/types';
 import { FilterCategory } from '../filter-category';
 import { FilterLevel } from '../filter-levels';
 import { FilterPrice } from '../filter-price';
 import { FilterTypes } from '../filter-types';
+import { useLocationState } from '../../hooks/use-location-state/use-location-state';
 
-type CatalogFilterProps = {
-  sortingProducts: Products;
-}
-
-export const CatalogFilter = ({ sortingProducts }: CatalogFilterProps) => {
-  const dispatch = useAppDispatch();
-  const [isReset, setIsReset] = useState(false);
+export const CatalogFilter = () => {
+  const {resetFilters} = useLocationState();
 
   const handleClick = () => {
-    setIsReset(true);
-    dispatch(resetFilters());
+    resetFilters();
   };
-
-  useEffect(() => {
-    if (isReset) {
-      setIsReset(false);
-    }
-  }, [isReset]);
 
   return (
     <form action="#">
       <h2 className="visually-hidden">Фильтр</h2>
-      <FilterPrice sortingProducts={sortingProducts} />
+      <FilterPrice/>
       <FilterCategory />
       <FilterTypes />
       <FilterLevel />

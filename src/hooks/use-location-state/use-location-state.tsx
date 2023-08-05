@@ -119,6 +119,20 @@ export const useLocationState = () => {
     setSearchParams(searchParams);
   };
 
+  const resetFilters = () => {
+    if(searchParams.get('category')){
+      searchParams.delete('category');}
+    if(searchParams.get('types')){
+      searchParams.delete('types');}
+    if(searchParams.get('levels')){
+      searchParams.delete('levels');}
+    if(searchParams.get('priceLte')){
+      searchParams.delete('priceLte');}
+    if(searchParams.get('priceGte')){
+      searchParams.delete('priceGte');}
+    setSearchParams(searchParams);
+  };
+
   return {
     params,
     changeSortBy,
@@ -129,5 +143,6 @@ export const useLocationState = () => {
     changFilterLevels,
     changePriceGte,
     changePriceLte,
+    resetFilters
   };
 };

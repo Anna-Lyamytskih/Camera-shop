@@ -67,7 +67,7 @@ export const Catalog = () => {
                 <div className="page-content__columns">
                   <div className="catalog__aside">
                     <div className="catalog-filter">
-                      <CatalogFilter sortingProducts={sortingProducts} />
+                      <CatalogFilter/>
                     </div>
                   </div>
                   <div className="catalog__content">
