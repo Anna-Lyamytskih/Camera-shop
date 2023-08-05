@@ -7,7 +7,6 @@ import { HistoryRouter } from '../history-router';
 import { Provider } from 'react-redux';
 import { productProcessSlice } from '../../store/products-api/products-process';
 import { promoApi } from '../../store/promo-api/promo-api';
-import { filterProcessSlice } from '../../store/filter-process/filter-process';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
 import { ReviewCardRateList } from './review-card-rate-list';
 
@@ -20,7 +19,6 @@ describe('Component: ReviewCardRateList', () => {
     const storeRef = setupApiStore(productsApi,
       {PRODUCT: productProcessSlice.reducer,
         promoApi: promoApi.reducer,
-        FILTER: filterProcessSlice.reducer,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         reviewListApi: reviewListApi.reducer} as any);
     render(

@@ -9,7 +9,6 @@ import { HistoryRouter } from '../history-router';
 import { Provider } from 'react-redux';
 import { productProcessSlice } from '../../store/products-api/products-process';
 import { promoApi } from '../../store/promo-api/promo-api';
-import { filterProcessSlice } from '../../store/filter-process/filter-process';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
 import { basketProcessSlice } from '../../store/basket-process/basket-process';
 
@@ -22,7 +21,6 @@ describe('Component: ProductCardList', () => {
     const storeRef = setupApiStore(productsApi,
       {PRODUCT: productProcessSlice.reducer,
         promoApi: promoApi.reducer,
-        FILTER: filterProcessSlice.reducer,
         reviewListApi: reviewListApi.reducer,
         BASKET: basketProcessSlice.reducer
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -6,7 +6,6 @@ import { setupApiStore } from '../../utils/mockStore';
 import { productProcessSlice } from '../../store/products-api/products-process';
 import { productsApi } from '../../store/products-api/products-api';
 import { promoApi } from '../../store/promo-api/promo-api';
-import { filterProcessSlice } from '../../store/filter-process/filter-process';
 import { reviewListApi } from '../../store/review-list-api/review-list-api';
 import { HistoryRouter } from '../history-router';
 import { Provider } from 'react-redux';
@@ -19,7 +18,6 @@ describe('Component: ProductSlider', () => {
   const storeRef = setupApiStore(productsApi,
     {PRODUCT: productProcessSlice.reducer,
       promoApi: promoApi.reducer,
-      FILTER: filterProcessSlice.reducer,
       reviewListApi: reviewListApi.reducer,
       BASKET: basketProcessSlice.reducer
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

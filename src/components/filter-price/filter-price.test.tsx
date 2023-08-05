@@ -1,40 +1,24 @@
 import { render, screen } from '@testing-library/react';
-import thunk from 'redux-thunk';
-import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
-import { NameSpace } from '../../store/products-api/types';
 import { Provider } from 'react-redux';
 import { HistoryRouter } from '../history-router';
 import { FilterPrice } from './filter-price';
 import { makeFakeProducts } from '../../utils/mocks';
-
-const mockStore = configureMockStore([thunk]);
+import { setupApiStore } from '../../utils/mockStore';
+import { productsApi } from '../../store/products-api/products-api';
 
 describe('Component: filterPrice', () => {
-  const sortingProducts = makeFakeProducts();
+  const fakeProducts = makeFakeProducts();
   it('should render correctly', () => {
+    fetchMock.mockResponse(JSON.stringify(fakeProducts));
     const history = createMemoryHistory();
-    const store = mockStore({
-      [NameSpace.Filter]: {
-        filter:
-        {
-          maxPrice: 0,
-          minPrice: 0,
-          category: null,
-          type: [],
-          level: [],
-          max: 0,
-          min: 0,
-        }
-      }
-    });
-
+    const storeRef = setupApiStore(productsApi);
     render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <FilterPrice sortingProducts={sortingProducts} />
-        </HistoryRouter>
-      </Provider>
+      <HistoryRouter history={history}>
+        <Provider store={storeRef.store}>
+          <FilterPrice />
+        </Provider>
+      </HistoryRouter>
     );
 
     expect(screen.getByText('Цена, ₽')).toBeInTheDocument();
