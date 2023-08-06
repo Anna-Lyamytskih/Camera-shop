@@ -17,10 +17,10 @@ export const fillterLevels = [
 ];
 
 export const FilterLevel = () => {
-  const { params, changFilterLevels } = useLocationState();
+  const { params, changeFilterLevels } = useLocationState();
 
   const handleFilterClick = (filterName: FilterTypeLevel) => {
-    changFilterLevels(filterName);
+    changeFilterLevels(filterName);
   };
 
   return (

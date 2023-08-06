@@ -7,7 +7,7 @@ import { FilterTypeType, FilterTypeLevel } from '../../store/products-api/types'
 export const useLocationState = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const setArrayInParams = (newState: FilterTypeType[] | FilterTypeLevel[], key: 'types' | 'levels') => {
+  const setArrayInParams = (newState: FilterTypeType[] | FilterTypeLevel[], key: 'type' | 'level') => {
     searchParams.delete(key);
     newState.forEach((el: string) => {
       searchParams.append(key, el);
@@ -18,8 +18,8 @@ export const useLocationState = () => {
     const sortBy = searchParams.get('sortBy') as unknown as QueryParam['sortBy'];
     const sortOrder = searchParams.get('order') as unknown as QueryParam['order'];
     const category = searchParams.get('category') as unknown as QueryParam['category'];
-    const types = searchParams.getAll('types') as unknown as QueryParam['types'];
-    const levels = searchParams.getAll('levels') as unknown as QueryParam['levels'];
+    const types = searchParams.getAll('type') as unknown as QueryParam['types'];
+    const levels = searchParams.getAll('level') as unknown as QueryParam['levels'];
     const priceGte = searchParams.get('priceGte') as unknown as QueryParam['priceGte'];
     const priceLte = searchParams.get('priceLte') as unknown as QueryParam['priceLte'];
 
@@ -54,7 +54,7 @@ export const useLocationState = () => {
     }
   };
 
-  const changFilterCategory = (newKey: QueryParam['category']) => {
+  const changeFilterCategory = (newKey: QueryParam['category']) => {
     if (params.category === newKey) {
       searchParams.delete('category');
       setSearchParams(searchParams);
@@ -65,39 +65,39 @@ export const useLocationState = () => {
   };
 
   const resetFiltersTypes = () => {
-    searchParams.delete('types');
+    searchParams.delete('type');
     setSearchParams(searchParams);
   };
 
-  const changFilterTypes = (newKey: FilterTypeType) => {
+  const changeFilterTypes = (newKey: FilterTypeType) => {
     if (params.types?.length && params.types?.includes(newKey)) {
       const newState = params.types.filter((type) => type !== newKey);
       if (newState.length === 0) {
-        searchParams.delete('types');
+        searchParams.delete('type');
       } else {
-        setArrayInParams(newState, 'types');
+        setArrayInParams(newState, 'type');
       }
       setSearchParams(searchParams);
       return;
     }
     const newState = [...(params?.types || []), newKey];
-    setArrayInParams(newState, 'types');
+    setArrayInParams(newState, 'type');
     setSearchParams(searchParams);
   };
 
-  const changFilterLevels = (newKey: FilterTypeLevel) => {
+  const changeFilterLevels = (newKey: FilterTypeLevel) => {
     if (params.levels?.length && params.levels?.includes(newKey)) {
       const newState = params.levels.filter((level) => level !== newKey);
       if (newState.length === 0) {
-        searchParams.delete('levels');
+        searchParams.delete('level');
       } else {
-        setArrayInParams(newState, 'levels');
+        setArrayInParams(newState, 'level');
       }
       setSearchParams(searchParams);
       return;
     }
     const newState = [...(params?.levels || []), newKey];
-    setArrayInParams(newState, 'levels');
+    setArrayInParams(newState, 'level');
     setSearchParams(searchParams);
   };
 
@@ -122,10 +122,10 @@ export const useLocationState = () => {
   const resetFilters = () => {
     if(searchParams.get('category')){
       searchParams.delete('category');}
-    if(searchParams.get('types')){
-      searchParams.delete('types');}
-    if(searchParams.get('levels')){
-      searchParams.delete('levels');}
+    if(searchParams.get('type')){
+      searchParams.delete('type');}
+    if(searchParams.get('level')){
+      searchParams.delete('level');}
     if(searchParams.get('priceLte')){
       searchParams.delete('priceLte');}
     if(searchParams.get('priceGte')){
@@ -137,10 +137,10 @@ export const useLocationState = () => {
     params,
     changeSortBy,
     changeSortOrder,
-    changFilterCategory,
-    changFilterTypes,
+    changeFilterCategory,
+    changeFilterTypes,
     resetFiltersTypes,
-    changFilterLevels,
+    changeFilterLevels,
     changePriceGte,
     changePriceLte,
     resetFilters

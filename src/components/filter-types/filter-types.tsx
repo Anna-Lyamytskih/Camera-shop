@@ -22,12 +22,12 @@ const filterTypes = [
 
 
 export const FilterTypes = () => {
-  const { params, changFilterTypes } = useLocationState();
+  const { params, changeFilterTypes } = useLocationState();
 
   const isVideocamera = params.category === FilterTypeCategory.Videocamera;
 
   const handleFilterClick = (filterName: FilterTypeType) => {
-    changFilterTypes(filterName);
+    changeFilterTypes(filterName);
   };
 
   return (

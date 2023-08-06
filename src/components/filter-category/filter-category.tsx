@@ -15,10 +15,10 @@ const CategoryProduct = [
 ];
 
 export const FilterCategory = () => {
-  const { params, changFilterCategory, resetFiltersTypes } = useLocationState();
+  const { params, changeFilterCategory, resetFiltersTypes } = useLocationState();
 
   const handleFilterClick = (filterName: FilterTypeCategory) => {
-    changFilterCategory(filterName);
+    changeFilterCategory(filterName);
     resetFiltersTypes();
   };
 
