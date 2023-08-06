@@ -1,6 +1,7 @@
 import { useAppDispatch } from '../../hooks';
 import { addProduct, decrementProductCount, setProductCount } from '../../store/basket-process/basket-process';
 import { Product } from '../../store/products-api/types';
+import { LoadingScreen } from '../loading-screen';
 
 export enum BasketItemType {
   Standart = 'standart',
@@ -30,7 +31,9 @@ export const MAX_PRODUCT_COUNT = 99;
 
 export const BasketItem = ({camera, type, setOpenedRemoveModal, setCurrentCamera}: BasketItemProps) => {
   const dispatch = useAppDispatch();
-
+  if(!camera){
+    return <LoadingScreen/>;
+  }
   const handleIncrementClick = () => {
     dispatch(addProduct(camera));
   };
